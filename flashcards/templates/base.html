@@ -1,0 +1,24 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=9" />
+        <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
+        {% block css %}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+        {% endblock %}
+        {% block javascript %}
+        {% endblock %}
+        <title>{% block title %}Flash Cards{% endblock %}</title>
+        {% block extrahead %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            {% block content %}
+            {% endblock %}
+        {% endblock %}
+        {% block footer %}
+        {% endblock %}
+    </body>
+</html>
