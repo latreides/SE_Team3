@@ -11,17 +11,20 @@ Prerequisite(s)
 Download these and install them.
 
 If you are using an Ubuntu based Linux distribution, you can install them via:
+
 **`sudo apt-get install python python-django python-django-south`**
 
 Database Initalization
 --------------------
 To generate the initial (empty) database, run:
+
 **`python manage.py syncdb`**
 **`python manage.py migrate`**
 
 Start the Server
 --------------------
 To start the server, run:
+
 **`python manage.py runserver 0.0.0.0:8000`**
 (Note, you can change 8000 to the port of your choice)
 
