@@ -1,0 +1,10 @@
+Initial deck structure for now:
+
+DECKNAME:
+    CARDNAME:
+	    q: QUESTION
+		a: ANSWER
+	CARDNAME2:
+	    q: QUESTION
+		a: ANSWER
+	..etc..
