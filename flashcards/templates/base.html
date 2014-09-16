@@ -15,30 +15,30 @@
         {% block extrahead %}{% endblock %}
     </head>
     <body>
-		{% block header %}
-		<nav>
-		 	<ul>
-				<li><a href="{% url 'landing_page' %}">Home</a></li>
-				<li><a href="{% url 'landing_page' %}">My Decks</a></li>
-				<li><a href="{% url 'landing_page' %}">My Scores</a></li>
-				<li><a href="{% url 'landing_page' %}">Import/Export</a></li>
-				<li><a href="{% url 'landing_page' %}">Account</a></li>
-				<li><a href="{% url 'landing_page' %}">Contact</a></li>
-				<li><a href="{% url 'landing_page' %}">Sign Up/Log In</a></li>
-		 	</ul>
-		</nav>
-		<hr>
-		{% endblock %}
-		
+        {% block header %}
+        <nav>
+             <ul>
+                <li><a href="{% url 'landing_page' %}">Home</a></li>
+                <li><a href="{% url 'view_decks' %}">My Decks</a></li>
+                <li><a href="{% url 'scores' %}">My Scores</a></li>
+                <li><a href="{% url 'manage_decks' %}">Manage Decks</a></li>
+                <li><a href="{% url 'account' %}">Account</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url 'signin' %}">Sign Up/Log In</a></li>
+             </ul>
+        </nav>
+        <hr>
+        {% endblock %}
+
         {% block body %}
             {% block content %}
             {% endblock %}
         {% endblock %}
-		
+
         {% block footer %}
-			<p>
-				<h4>Copyright © 2014 SE_Team3</h4>
-			</p>
+            <p>
+                <h4>Copyright © 2014 SE_Team3</h4>
+            </p>
         {% endblock %}
     </body>
 </html>
