@@ -1,4 +1,103 @@
-h1
+h1, h2, h3	{	
+  color: #1EB5FF;
+  font-family: "Microsoft-Sans-Serif", sans-serif;
+  
+}
+
+h1{	/*Main title/header of current page*/
+  font-size: 22pt;
+  text-align: center;
+  font-weight: heavy;
+}
+
+h2{	/*Secondary title/section header*/
+  font-size: 18pt;
+  text-align: left;
+  font-weight: normal;
+  text-decoration: underline;
+}
+
+h3{ /* sub section */
+  font-size: 16pt;
+  text-align: left;
+  font-weight: normal;
+  text-decoration: underline;
+}
+		
+h4 {	/*Copyright statement*/
+  font-size: 10pt;
+  text-align: center;
+  font-weight: normal;
+  color: #909090;
+  font-style: italic;
+  font-family: Microsoft-Sans-Serif, sans-serif;
+}
+
+body {
+	background-color: #383838;
+	font-family: Microsoft-Sans-Serif, sans-serif;
+	color: white;
+}
+
+nav body { /*reset styles*/
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+nav {
+  float: left;
+  width: 100%; /*nav bar width = body width */
+  max-width: 100%;
+  margin: 0 0;
+  overflow: hidden; 
+  display: inline-block;
+  text-align: center;
+}
+ 
+nav ul {
+  font-size: 100%; /* links width = nav bar length */
+  font-family: Microsoft-Sans-Serif, sans-serif;
+  list-style: none;
+  margin: 0 0;
+  padding: 0px;
+}
+ 
+nav ul li {
+  width: 12%; /* width of each nav block */
+  display: inline-block; /* keep horizontal */
+  overflow: hidden; /* if window is small, cut off overflow text */
+}
+ 
+nav ul li a {
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 0;
+  display: block;
+  width: 100%;
+  border-bottom-style: solid;
+  border-bottom-width: medium;
+  border-bottom-color: black;
+  background: #1E90FF;
+  box-shadow: 0 1px 1px black;
+}
+
+nav ul li a:hover {
+  background-color: #1EB5FF;
+  color: white;
+}
+
+nav ul li a:link {
+  color: white;
+}
+
+nav ul li a:visited {
+  color: white;
+}
+
+.hidden
 {
-    color: green;
+	display: none;
 }

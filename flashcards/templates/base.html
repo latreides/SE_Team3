@@ -7,6 +7,7 @@
         <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
         {% block css %}
             <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+
         {% endblock %}
         {% block javascript %}
         {% endblock %}
@@ -14,11 +15,30 @@
         {% block extrahead %}{% endblock %}
     </head>
     <body>
+		{% block header %}
+		<nav>
+		 	<ul>
+				<li><a href="{% url 'landing_page' %}">Home</a></li>
+				<li><a href="{% url 'landing_page' %}">My Decks</a></li>
+				<li><a href="{% url 'landing_page' %}">My Scores</a></li>
+				<li><a href="{% url 'landing_page' %}">Import/Export</a></li>
+				<li><a href="{% url 'landing_page' %}">Account</a></li>
+				<li><a href="{% url 'landing_page' %}">Contact</a></li>
+				<li><a href="{% url 'landing_page' %}">Sign Up/Log In</a></li>
+		 	</ul>
+		</nav>
+		<hr>
+		{% endblock %}
+		
         {% block body %}
             {% block content %}
             {% endblock %}
         {% endblock %}
+		
         {% block footer %}
+			<p>
+				<h4>Copyright © 2014 SE_Team3</h4>
+			</p>
         {% endblock %}
     </body>
 </html>
