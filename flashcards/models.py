@@ -1,25 +1,5 @@
 from django.db import models
-
-'''
-User is a database Table that will store information specific to a user
-    User_ID- Primary Key assigned by database when user created
-    Email- Email address of user
-    Password- User chosen password
-    Login_ID- User chosen Login ID
-'''
-class User(models.Model):
-    User_ID = models.AutoField(primary_key=True)
-    Email = models.CharField(max_length = 50)
-    Password = models.CharField(max_length = 32)
-    Login_ID = models.CharField(max_length = 50)
-
-    #Return the users login ID as the text for the object
-    def __unicode__(self):
-        return self.Login_ID
-
-    class Meta:
-        app_label = 'flashcards'
-
+from django.conf import settings
 '''
 Deck is a database table that stores information specific to a single deck
     Deck_ID- (Primary Key) Integer value assigned when deck is created
@@ -30,7 +10,7 @@ Deck is a database table that stores information specific to a single deck
 '''
 class Deck(models.Model):
     Deck_ID = models.AutoField(primary_key=True)
-    User_ID = models.ForeignKey(User)
+    User_ID = models.ForeignKey(settings.AUTH_USER_MODEL)
     Name = models.CharField(max_length = 100)
     Create_Date = models.DateTimeField()
     Accessed_Date = models.DateTimeField()
@@ -79,7 +59,7 @@ class Card(models.Model):
     Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image')
     Difficulty = models.IntegerField()
     Last_Attempted = models.DateTimeField()
-    Two_Sided = models.BooleanField()
+    Two_Sided = models.BooleanField(default=False)
 
     #Return the Cards front side text as the text for the object
     def __unicode__(self):
