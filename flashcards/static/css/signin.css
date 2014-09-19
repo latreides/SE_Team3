@@ -6,16 +6,21 @@ div#content {
 }
 
 form{
+	background: #FFF
 	margin-left: auto;
 	margin-right: auto;
+	padding: 0px;
 	text-align: center;
 }
 
 input {
-	border: transparent;
+	border: white solid 2px;
 	height: 24px;
-	margin: 0px;
-	min-width: 192px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: 0px;
+	width: 200px;
 	padding: 0px;
 }
 
@@ -24,8 +29,12 @@ input[type="submit"] {
 	border: transparent solid 2px;
 	font-weight: bold;
 	height: 32px;
-	margin-right: 4px;
 	margin-top: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	left: -2px;
+	width: 204px;
 }
 
 input:active {
