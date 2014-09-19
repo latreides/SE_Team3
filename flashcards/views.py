@@ -6,7 +6,10 @@ class LandingPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
-        context['example_value'] = "Example"
+        context['last_deck_viewed'] = "This is the last deck!"
+        context['last_visited'] = "This is the last time visited!"
+        context['views_for_deck'] = "You viewed this deck x times!"
+
         return context
 
 class ManageDecksPage(TemplateView):
