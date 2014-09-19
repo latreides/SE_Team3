@@ -1,5 +1,43 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Test</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/signin.css' %}" />
+
+    <h1>Hello, There!</h1>
+	
+	<div id="content">
+		<h2>Been Here Before?</h2>
+		<div class = "section">
+			<p>
+				If you're a returning user, please login 
+				below to access all the features of your account.
+			</p>
+			<form id="sign-in" method="post" onsubmit="return true;" action="">
+			
+				<input name="username" type="text" placeholder="user name">
+				<br>
+				<input name="password" type="password" placeholder="password">
+				<br>
+				<input type="submit" value="Sign In">
+			</form>
+		</div>
+		<h2>New to MemorizeMe?</h2>
+		<div class = "section">
+			<p>
+				If you're new to MemorizeMe, take a few seconds 
+				to create a profile below and get access to a
+				fun and innovative way of learning something new!
+			</p>
+			<form id="sign-up" method="post" onsubmit="return true;" action="">
+			{% csrf_token %}
+					<input name="username" type="text" placeholder="Pick a user name">
+				<br>
+					<input name="password" type="password" placeholder="Pick a password">
+				<br>
+					<input name="password" type="password2" placeholder="Retype your password">
+				<br>
+				<input type="submit" value="Sign Up">
+			</form>
+		</div>
+	</div>
 {% endblock %}

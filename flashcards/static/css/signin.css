@@ -1,0 +1,72 @@
+div#content {
+	margin-left: auto;
+	margin-right:auto;
+	max-width: 1200px;
+	min-width: 800px;
+}
+
+form{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+input {
+	border: transparent;
+	height: 24px;
+	margin: 0px;
+	min-width: 192px;
+	padding: 0px;
+}
+
+input[type="submit"] {
+	background: #1E90FF;
+	border: transparent solid 2px;
+	font-weight: bold;
+	height: 32px;
+	margin-right: 4px;
+	margin-top: 4px;
+}
+
+input:active {
+	background: #AAA;
+}
+
+input:hover {
+	background: #CCE6FF;
+}
+
+input[type="submit"]:hover {
+	background: #1EB5FF;
+	border: white solid 2px;
+}
+
+.section {
+    border-left: solid;
+    border-top: solid;
+    border-width: 2px;
+	margin-bottom: 2em;
+    padding: 10px;
+}
+
+::-webkit-input-placeholder {
+	color: #666;
+	text-align: center;
+}
+
+:-moz-placeholder {
+	color: #666;
+	opacity: 1;
+	text-align: center;
+}
+
+::-moz-placeholder {
+	color: #666;
+	opacity: 1;
+	text-align: center;
+}
+
+:-ms-input-placeholder {
+	color: #666;
+	text-align: center;
+}
