@@ -13,12 +13,14 @@ p.landing{
     margin-bottom:20px;
     margin-left: auto;
     margin-right: auto;
+    
 }
 
 #carousel .slide {
     width:6345px;  /*9(images) x 705(width)*/
     position: absolute;
     height:80px;
+
 }
 
 #carousel .image {
@@ -30,6 +32,7 @@ p.landing{
     color:#b0b0b0;
     line-height:20px;
     text-align:center;
+
 }
 
 
@@ -56,8 +59,8 @@ p.landing{
 }
 
 #carousel img{
-    width: 500px;
-    height: 500px;
+    max-width:705px; 
+    max-height:300px;       
 }
 
 

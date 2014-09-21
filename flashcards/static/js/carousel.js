@@ -10,8 +10,7 @@ $(document).ready(function (){
                 $(this).addClass('active')}
         });
     });
-        Next();
-        interval = setInterval ( function(){Next();}, 5000 );
+        interval = setInterval ( function(){Next();}, 5000  );
     });
     
     function Next(){
