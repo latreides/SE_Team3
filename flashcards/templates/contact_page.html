@@ -1,5 +1,51 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Test</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+    
+    <h1>Contact Information</h1>
+	
+    <div id="content">
+	<h2>Mailing Address:</h2>
+    
+    <div class = "section">
+	<p>
+        Attn: MemorizeMe <br>
+        Missouri State University <br>
+        901 South National Avenue <br>
+        Springfield, MO 65897<br>
+	</p>
+    </div>
+    
+    <h2>Email Us</h2>
+    
+    <div class = "section">
+    <form action="MAILTO:No Email At This Time" method="post" enctype="text/plain">
+        <fieldset>
+        <p>
+            <label class="name" for="Name">Name:</label>
+            <input type="text" class="textbox" name="Name" value="Your Name">
+        </p>
+        
+        <p>
+            <label class="name" for="Email">Email:</label>
+            <input type="text" class="textbox" name="mail" value="Your Email" />
+        </p>
+        
+        <p>
+           <label class="name" for="Message">Message:</label>
+            <textarea class="textbox2" maxlength="250" name="Message" wrap="hard" rows="8" cols="50"> </textarea><br>
+        </p>
+        
+            <input type="submit" value="Send">
+            <input type="reset" value="Reset">
+        </p>
+        </fieldset>
+    </form>
+    </div>
+    
+    </div>
+   
+    
+    
 {% endblock %}

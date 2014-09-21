@@ -1,0 +1,45 @@
+div#content {
+	margin-left: auto;
+	margin-right:auto;
+	max-width: 1200px;
+	min-width: 800px;
+}
+
+fieldset {
+    width: 300px;
+    border: none;
+}
+
+label.name {
+    text-align: right;
+    width: 100px;
+    floath: right;
+    font-weight: bold;
+}
+
+input.textbox {
+    width: 200px;
+    float: right;
+}
+
+input.textbox2 {
+    foat: left;
+}
+
+fieldset p {
+    clear: both;
+    padding: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+
+.section {
+    border-left: solid;
+    border-top: solid;
+    border-width: 2px;
+	margin-bottom: 2em;
+    padding: 5px;
+}
