@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}" />
+<script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
 
 <h1>Welcome to MemorizeMe!</h1>
 <h2> News / About </h2>
@@ -17,31 +18,56 @@ Number of times you viewed last deck: {{ views_for_deck }} <br><br>
 <p class = "landing">
 This is filler. I have no idea what to put here. I will put an image here just to see how it will look. <br> 
 </p>
-<img src="{% static "img/memorizeMe.png" %}" alt="My image" />
+<img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
 
 
-<div id="images">
-    <img id="image1" src="static/img/1.jpg" />
-    <img id="image2" src="static/img/2.jpg" />
-    <img id="image3" src="static/img/3.jpg" />
-    <img id="image4" src="static/img/4.jpg" />
-    <img id="image5" src="static/img/5.jpg" />
-    <img id="image6" src="static/img/6.jpg" />
-    <img id="image7" src="static/img/7.jpg" />
-    <img id="image8" src="static/img/8.jpg" />
-    <img id="image9" src="static/img/9.jpg" />
+<div id="carousel">
+    <div class="slide">
+        <div class="image">
+            <img src="{% static 'img/1.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/2.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/3.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/4.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/5.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/6.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/7.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/8.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/9.jpg' %}" alt="My image" />
+        </div>  
+    </div>
 </div>
-<div id="slider">
-    <a href="#image1">1</a>
-    <a href="#image2">2</a>
-    <a href="#image3">3</a>
-    <a href="#image4">4</a>
-    <a href="#image5">5</a>
-    <a href="#image6">6</a>
-    <a href="#image7">7</a>
-    <a href="#image8">8</a>
-    <a href="#image9">9</a>
+
+<div class="clear"></div>
+
+<div id="button" >
+    <a class="button1 active" rel="1"></a>
+    <a class="button2" rel="2"></a>
+    <a class="button3" rel="3"></a>
+    <a class="button4" rel="4"></a>
+    <a class="button5" rel="5"></a>
+    <a class="button6" rel="6"></a>
+    <a class="button7" rel="7"></a>
+    <a class="button8" rel="8"></a>
+    <a class="button9" rel="9"></a>
 </div>
 
+<div class="clear"></div>
+          
 
 {% endblock %}
