@@ -13,7 +13,7 @@
 				below to access all the features of your account.
 			</p>
 			<form id="sign-in" method="post" onsubmit="return true;" action="">
-			
+			{% csrf_token %}
 				<input name="username" type="text" placeholder="user name">
 				<br>
 				<input name="password" type="password" placeholder="password">
