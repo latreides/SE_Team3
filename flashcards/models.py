@@ -6,14 +6,13 @@ Deck is a database table that stores information specific to a single deck
     User_ID- (Foreign Key) ID of the user who created the deck
     Name- User chosen name of the deck of flashcards
     Create_Date- Date which the deck was created
-    Accessed_Date- Last time the deck was used 
+    Accessed_Date- Last time the deck was used
 '''
 class Deck(models.Model):
-    Deck_ID = models.AutoField(primary_key=True)
     User_ID = models.ForeignKey(settings.AUTH_USER_MODEL)
     Name = models.CharField(max_length = 100)
     Create_Date = models.DateTimeField()
-    Accessed_Date = models.DateTimeField()
+    Accessed_Date = models.DateTimeField(blank=True)
 
     #Return the Decks name as the text for the object
     def __unicode__(self):
@@ -29,7 +28,6 @@ table, and then the path to where the image is stored on the server
     Image_Path- The path to the image file on the server
 '''
 class Image(models.Model):
-    Image_ID = models.AutoField(primary_key=True)
     Image_Path = models.CharField(max_length = 200)
 
     #Return the image records path as the text for the object
@@ -48,17 +46,16 @@ Card is a database table that stores information specific to a single flash card
     Difficulty- User rated difficulty of the current card
     Last_Attempted- The most recent time the card was attempted by the user
     Two_Sided- A boolean value hloding whether the card can be displayed with either
-    side forward 
+    side forward
 '''
 class Card(models.Model):
-    Card_ID = models.AutoField(primary_key=True)
     Deck_ID = models.ForeignKey(Deck)
-    Front_Text = models.TextField()
-    Back_Text = models.TextField()
-    Front_Img_ID = models.ForeignKey('Image', related_name = 'Front_Image')
-    Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image')
-    Difficulty = models.IntegerField()
-    Last_Attempted = models.DateTimeField()
+    Front_Text = models.TextField(blank=True)
+    Back_Text = models.TextField(blank=True)
+    Front_Img_ID = models.ForeignKey('Image', related_name = 'Front_Image', blank=True)
+    Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image', blank=True)
+    Difficulty = models.IntegerField(blank=True)
+    Last_Attempted = models.DateTimeField(blank=True)
     Two_Sided = models.BooleanField(default=False)
 
     #Return the Cards front side text as the text for the object
