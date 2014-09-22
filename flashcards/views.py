@@ -38,7 +38,7 @@ class AccountPage(LoginRedirect):
 class ContactPage(LoginRedirect):
     template_name = 'contact_page.html'
 
-class SigninPage(LoginRedirect):
+class SigninPage(TemplateView):
     template_name = 'signin_page.html'
 
 class PlayDeckPage(LoginRedirect):

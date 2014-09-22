@@ -53,6 +53,10 @@ class ContactTest(StandardTest):
 class SigninTest(StandardTest):
     path = reverse('signin')
 
+    # Signin does not redirect!
+    def test_redirect(self):
+        pass
+
 class PlayDeckTest(StandardTest):
     path = reverse('play_deck')
 
