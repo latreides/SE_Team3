@@ -1,7 +1,18 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, ListView
+from django.core.urlresolvers import reverse
 
-class LandingPage(TemplateView):
+class LoginRedirect(TemplateView):
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_anonymous():
+            return HttpResponseRedirect(reverse('welcome'))
+        else:
+            return super(LoginRedirect, self).dispatch(request, *args, **kwargs)
+
+
+
+class LandingPage(LoginRedirect):
     template_name = 'landing_page.html'
 
     def get_context_data(self, **kwargs):
@@ -12,23 +23,26 @@ class LandingPage(TemplateView):
 
         return context
 
-class ManageDecksPage(TemplateView):
+class ManageDecksPage(LoginRedirect):
     template_name = 'manage_decks_page.html'
 
-class ScoresPage(TemplateView):
+class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
-class ViewDeckPage(TemplateView):
+class ViewDeckPage(LoginRedirect):
     template_name = 'view_deck_page.html'
 
-class AccountPage(TemplateView):
+class AccountPage(LoginRedirect):
     template_name = 'account_page.html'
 
-class ContactPage(TemplateView):
+class ContactPage(LoginRedirect):
     template_name = 'contact_page.html'
 
-class SigninPage(TemplateView):
+class SigninPage(LoginRedirect):
     template_name = 'signin_page.html'
 
-class PlayDeckPage(TemplateView):
+class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
+
+class WelcomePage(TemplateView):
+    template_name = 'welcome_page.html'

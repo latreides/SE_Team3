@@ -10,4 +10,5 @@ urlpatterns = patterns('',
                         url(r'^contact$', ContactPage.as_view(), name='contact'),
                         url(r'^signin$', SigninPage.as_view(), name='signin'),
                         url(r'^play$', PlayDeckPage.as_view(), name='play_deck'),
+                        url(r'^welcome$', WelcomePage.as_view(), name='welcome'),
                        )
