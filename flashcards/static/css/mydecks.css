@@ -36,6 +36,14 @@ img.icon {
 	width: 16px;
 }
 
+img.inline {
+	background: #CCC;
+	height: 16px;
+	padding: 2px;
+	vertical-align: top;
+	width: 16px;
+}
+
 img.icon:hover {
 	cursor: pointer;
 }

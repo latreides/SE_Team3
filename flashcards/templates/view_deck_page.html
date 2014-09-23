@@ -10,49 +10,86 @@
 				Below you'll find all the decks you've subscribed to.
 			</p>
 			<p>
-				Use the green play button to start playing the corresponding deck.
+				Use 
+				<img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/> 
+				to start playing!.<br>
+				You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
 				<br>
-				Use the gold ribbon button to see your scores and statistics for 
-				that deck.
+				Use 
+				<img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/> 
+				to see your scores!.<br>
+				You'll be taken to the My Scores page to see how you're doing on that deck.<br>
 				<br>
-				Use the black check-list button to manage the corresponding deck.
-				You'll be taken to the Manage Decks page where you can fiddle around
-				with that particular deck's settings, like deleting it.
+				Use 
+				<img class="inline" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/> 
+				to manage that deck!<br>
+				You'll be taken to the Manage Decks page where you can do things 
+				like unsubscribe from the deck or edit it.
 			</p>
 		</div>
+		
 		<div id="deckpane">
+		
 			<div class="deckItem">
 				<span class="deckName">How to Use MemorizeMe</span>
 				<span class="deckActions">
-					<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					<a href="#">
+						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					</a>
 				<span>
 			</div>
+			
 			<div class="deckItem">
 				<span class="deckName">I'm a Deck!</span>
 				<span class="deckActions">
-					<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					<a href="#">
+						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					</a>
 				<span>
 			</div>
+			
 			<div class="deckItem">
 				<span class="deckName">Swahili for Beginners</span>
 				<span class="deckActions">
-					<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					<a href="#">
+						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					</a>
 				<span>
 			</div>
+			
 			<div class="deckItem">
 				<span class="deckName">Swahili as a Second Language</span>
 				<span class="deckActions">
-					<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					<a href="#">
+						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+					</a>
 				<span>
 			</div>
+			
 		</div>
 	</div>
 {% endblock %}
