@@ -19,6 +19,7 @@ div#deckpane {
 div.deckItem {
 	border-radius: 8px;
 	height: 28px;
+	overflow: auto;
 	padding-top: 12px;
 }
 
@@ -54,7 +55,6 @@ span.deckActions {
 
 span.deckName {
 	font-weight: bold;
-	min-width: 60%;
 	padding: 6px;
 }
 

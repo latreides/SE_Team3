@@ -28,9 +28,10 @@
 		</div>
 		
 		<div id="deckpane">
-		
+		{% for deck in user_decks %}
+		<!-- decks currently fetched in a dictionary -->
 			<div class="deckItem">
-				<span class="deckName">How to Use MemorizeMe</span>
+				<span class="deckName">{{ deck.name }}</span>
 				<span class="deckActions">
 					<a href="#">
 						<img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
@@ -43,52 +44,7 @@
 					</a>
 				<span>
 			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">I'm a Deck!</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>
-					</a>
-				<span>
-			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">Swahili for Beginners</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>
-					</a>
-				<span>
-			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">Swahili as a Second Language</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>
-					</a>
-				<span>
-			</div>
-			
+		{% endfor %}			
 		</div>
 	</div>
 {% endblock %}

@@ -29,67 +29,23 @@
 		</div>
 		
 		<div id="deckpane">
-		
+		{% for deck in user_decks %}
+		<!-- decks currently fetched in a dictionary -->
 			<div class="deckItem">
-				<span class="deckName">How to Use MemorizeMe</span>
+				<span class="deckName">{{ deck.name }}</span>
 				<span class="deckActions">
-					<a href="#">
+					<a href="{{ deck.manref }}">
 						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
 					</a>
-					<a href="#">
+					<a href="{{ deck.scoreref }}">
 						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
 					</a>
-					<a href="#">
+					<a href="{{ deck.playref }}">
 						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
 					</a>
 				<span>
 			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">I'm a Deck!</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
-					</a>
-				<span>
-			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">Swahili for Beginners</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
-					</a>
-				<span>
-			</div>
-			
-			<div class="deckItem">
-				<span class="deckName">Swahili as a Second Language</span>
-				<span class="deckActions">
-					<a href="#">
-						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					</a>
-					<a href="#">
-						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
-					</a>
-				<span>
-			</div>
-			
+		{% endfor %}
 		</div>
 	</div>
 {% endblock %}
