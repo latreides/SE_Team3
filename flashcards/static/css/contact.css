@@ -6,17 +6,12 @@ fieldset {
 label.name {
     text-align: right;
     width: 100px;
-    floath: right;
     font-weight: bold;
 }
 
 input.textbox {
     width: 200px;
     float: right;
-}
-
-input.textbox2 {
-    foat: left;
 }
 
 fieldset p {
