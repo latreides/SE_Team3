@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/mydecks.css' %}" />
+    <h1>Manage Decks</h1>
+	<div id="content">
+		<h2>Your Decks, Your Way</h2>
+		<div class="section">
+			<p>
+				Below you'll find all the decks you have.
+			</p>
+			<p>
+				Use 
+				<img class="inline" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/> 
+				to delete a deck!<br>
+				The deck will be <em>permanently</em> destroyed, so be sure you really want to do that before clicking.<br>
+				<br>
+				Use 
+				<img class="inline" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/> 
+				to reset your progress!<br>
+				We'll <em>permanently</em> trash any notes about how well you've done on that deck, so be sure you really want to do that before clicking.<br>
+				<br>
+				Use 
+				<img class="inline" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/> 
+				to edit the deck!<br>
+				Found a typo? Need more cards? Hate one card in particular? Edit button.
+			</p>
+		</div>
+		
+		<div id="deckpane">
+		{% for deck in user_decks %}
+		<!-- decks currently fetched in a dictionary -->
+			<div class="deckItem">
+				<span class="deckName">{{ deck.name }}</span>
+				<span class="deckActions">
+					<a href="#">
+						<img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
+					</a>
+					<a href="#">
+						<img class="icon" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>
+					</a>
+				<span>
+			</div>
+		{% endfor %}			
+		</div>
+	</div>
+{% endblock %}

@@ -1,5 +1,78 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-<h1>Flash Cards Foundation!</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}" />
+<script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
+
+<h1>Welcome to MemorizeMe!</h1>
+
+<div id="content">
+<h2> News / About </h2>
+
+<div class="section">
+<p>
+The following results may be database retrieval calls: <br><br>
+Last deck viewed: {{ last_deck_viewed }} <br>
+Last time visited:{{ last_visited }} <br>
+Number of times you viewed last deck: {{ views_for_deck }} <br><br>
+</p>
+</div>
+
+<h2> How - To </h2>
+
+<div class="section">
+<p>
+This is filler. I have no idea what to put here. I will put an image here just to see how it will look. <br> 
+</p>
+
+
+<div id="carousel">
+    <div class="slide">
+        <div class="image">
+            <img src="{% static 'img/1.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/2.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/3.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/4.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/5.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/6.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/7.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/8.jpg' %}" alt="My image" />
+        </div>
+        <div class="image">
+            <img src="{% static 'img/9.jpg' %}" alt="My image" />
+        </div>  
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div id="button" >
+    <a class="button1 active" rel="1"></a>
+    <a class="button2" rel="2"></a>
+    <a class="button3" rel="3"></a>
+    <a class="button4" rel="4"></a>
+    <a class="button5" rel="5"></a>
+    <a class="button6" rel="6"></a>
+    <a class="button7" rel="7"></a>
+    <a class="button8" rel="8"></a>
+    <a class="button9" rel="9"></a>
+</div>
+
+<div class="clear"></div>
+</div>
+</div>
 {% endblock %}

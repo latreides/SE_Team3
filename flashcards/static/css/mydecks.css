@@ -1,0 +1,52 @@
+div#deckpane {
+	background: #888;
+	border: white solid 4px;
+	border-radius: 24px;
+	box-shadow: 0px 2px 2px 2px #333 inset;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 16px;
+	width: 60%;
+}
+
+div.deckItem {
+	border-radius: 8px;
+	height: 28px;
+	overflow: auto;
+	padding-top: 12px;
+}
+
+div.deckItem:hover {
+	background: #CCC;
+	box-shadow: 0px 2px 2px 2px #333 inset;
+	color: black;
+}
+
+img.icon {
+	height: 16px;
+	float:right;
+	margin-right: 8px;
+	vertical-align: middle;
+	width: 16px;
+}
+
+img.inline {
+	background: #CCC;
+	height: 16px;
+	padding: 2px;
+	vertical-align: top;
+	width: 16px;
+}
+
+img.icon:hover {
+	cursor: pointer;
+}
+
+span.deckActions {
+	text-align: right;
+}
+
+span.deckName {
+	font-weight: bold;
+	padding: 6px;
+}
