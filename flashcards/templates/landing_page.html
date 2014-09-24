@@ -5,20 +5,25 @@
 <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
 
 <h1>Welcome to MemorizeMe!</h1>
+
+<div id="content">
 <h2> News / About </h2>
 
-<p class = "landing">
+<div class="section">
+<p>
 The following results may be database retrieval calls: <br><br>
 Last deck viewed: {{ last_deck_viewed }} <br>
 Last time visited:{{ last_visited }} <br>
 Number of times you viewed last deck: {{ views_for_deck }} <br><br>
 </p>
+</div>
 
-<h3> How - To </h3>
-<p class = "landing">
+<h2> How - To </h2>
+
+<div class="section">
+<p>
 This is filler. I have no idea what to put here. I will put an image here just to see how it will look. <br> 
 </p>
-<img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
 
 
 <div id="carousel">
@@ -68,6 +73,6 @@ This is filler. I have no idea what to put here. I will put an image here just t
 </div>
 
 <div class="clear"></div>
-          
-
+</div>
+</div>
 {% endblock %}

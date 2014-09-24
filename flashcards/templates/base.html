@@ -18,6 +18,7 @@
     <body>
         {% block header %}
         <nav>
+            <img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
              <ul>
                 <li><a href="{% url 'landing_page' %}">Home</a></li>
                 <li><a href="{% url 'view_decks' %}">My Decks</a></li>
