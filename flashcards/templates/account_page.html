@@ -1,5 +1,62 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Test</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/account.css' %}" />
+    
+    <h1>Account Information</h1>
+
+    <div id="content">
+        
+        <h2>Account Information</h2>
+
+        <div class="section">
+            <p>
+                Username: <br />
+                _____<br />  <!--fetch username-->
+            </p>
+
+            <p>
+                Change Password: <br />
+            </p>
+
+            <form id="change_pw" method="post" onsubmit="return true;" action="">
+                {% csrf_token %}
+                <input name="old_password" type="password" placeholder="old password">
+                <br />
+                <input name="new_password" type="password" placeholder="new password">
+                <br />
+                <input name="confirm_password" type="password" placeholder="confirm password">
+                <br />
+                <input type="submit" value="Change">
+            </form><br />
+            
+            <p>
+                Email: <br />
+                _____@_____._____<br />  <!--fetch email-->
+            </p>
+            
+            <form id="change_email" method="post" onsubmit="return true;" action="">
+                {% csrf_token %}
+                <input name="new_email" type="text" placeholder="new email">
+                <br />
+                <input type="submit" value="Change">
+            </form>
+        </div>
+
+        <h2>Destroy Account</h2>
+
+        <div class="section">
+            <p>
+                If you would like to permanently delete your account, enter your password and click "Accept". Once an account has been
+                deleted, it can not be recovered.
+            </p>
+
+            <form id="delete_account" method="post" onsubmit="return true;" action="">
+                {% csrf_token %}
+                <input name="password" type="password" placeholder="password">
+                <br />
+                <input type="submit" value="Accept">
+            </form>
+        </div>
+    </div>
 {% endblock %}

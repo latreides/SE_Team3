@@ -74,5 +74,8 @@ class SigninPage(TemplateView):
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
+class ImportPage(LoginRedirect):
+    template_name = 'import_export_page.html'
+
 class WelcomePage(TemplateView):
     template_name = 'welcome_page.html'

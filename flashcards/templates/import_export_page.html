@@ -1,0 +1,53 @@
+﻿{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block content %}
+
+<h1>Import / Export Decks</h1>
+
+<div id="content">
+
+    <h2>Import Deck</h2>
+
+    <div class="section">
+        <p>
+            If you would like to import a Deck file, please select it and click import.
+        </p>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file">Filename:</label>
+            <input type="file" name="deck" id="file"><br>
+            <input type="submit" name="submit" value="Import">
+        </form>
+    </div>
+
+    <h2>Export Deck</h2>
+
+    <div class="section">
+        <p>
+            If you would like to export a deck into a text file, select it and click Export.
+        </p>
+
+        <!-- Still working on radio list
+        
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for deck in user_decks %}
+            <input type="radio" name="deck" id="deck{{ forloop.counter }}" value=" {{ deck.id }}" />
+            <label for="deck{{ forloop.counter }}">{{ deck.name }}</label><br />
+            {% endfor %}
+            <input type="submit" value="Export" />
+        </form>
+            
+        -->
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+</body>

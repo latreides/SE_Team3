@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                         url(r'^signin$', SigninPage.as_view(), name='signin'),
                         url(r'^play$', PlayDeckPage.as_view(), name='play_deck'),
                         url(r'^welcome$', WelcomePage.as_view(), name='welcome'),
+                        url(r'files$', ImportPage.as_view(), name='import_export_page')
                        )
