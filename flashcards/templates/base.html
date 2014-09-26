@@ -18,8 +18,10 @@
     <body>
         {% block header %}
         <nav>
-            <img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
-             <ul>
+            <a href="{% url 'landing_page' %}">
+                <img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
+            </a>    
+            <ul>
                 <li><a href="{% url 'landing_page' %}">Home</a></li>
                 <li><a href="{% url 'view_decks' %}">My Decks</a></li>
                 <li><a href="{% url 'scores' %}">My Scores</a></li>
@@ -27,7 +29,7 @@
                 <li><a href="{% url 'account' %}">Account</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
                 <li><a href="{% url 'signin' %}">Sign Up/Log In</a></li>
-             </ul>
+            </ul>
         </nav>
         <hr>
         {% endblock %}
