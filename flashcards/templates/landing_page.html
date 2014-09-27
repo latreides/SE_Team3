@@ -10,20 +10,35 @@
 <h2> News / About </h2>
 
 <div class="section">
-<p>
-The following results may be database retrieval calls: <br><br>
-Last deck viewed: {{ last_deck_viewed }} <br>
-Last time visited:{{ last_visited }} <br>
-Number of times you viewed last deck: {{ views_for_deck }} <br><br>
-</p>
+    <p>
+        The following results are retrieval calls from the database: <br><br>    
+        <table>
+            <tr>
+                <td><h3>Your most recent deck:</h3></td>
+                <td>{{ most_recent_deck }}</td> 
+            </tr>
+            <tr>
+                <td><h3>Decks for user:</h3></td>
+                <td> {{ decks_for_user }} </td> 
+            </tr>
+            <tr>
+                <td><h3>Cards for deck:</h3></td>
+                <td> {{ cards_for_deck }} </td> 
+            </tr>
+            <tr>
+                <td><h3>Last time logged in:</h3></td>
+                <td> {{ last_time_logged_in }} </td> 
+            </tr>
+        </table>        
+    </p>
 </div>
 
 <h2> How - To </h2>
 
 <div class="section">
-<p>
-This is filler. I have no idea what to put here. I will put an image here just to see how it will look. <br> 
-</p>
+    <p>
+        Thank you for logging in! Take a look at our slider below to learn more about our features!<br> 
+    </p>
 
 
 <div id="carousel">

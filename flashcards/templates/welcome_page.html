@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Welcome, please Login or Signup!</h1>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}" />
+    <script type="text/javascript" src="{% static 'js/homepage.js' %}"></script>
+    
+    <h1>Welcome, please <a class="greeting" href="{% url 'signin' %}"> Login </a> or <a class= "greeting" href="{% url 'signin' %}"> Signup! </a> </h1>
+    
+    <div id="carousel">
+        <ul id="carouselNav">
+            <li>
+                <img class="home" src="{% static 'img/home0.jpg' %}" />
+            </li>
+            <li>
+                <img class="home" src="{% static 'img/home1.jpg' %}" />
+            </li>
+            <li>
+                <img class="home" src="{% static 'img/home2.jpg' %}" />
+            </li>
+        </ul>
+    </div>
+    
+    <p>
+        Welcome to MemorizeMe!<br><br>        
+        This service provides users with an online flash card memorization system that be virtually
+        access anywhere! With being able to create a deck in your favorite text editor, it's
+        easy to not only create and upload your own decks but also trade them with friends who can
+        then upload them, modify them and start memorizing today!
+    </p>
 {% endblock %}

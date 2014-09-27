@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, ListView
 from django.core.urlresolvers import reverse
+from flashcards.db_interactions import *
 
 class LoginRedirect(TemplateView):
 
@@ -17,9 +18,10 @@ class LandingPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
-        context['last_deck_viewed'] = "This is the last deck!"
-        context['last_visited'] = "This is the last time visited!"
-        context['views_for_deck'] = "You viewed this deck x times!"
+        context['most_recent_deck'] = GetMostRecentDeck(1)
+        context['decks_for_user'] = GetDecksForUser(1)
+        context['cards_for_deck'] = GetCardsForDeck(1)
+        context['last_time_logged_in'] = GetLastTimeLoggedIn(1)
 
         return context
 

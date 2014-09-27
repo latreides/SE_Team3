@@ -18,17 +18,17 @@
     <body>
         {% block header %}
         <nav>
-            <a href="{% url 'landing_page' %}">
-                <img src="{% static 'img/memorizeMe.png' %}" alt="My image" />
-            </a>    
+            <a class="top" href="{% url 'landing_page' %}">
+                <img src="{% static 'img/memorizeMe.png' %}" alt="My Image">
+            </a>         
             <ul>
-                <li><a href="{% url 'landing_page' %}">Home</a></li>
-                <li><a href="{% url 'view_decks' %}">My Decks</a></li>
-                <li><a href="{% url 'scores' %}">My Scores</a></li>
-                <li><a href="{% url 'manage_decks' %}">Manage Decks</a></li>
-                <li><a href="{% url 'account' %}">Account</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-                <li><a href="{% url 'signin' %}">Sign Up/Log In</a></li>
+                <li><a class="show" href="{% url 'landing_page' %}">Home</a></li>
+                <li><a class="show" href="{% url 'view_decks' %}">My Decks</a></li>
+                <li><a class="show" href="{% url 'scores' %}">My Scores</a></li>
+                <li><a class="show" href="{% url 'manage_decks' %}">Manage Decks</a></li>
+                <li><a class="show" href="{% url 'account' %}">Account</a></li>
+                <li><a class="show" href="{% url 'contact' %}">Contact</a></li>
+                <li><a class="show" href="{% url 'signin' %}">Sign Up/Log In</a></li>
             </ul>
         </nav>
         <hr>

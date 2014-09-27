@@ -1,3 +1,15 @@
+table{
+    border-style: none;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    line-height: 0px;
+}
+
+table td+td{
+    padding-left: 20px;
+}
+
 #carousel {
     width:705px;
     overflow:hidden;
@@ -5,15 +17,13 @@
     height:300px;
     margin-bottom:20px;
     margin-left: auto;
-    margin-right: auto;
-    
+    margin-right: auto;    
 }
 
 #carousel .slide {
     width:6345px;  /*9(images) x 705(width)*/
     position: absolute;
     height:80px;
-
 }
 
 #carousel .image {
@@ -25,9 +35,7 @@
     color:#b0b0b0;
     line-height:20px;
     text-align:center;
-
 }
-
 
 .button1,
 .button2,
@@ -55,7 +63,6 @@
     max-width:705px; 
     max-height:300px;       
 }
-
 
 .active { 
     background:#111;

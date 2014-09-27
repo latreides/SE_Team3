@@ -124,3 +124,82 @@ nav ul li a:visited {
 {
     display: none;
 }
+
+
+form{
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px;
+	text-align: center;
+}
+
+
+input {
+	border: white solid 2px;
+	height: 24px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: 0px;
+	width: 200px;
+	padding: 0px;
+}
+
+input[type="submit"],
+input[type="reset"] {
+	background: #1E90FF;
+	border: transparent solid 2px;
+	font-weight: bold;
+	height: 32px;
+	margin-top: 4px;
+	margin-left: auto;  
+	margin-right: auto;
+	position: relative;
+	left: -3px;
+	width: 204px;
+}
+
+input:active {
+	background: #AAA;
+}
+
+input:hover {
+	background: #CCE6FF;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+	background: #1EB5FF;
+	border: white solid 2px;
+}
+
+.section {
+    border-left: solid;
+    border-top: solid;
+    border-width: 2px;
+	margin-bottom: 2em;
+    padding: 10px;
+}
+
+::-webkit-input-placeholder {
+	color: #666;
+    font-style: italic;
+	text-align: center;
+}
+
+:-moz-placeholder {
+	color: #666;
+	opacity: 1;
+	text-align: center;
+}
+
+::-moz-placeholder {
+	color: #666;
+	opacity: 1;
+	text-align: center;
+}
+
+:-ms-input-placeholder {
+	color: #666;
+	text-align: center;
+}

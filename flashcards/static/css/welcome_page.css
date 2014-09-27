@@ -1,0 +1,39 @@
+p{
+    width: 70%;
+    margin-left: auto;
+    margin-right : auto;
+}
+
+a{
+    color: inherit;    
+}
+
+a.greeting:hover{
+    color: #666;    
+}
+
+a.top{
+    text-decoration: none;
+}
+
+a.show{
+    display: none;    
+}
+
+#carousel {
+    text-align: center;
+    background: none;    
+}
+
+#carousel ul {
+    list-style: none;    
+}
+
+#carousel li {
+    display: none;    
+}
+
+img.home{
+    width: 100%;
+    height: 350px;
+}
