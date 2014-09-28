@@ -2,6 +2,15 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from flashcards.models import *
+from datetime import datetime
+from django.utils.timezone import utc
+
+'''
+Generic Helper Function for Time Zone aware now()
+'''
+def GetNow():
+    return datetime.now().replace(tzinfo=utc)
+
 
 '''
 Creates a new deck object given a name for the deck and the userID for the user who is creating the deck
@@ -12,7 +21,7 @@ def CreateDeck(userID, deckName):
 		userObj = User.objects.get(id=userID)
 	except (ValueError, ObjectDoesNotExist):
 		print "The given User ID does not exist in the database"
-		
+
 	newDeck = Deck(Name = deckName, User_ID = userObj, Create_Date=timezone.now())
 	newDeck.save()
 	return newDeck
@@ -29,9 +38,9 @@ def CreateCard(deckID, twoSided, frontText = None, backText = None, frontImageID
 			backImageObj = Image.objects.get(Image_ID = backImageID)
 		except (ValueError, ObjectDoesNotExist):
 			print "The ID provided for the back image id does not exist in the image table."
-	else: 
+	else:
 		backImageObj = None
-		
+
 	if frontImageID != None:
 		try:
 			frontImageObj = Image.objects.get(Image_ID = frontImageID)
@@ -39,12 +48,12 @@ def CreateCard(deckID, twoSided, frontText = None, backText = None, frontImageID
 			print "The ID provided for the front image id does not exist in the image table."
 	else:
 		frontImageObj = None
-	
+
 	try:
 		DeckObj = Deck.objects.get(Deck_ID = deckID)
 	except (ValueError, ObjectDoesNotExist):
 			print "The User ID provided does not exist in the database"
-	
+
 	newCard = Card(Deck_ID = DeckObj, Front_Text = frontText, Back_Text = backText, Front_Img_ID = frontImageObj, Back_Img_ID = backImageObj, Two_Sided = twoSided)
 	newCard.save()
 	return newCard
@@ -70,6 +79,19 @@ Returns a list containing all the decks that the current user has as Deck object
 def GetDecksForUser(userID):
 	return Deck.objects.filter(User_ID=userID)
 
+# Abstract Test Data Function, to be removed for final product.
+def GetDecksForUser_test(userID):
+    return [\
+            Deck.objects.create(Name = "How to Use MemorizeMe", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "My Deck", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow().replace(tzinfo=utc)), \
+            Deck.objects.create(Name = "How To Swahili with Dr. Shade", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "What is Love? (Baby, Don't Hurt Me)", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "Identifying Wood", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "Meine Flashkarte", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "Mitt Flashcard", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            Deck.objects.create(Name = "Mi Tarjeta de Memoria Flash", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
+            ]
+
 '''
 Returns a list containing all the cards as objects belonging to the deck ID that was passed in
 '''
@@ -85,4 +107,3 @@ def GetLastTimeLoggedIn(userID):
 	except (ValueError, ObjectDoesNotExist):
 		print "The given User ID does not exist in the database"
 	return userObj.last_login.strftime('%b-%d-%Y %I:%M:%S %p')
-	

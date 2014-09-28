@@ -3,49 +3,49 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/mydecks.css' %}" />
     <h1>My Decks</h1>
-	<div id="content">
-		<h2>Take a Look</h2>
-		<div class="section">
-			<p>
-				Below you'll find all the decks you have.
-			</p>
-			<p>
-				Use 
-				<img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/> 
-				to start playing!<br>
-				You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
-				<br>
-				Use 
-				<img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/> 
-				to see your scores!<br>
-				You'll be taken to the My Scores page to see how you're doing on that deck.<br>
-				<br>
-				Use 
-				<img class="inline" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/> 
-				to manage that deck!<br>
-				You'll be taken to the Manage Decks page where you can do things 
-				like edit and delete them.
-			</p>
-		</div>
-		
-		<div id="deckpane">
-		{% for deck in user_decks %}
-		<!-- decks currently fetched in a dictionary -->
-			<div class="deckItem">
-				<span class="deckName">{{ deck.name }}</span>
-				<span class="deckActions">
-					<a href="{{ deck.manref }}">
-						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
-					</a>
-					<a href="{{ deck.scoreref }}">
-						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
-					</a>
-					<a href="{{ deck.playref }}">
-						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
-					</a>
-				<span>
-			</div>
-		{% endfor %}
-		</div>
-	</div>
+    <div id="content">
+        <h2>Take a Look</h2>
+        <div class="section">
+            <p>
+                Below you'll find all the decks you have.
+            </p>
+            <p>
+                Use
+                <img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/>
+                to start playing!<br>
+                You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
+                <br>
+                Use
+                <img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+                to see your scores!<br>
+                You'll be taken to the My Scores page to see how you're doing on that deck.<br>
+                <br>
+                Use
+                <img class="inline" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+                to manage that deck!<br>
+                You'll be taken to the Manage Decks page where you can do things
+                like edit and delete them.
+            </p>
+        </div>
+
+        <div id="deckpane">
+        {% for deck in user_decks %}
+        <!-- decks currently fetched in a dictionary -->
+            <div class="deckItem">
+                <span class="deckName">{{ deck.Name }}</span>
+                <span class="deckActions">
+                    <a href="{% url 'manage_decks' deck.id %}">
+                        <img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+                    </a>
+                    <a href="{% url 'scores' deck.id %}">
+                        <img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+                    </a>
+                    <a href="{% url 'play_deck' deck.id %}">
+                        <img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+                    </a>
+                <span>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 {% endblock %}
