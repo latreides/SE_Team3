@@ -58,7 +58,7 @@ class SigninTest(StandardTest):
         pass
 
 class PlayDeckTest(StandardTest):
-    path = reverse('play_deck')
+    path = reverse('play_deck', args=('1',))
 
 class WelcomeTest(StandardTest):
     path = reverse('welcome')
