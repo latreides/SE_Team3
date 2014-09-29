@@ -9,11 +9,11 @@ and returns the new deck as an object of type deck
 '''
 def CreateDeck(userID, deckName):
 	try:
-		userObj = User.objects.get(id=userID)
+		userObj = User.objects.get(id = userID)
 	except (ValueError, ObjectDoesNotExist):
 		print "The given User ID does not exist in the database"
 		
-	newDeck = Deck(Name = deckName, User_ID = userObj, Create_Date=timezone.now())
+	newDeck = Deck(Name = deckName, User_ID = userObj, Create_Date = timezone.now(), Accessed_Date = timezone.now())
 	newDeck.save()
 	return newDeck
 
@@ -26,7 +26,7 @@ Returns the card object that was created
 def CreateCard(deckID, twoSided, frontText = None, backText = None, frontImageID = None, backImageID = None):
 	if backImageID != None:
 		try:
-			backImageObj = Image.objects.get(Image_ID = backImageID)
+			backImageObj = Image.objects.get(id = backImageID)
 		except (ValueError, ObjectDoesNotExist):
 			print "The ID provided for the back image id does not exist in the image table."
 	else: 
@@ -34,18 +34,18 @@ def CreateCard(deckID, twoSided, frontText = None, backText = None, frontImageID
 		
 	if frontImageID != None:
 		try:
-			frontImageObj = Image.objects.get(Image_ID = frontImageID)
+			frontImageObj = Image.objects.get(id = frontImageID)
 		except (ValueError, ObjectDoesNotExist):
 			print "The ID provided for the front image id does not exist in the image table."
 	else:
 		frontImageObj = None
 	
 	try:
-		DeckObj = Deck.objects.get(Deck_ID = deckID)
+		DeckObj = Deck.objects.get(id = deckID)
 	except (ValueError, ObjectDoesNotExist):
 			print "The User ID provided does not exist in the database"
 	
-	newCard = Card(Deck_ID = DeckObj, Front_Text = frontText, Back_Text = backText, Front_Img_ID = frontImageObj, Back_Img_ID = backImageObj, Two_Sided = twoSided)
+	newCard = Card(Deck_ID = DeckObj, Front_Text = frontText, Back_Text = backText, Front_Img_ID = frontImageObj, Back_Img_ID = backImageObj, Two_Sided = twoSided, Difficulty = 0, Last_Attempted = timezone.now())
 	newCard.save()
 	return newCard
 
