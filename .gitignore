@@ -13,6 +13,11 @@ Thumbs.db
 ################
 *~
 
+# COVERAGE #
+############
+coverage_data/*
+.coverage
+
 # OTHER #
 ################
 *.pyc
