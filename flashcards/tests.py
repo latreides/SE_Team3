@@ -50,6 +50,9 @@ class AccountTest(StandardTest):
 class ContactTest(StandardTest):
     path = reverse('contact')
 
+class ImportTest(StandardTest):
+    path = reverse('import_deck')
+    
 class SigninTest(StandardTest):
     path = reverse('signin')
 
