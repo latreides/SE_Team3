@@ -1,8 +1,9 @@
 window.onload = function() {
         $(".manage").click( drawerSlide      );
         $(".manage").click( updateDeckDrawer );
+        $("#closeButton").click( closeDrawer );
         
-        $("#closeButton").hover(closeHover, closeDefault);
+        //$("#closeButton").hover(closeHover, closeDefault);
     };
 
 var drawerVis = false;
@@ -38,6 +39,7 @@ function updateDeckDrawer() {
     auth.html( $(this).attr("data-author") );
 }
 
+/*
 function closeHover() {
     $("#closeButton").attr("src","{% static 'img/close_inv.png' %}");
 }
@@ -45,3 +47,4 @@ function closeHover() {
 function closeDefault() {
     $("#closeButton").attr("src","{% static 'img/close.png' %}");
 }
+*/

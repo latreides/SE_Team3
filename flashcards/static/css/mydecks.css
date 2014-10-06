@@ -51,11 +51,19 @@ div#deckDrawer > span.deckActions img {
     top: 16px;
 }
 
-img#closeButton{
-	height: 24px;
+#closeButton{
+    background-image: url('../img/close.png');
+	background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
     position: relative;
     top: 12px;
-	width: 24px;
+    width: 24px;
+}
+
+#closeButton:hover {
+    background-image: url('../img/close_inv.png');
 }
 
 img.icon {
