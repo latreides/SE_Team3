@@ -3,6 +3,7 @@ from django.views.generic import TemplateView, ListView, CreateView, View
 from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
 from django.contrib import auth
+from flashcards.decks import *
 
 class LoginRedirect(TemplateView):
 
@@ -87,8 +88,10 @@ class PlayDeckPage(LoginRedirect):
 
 class ImportPage(LoginRedirect):
     def post(self, request, *args, **kwargs):
+        decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
+        decks.importDeck(request, deck)
         return HttpResponseRedirect(reverse("import_deck"))
     template_name = 'import_export_page.html'
 
