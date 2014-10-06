@@ -14,7 +14,6 @@ div#deckDrawer {
 
 div.deckItem {
 	border-radius: 8px;
-    cursor: pointer;
 	height: 28px;
 	overflow: auto;
 	padding-top: 12px;
@@ -42,14 +41,15 @@ h2#dTitle {
     text-decoration: none;
 }
 
-/* img#dImg {
-    float: left;
-} */
-
 div#dInfo {
     clear: left;
     display: inline;
-} 
+}
+
+div#deckDrawer > span.deckActions img {
+    position: relative;
+    top: 16px;
+}
 
 img#closeButton{
 	height: 24px;
