@@ -106,3 +106,9 @@ def GetLastTimeLoggedIn(userID):
 	except (ValueError, ObjectDoesNotExist):
 		print "The given User ID does not exist in the database"
 	return userObj.last_login.strftime('%b-%d-%Y %I:%M:%S %p')
+
+def GetCountCardsWithDifficulty(deckID, difficulty):
+    return Card.objects.filter(Deck_ID=deckID, Difficulty=difficulty).count()
+
+def GetCountCardsNotStudied(deckID):
+    return Card.objects.filter(Deck_ID=deckID).exclude(Difficulty__isnull=False).count()

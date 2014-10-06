@@ -203,3 +203,8 @@ input[type="reset"]:hover {
 	color: #666;
 	text-align: center;
 }
+
+.ErrorMessage	{
+	color: red;
+	margin-top: 4px;
+}
