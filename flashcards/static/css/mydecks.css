@@ -28,6 +28,34 @@ div.deckItem:hover {
 
 div#deckDrawer {
     border-bottom: none;
+    height: 188px;
+}
+
+div#imgContainer {
+    float: left;
+    height: 128px;
+    width: 128px;
+}
+
+h2#dTitle {
+    color: black;
+    text-decoration: none;
+}
+
+/* img#dImg {
+    float: left;
+} */
+
+div#dInfo {
+    clear: left;
+    display: inline;
+} 
+
+img#closeButton{
+	height: 24px;
+    position: relative;
+    top: 12px;
+	width: 24px;
 }
 
 img.icon {
@@ -38,7 +66,7 @@ img.icon {
 	width: 16px;
 }
 
-img.Cards {
+img.cards {
 	margin-right: 8px;
 	vertical-align: middle;
 	width: 128px;

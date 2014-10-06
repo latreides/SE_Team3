@@ -20,7 +20,10 @@
         id:{{ deck.id }},
         pos: i,
         name: "{{ deck.Name }}",
-        desc: "Deck description here."
+        desc: "Deck description here.",
+        lastAcc: "{{ deck.Accessed_Date }}",
+        count: {{ GetCardsForDeck|length }},
+        auth: "Me"
         };
         Decks.push(deck);
         i += 1;
@@ -56,10 +59,17 @@
         info specific to the deck in
         question.
         */
-        titleBar = $("#dDTitle");
+        titleBar = $("#dTitle");
+        desc = $("#Desc");
+        count = $("#cardCount");
+        acc = $("#access");
+        auth = $("#author");
         
-        newName = Decks[currentDeck].name;
-        titleBar.html(newName);
+        titleBar.html( Decks[currentDeck].name );
+        desc.html( Decks[currentDeck].desc );
+        count.html( Decks[currentDeck].count );
+        acc.html( Decks[currentDeck].lastAcc );
+        auth.html( Decks[currentDeck].auth );
     }
     
     function closeHover() {
@@ -99,8 +109,17 @@
             <a onclick="closeDrawer()">
                 <img id="closeButton" class="icon" src="{% static 'img/close.png' %}" alt="Close" title="Close"/>
             </a>
-            <h2 id="dDTitle">Missing No.</h2>
-            <img id="dDImg" class="Cards" src="{% static 'img/cardstack0.png' %}" alt="Cards"/>
+            <h2 id="dTitle">Missing No.</h2>
+            <hr/>
+            <div id="imgContainer">
+                <img id="dImg" class="cards" src="{% static 'img/cardstack0.png' %}" alt="Cards"/>
+            </div>
+            <div id="dInfo">
+                Description: <em><span id="desc">Deck description...</span></em><br>
+                Card count: <span id="cardCount"></span><br>
+                Last access: <span id="access"></span><br>
+                Created by: <span id="author">Me (id: {{ request.user.id }})</span><br>
+            </div>
         </div>
         <div id="deckPane">
         {% for deck in user_decks %}
