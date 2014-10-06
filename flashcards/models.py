@@ -12,7 +12,8 @@ class Deck(models.Model):
     User_ID = models.ForeignKey(settings.AUTH_USER_MODEL)
     Name = models.CharField(max_length = 100)
     Create_Date = models.DateTimeField()
-    Accessed_Date = models.DateTimeField(blank=True)
+    Accessed_Date = models.DateTimeField(blank=True, null=True)
+    Public = models.BooleanField(default=False)
 
     #Return the Decks name as the text for the object
     def __unicode__(self):
@@ -50,17 +51,18 @@ Card is a database table that stores information specific to a single flash card
 '''
 class Card(models.Model):
     Deck_ID = models.ForeignKey(Deck)
-    Front_Text = models.TextField(blank=True)
-    Back_Text = models.TextField(blank=True)
-    Front_Img_ID = models.ForeignKey('Image', related_name = 'Front_Image', blank=True)
-    Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image', blank=True)
-    Difficulty = models.IntegerField(blank=True)
-    Last_Attempted = models.DateTimeField(blank=True)
+    Front_Text = models.TextField(blank=True, null=True)
+    Back_Text = models.TextField(blank=True, null=True)
+    Front_Img_ID = models.ForeignKey('Image', related_name = 'Front_Image', blank=True, null=True)
+    Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image', blank=True, null=True)
+    Difficulty = models.IntegerField(blank=True, null=True)
+    Last_Attempted = models.DateTimeField(blank=True, null=True)
     Two_Sided = models.BooleanField(default=False)
+    Categories = models.TextField(null=True)
 
     #Return the Cards front side text as the text for the object
     def __unicode__(self):
-        return self.Front_Text
-
+        return str(self.id)
+    
     class Meta:
         app_label = 'flashcards'
