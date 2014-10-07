@@ -35,9 +35,6 @@ class StandardTest(TestCase):
 class LandingTest(StandardTest):
     path = reverse('landing_page')
 
-class ManageDecksTest(StandardTest):
-    path = reverse('manage_decks')
-
 class ScoresTest(StandardTest):
     path = reverse('scores')
 
