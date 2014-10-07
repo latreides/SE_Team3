@@ -1,11 +1,3 @@
-window.onload = function() {
-        $(".manage").click( drawerSlide      );
-        $(".manage").click( updateDeckDrawer );
-        $("#closeButton").click( closeDrawer );
-        
-        //$("#closeButton").hover(closeHover, closeDefault);
-    };
-
 var drawerVis = false;
 
 function drawerSlide() {
@@ -19,7 +11,7 @@ function closeDrawer() {
     drawerVis = false;
 }
 
-function updateDeckDrawer() {
+function updateDeckDrawer(child) {
     /**
     When a deck is clicked, update
     the deck drawer to reflect the
@@ -27,24 +19,20 @@ function updateDeckDrawer() {
     question.
     */
     titleBar = $("#dTitle");
-    desc = $("#Desc");
+    desc = $("#desc");
     count = $("#cardCount");
     acc = $("#access");
     auth = $("#author");
-    
-    titleBar.html( $(this).attr("data-deckName") );
-    desc.html( $(this).attr("ddata-eckDesc") );
-    count.html( $(this).attr("data-cardCount") );
+
+    titleBar.html($(this).attr("data-deckName") );
+    desc.html($(this).attr("data-deckDesc") );
+    count.html($(this).attr("data-cardCount") );
     acc.html( $(this).attr("data-lastAccess") );
     auth.html( $(this).attr("data-author") );
 }
 
-/*
-function closeHover() {
-    $("#closeButton").attr("src","{% static 'img/close_inv.png' %}");
-}
-
-function closeDefault() {
-    $("#closeButton").attr("src","{% static 'img/close.png' %}");
-}
-*/
+window.onload = function() {
+        $(".manage").click( drawerSlide      );
+        $(".manage").click( updateDeckDrawer );
+        $("#closeButton").click( closeDrawer );
+    };

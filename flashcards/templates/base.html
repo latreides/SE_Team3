@@ -11,26 +11,30 @@
         {% endblock %}
         {% block javascript %}
             <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+            <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
         {% endblock %}
         <title>{% block title %}Flash Cards{% endblock %}</title>
         {% block extrahead %}{% endblock %}
     </head>
     <body>
         {% block header %}
+        {% spaceless %}
         <nav>
             <a class="top" href="{% url 'landing_page' %}">
-                <img src="{% static 'img/memorizeMe.png' %}" alt="My Image">
-            </a>         
-            <ul>
+                <img id="logo" src="{% static 'img/memorizeMe.png' %}" alt="My Image">
+            </a>
+            <ul id="nav-header">
                 <li><a class="show" href="{% url 'landing_page' %}">Home</a></li>
                 <li><a class="show" href="{% url 'view_decks' %}">My Decks</a></li>
                 <li><a class="show" href="{% url 'scores' %}">My Scores</a></li>
                 <li><a class="show" href="{% url 'account' %}">Account</a></li>
                 <li><a class="show" href="{% url 'contact' %}">Contact</a></li>
-                <li><a class="show" href="{% url 'signin' %}">Sign Up/Log In</a></li>
-            </ul>
+                <li><a class="show" href="{% url 'signin' %}">Sign Up/Log In</a></li></ul>
         </nav>
+        {% endspaceless %}
+
         <hr>
+
         {% endblock %}
 
         {% block body %}
