@@ -42,16 +42,16 @@
                 Created by: <span id="author">No one</span><br>
             </div>
             <div class="deckActions">
-                <img class="icon" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>
-                <img class="icon" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
-                <img class="icon" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>
+                <div id="D" class="icon" title="Permanently delete!"/></div>
+                <div id="R" class="icon" title="Reset your progress"/></div>
+                <div id="E" class="icon" title="Edit"></div>
             </div>
         </div>
         <div id="deckPane">
         <table>
         {% for deck in user_decks %}
         <!-- decks currently fetched in a dictionary -->
-            <tr>
+            <tr class="deckItem">
                 <td>{{ deck.Name }}</td>
                 <td class="deckActions">
                     <a href="{% url 'play_deck' deck.id %}">

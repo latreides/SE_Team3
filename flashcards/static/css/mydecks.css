@@ -17,14 +17,14 @@ div#deckDrawer {
     display: none;
 }
 
-div.deckItem {
+.deckItem {
     border-radius: 8px;
     height: 28px;
     overflow: auto;
     padding-top: 12px;
 }
 
-div.deckItem:hover {
+.deckItem:hover {
     background: #CCC;
     box-shadow: 0px 2px 2px 2px #333 inset;
     color: black;
@@ -62,6 +62,45 @@ div#dInfo {
     height: auto;
 }
 
+#E {
+    background-image: url('../img/edit1_inv_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    width: 16px;
+}
+
+#E:hover {
+    background-image: url('../img/edit1_64.png');
+}
+
+#R {
+    background-image: url('../img/reset_inv_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    width: 16px;
+}
+
+#R:hover {
+    background-image: url('../img/reset_64.png');
+}
+
+#D {
+    background-image: url('../img/delete1_drk_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    width: 16px;
+}
+
+#D:hover {
+    background-image: url('../img/delete1_inv_64.png');
+}
+
 #closeButton{
     background-image: url('../img/close.png');
     background-size: 24px 24px;
@@ -78,9 +117,9 @@ div#dInfo {
     background-image: url('../img/close_inv.png');
 }
 
-img.icon {
+.icon {
     height: 16px;
-    /*float:right;*/
+    /* float:right; */
     margin-right: 8px;
     vertical-align: middle;
     width: 16px;
