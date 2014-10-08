@@ -77,13 +77,14 @@ class PlayDeckPage(LoginRedirect):
 
 
 class ImportPage(LoginRedirect):
+    template_name = 'import_export_page.html'
     def post(self, request, *args, **kwargs):
         decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
         decks.importDeck(request, deck)
         return HttpResponseRedirect(reverse("import_deck"))
-    template_name = 'import_export_page.html'
+
 
 
 class WelcomePage(TemplateView):
