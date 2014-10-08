@@ -95,6 +95,11 @@ class ImportPage(LoginRedirect):
         return HttpResponseRedirect(reverse("import_deck"))
 
 
+    def get_context_data(self, **kwargs):
+        context = super(ImportPage, self).get_context_data(**kwargs)
+        context['user_decks'] = GetDecksForUser_test(self.request.user)
+        return context
+
 
 class WelcomePage(TemplateView):
     template_name = 'welcome_page.html'
