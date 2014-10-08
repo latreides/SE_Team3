@@ -5,11 +5,11 @@ p{
 }
 
 a{
-    color: inherit;    
+    color: inherit;
 }
 
 a.greeting:hover{
-    color: #666;    
+    color: #666;
 }
 
 a.top{
@@ -17,20 +17,20 @@ a.top{
 }
 
 a.show{
-    display: none;    
+    display: none;
 }
 
 #carousel {
     text-align: center;
-    background: none;    
+    background: none;
 }
 
-#carousel ul {
-    list-style: none;    
+#carouselNav img {
+    list-style: none;
 }
 
-#carousel li {
-    display: none;    
+#carouselNav img {
+    display: none;
 }
 
 img.home{
