@@ -7,7 +7,7 @@ class parseConfig:
     "Handles parsing, exporting, importing of deck configs"
 
     def __init__(self):
-        self.decks_location = "c:/Users/Bee/Desktop/CSC 450/SE_Team3/flashcards/decks/"
+        self.decks_location = "./decks/"
         self.deck = {}
 
     def importDeck(self, request, filename):

@@ -11,21 +11,21 @@
 
 <div class="section">
     <p>
-        The following results are retrieval calls from the database: <br><br>    
+        The following results are retrieval calls from the database: <br><br>
         <table>
             <tr>
                 <td><h3>Your most recent deck:</h3></td>
-                <td>{{ most_recent_deck }}</td> 
+                <td>{{ most_recent_deck }}</td>
             </tr>
             <tr>
                 <td><h3>Cards for deck:</h3></td>
-                <td> {{ cards_for_deck }} </td> 
+                <td> {{ cards_for_deck }} </td>
             </tr>
             <tr>
                 <td><h3>Last time logged in:</h3></td>
-                <td> {{ last_time_logged_in }} </td> 
+                <td> {{ last_time_logged_in }} </td>
             </tr>
-        </table>        
+        </table>
     </p>
 </div>
 
@@ -33,10 +33,9 @@
 
 <div class="section">
     <p>
-        Thank you for logging in! Take a look at our slider below to learn more about our features!<br> 
+        Thank you for logging in! Take a look below to learn more about our features!<br>
     </p>
-
-
+{% spaceless %}
 <div id="carousel">
     <div class="slide">
         <div class="image">
@@ -65,22 +64,21 @@
         </div>
         <div class="image">
             <img src="{% static 'img/9.jpg' %}" alt="My image" />
-        </div>  
+        </div>
     </div>
 </div>
+{% endspaceless %}
 
-<div class="clear"></div>
-
-<div id="button" >
-    <a class="button1 active" rel="1"></a>
-    <a class="button2" rel="2"></a>
-    <a class="button3" rel="3"></a>
-    <a class="button4" rel="4"></a>
-    <a class="button5" rel="5"></a>
-    <a class="button6" rel="6"></a>
-    <a class="button7" rel="7"></a>
-    <a class="button8" rel="8"></a>
-    <a class="button9" rel="9"></a>
+<div id="buttons" >
+    <a class="button active" rel="1"></a>
+    <a class="button" rel="2"></a>
+    <a class="button" rel="3"></a>
+    <a class="button" rel="4"></a>
+    <a class="button" rel="5"></a>
+    <a class="button" rel="6"></a>
+    <a class="button" rel="7"></a>
+    <a class="button" rel="8"></a>
+    <a class="button" rel="9"></a>
 </div>
 
 <div class="clear"></div>

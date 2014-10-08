@@ -26,16 +26,6 @@ class LandingPage(LoginRedirect):
         return context
 
 
-class ManageDecksPage(LoginRedirect):
-    template_name = 'manage_decks_page.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ManageDecksPage, self).get_context_data(**kwargs)
-        context['user_decks'] = GetDecksForUser_test(self.request.user)
-
-        return context
-
-
 class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
@@ -96,13 +86,14 @@ class PlayDeckPage(LoginRedirect):
 
 
 class ImportPage(LoginRedirect):
+    template_name = 'import_export_page.html'
     def post(self, request, *args, **kwargs):
         decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
         decks.importDeck(request, deck)
         return HttpResponseRedirect(reverse("import_deck"))
-    template_name = 'import_export_page.html'
+
 
 
 class WelcomePage(TemplateView):

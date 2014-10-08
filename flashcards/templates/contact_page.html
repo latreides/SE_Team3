@@ -2,12 +2,12 @@
 {% load static from staticfiles %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
-    
+
     <h1>Contact Information</h1>
-	
+
     <div id="content">
         <h2>Mailing Address</h2>
-        
+
         <div class = "section">
             <p>
                 This is our mailing address: <br>
@@ -19,37 +19,35 @@
                 Springfield, MO 65897<br>
             </p>
         </div>
-        
+
         <h2>Email Us</h2>
         <div class = "section">
             <form action="MAILTO:No Email At This Time" method="post" enctype="text/plain">
                 <p class="top" >
                     Comments or questions: <br>
                 </p>
-                <fieldset>                   
+                <fieldset>
                         <label class="name" for="Name">Name:</label>
                         <input type="text" class="textbox" name="Name" placeholder="'First Last'">
                         <br>
-                    
+
                         <label class="name" for="Email">Email:</label>
                         <input type="text" class="textbox" name="mail" placeholder="'sample@email.com'" />
-                        <br>                 
-                    
+                        <br>
+
                         <label class="name" for="Message">Message:</label>
                         <textarea placeholder="'Max length is 250 characters'" maxlength="250" name="Message" wrap="hard" rows="8" cols="50"></textarea>
                         <br>
-                        
-                        <label class="name"></label>
-                        <input type="submit" value="Send">
-                        <label class="name"></label>
-                        <input type="reset" value="Reset">
-                    
+                        <div id="contactButtons">
+                            <input type="submit" value="Send"></br>
+                            <input type="reset" value="Reset">
+                        </div>
                 </fieldset>
             </form>
         </div>
-    
+
     </div>
-   
-    
-    
+
+
+
 {% endblock %}

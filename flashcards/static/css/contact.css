@@ -13,32 +13,35 @@ p.address{
 
 fieldset{
   border: none;
-  width: 340px;
-  margin-left: 23%;   
-  margin-right: auto;
   padding: 0px;
 }
 
 label{
     display: inline-block;
-    width: 100px;
-    text-align: right;    
-    padding-right: 30px;    
+    width: 75px;
+    text-align: right;
+    padding-right: 15px;
 }
 
 input[type="reset"],
 input[type="submit"] {
-	left: 0px;
+    left: 0px;
 }
 
-input[type="reset"]{
-	margin: 0px;
+input[type="reset"], input[type="text"]{
+    margin: 1px;
 }
 
-textarea {    
+textarea {
       display: inline-block;
-      margin:0px;
+      margin: 1px;
       border-color:white;
       width: 198px;
       vertical-align: top;
+}
+
+#contactButtons
+{
+    padding-left: 90px;
+    display: block;
 }
