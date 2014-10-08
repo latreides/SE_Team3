@@ -1,63 +1,62 @@
+table{
+    border-style: none;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    line-height: 0px;
+}
+
+table td+td{
+    padding-left: 20px;
+}
+
 #carousel {
-    width:705px;
+    width:100%;
     overflow:hidden;
     position: relative;
     height:300px;
-    margin-bottom:20px;
-    margin-left: auto;
-    margin-right: auto;
-    
 }
 
 #carousel .slide {
     width:6345px;  /*9(images) x 705(width)*/
     position: absolute;
-    height:80px;
-
+    height: 100%;
+    display: inline-block;
 }
 
 #carousel .image {
-    width:705px;
-    float:left;
-    padding:20px 0;
+    display: inline-block;
     font-size:15px;
-    font-style: italic;
+    width: 805px;
     color:#b0b0b0;
-    line-height:20px;
-    text-align:center;
+    text-align: center;
+    height: auto;
+}
 
+#carousel .image img {
+    width: auto;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
-.button1,
-.button2,
-.button3,
-.button4,
-.button5,
-.button6,
-.button7,
-.button8,
-.button9   {
+.button   {
     background:#999;
     padding:6px;
-    display: inline-block; 
+    display: inline-block;
     margin-right:5px;
 }
 
-#button {
+#buttons {
     height: 30px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    padding-top: 10px;
 }
 
-#carousel img{
-    max-width:705px; 
-    max-height:300px;       
-}
-
-
-.active { 
+.active {
     background:#111;
     padding:6px;
     display:inline-block;

@@ -1,6 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, CreateView, View
 from django.core.urlresolvers import reverse
+from flashcards.db_interactions import *
+from django.contrib import auth
+from flashcards.decks import *
+from django.contrib.auth.models import User
 
 class LoginRedirect(TemplateView):
 
@@ -11,68 +15,129 @@ class LoginRedirect(TemplateView):
             return super(LoginRedirect, self).dispatch(request, *args, **kwargs)
 
 
-
 class LandingPage(LoginRedirect):
     template_name = 'landing_page.html'
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
-        context['last_deck_viewed'] = "This is the last deck!"
-        context['last_visited'] = "This is the last time visited!"
-        context['views_for_deck'] = "You viewed this deck x times!"
+        context['most_recent_deck'] = GetMostRecentDeck(1)
+        context['cards_for_deck'] = GetCardsForDeck(1)
+        context['last_time_logged_in'] = GetLastTimeLoggedIn(1)
 
         return context
 
-class ManageDecksPage(LoginRedirect):
-    template_name = 'manage_decks_page.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super(ManageDecksPage, self).get_context_data(**kwargs)
-        context['user_decks'] = [\
-			{"name":"How to Use MemorizeMe"}, \
-			{"name":"My Deck"}, \
-			{"name":"How To Swahili with Dr. Shade"}, \
-			{"name":"What is Love? (Baby, Don't Hurt Me)"}, \
-			{"name":"Identifying Wood"}, \
-			{"name":"Meine Flashkarte"}, \
-			{"name":"Mitt Flashcard"}, \
-			{"name":"Mi Tarjeta de Memoria Flash"} \
-			]
-		
-        return context
 
 class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ScoresPage, self).get_context_data(**kwargs)
+        context['cards_not_studied'] = GetCountCardsNotStudied(1)
+        context['most_recent_deck'] = GetMostRecentDeck(1)
+        context['cards_ranked_one'] = GetCountCardsWithDifficulty(1, 1)
+        context['cards_ranked_five'] = GetCountCardsWithDifficulty(1, 5)
+        
+        return context
+
+
 class ViewDeckPage(LoginRedirect):
     template_name = 'view_deck_page.html'
-	
+
     def get_context_data(self, **kwargs):
         context = super(ViewDeckPage, self).get_context_data(**kwargs)
-        context['user_decks'] = [\
-			{"name":"How to Use MemorizeMe", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"My Deck", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"How To Swahili with Dr. Shade", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"What is Love? (Baby, Don't Hurt Me)", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"Identifying Wood", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"Meine Flashkarte", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"Mitt Flashcard", "playref":"#", "scoreref":"scores", "manref":"manage"}, \
-			{"name":"Mi Tarjeta de Memoria Flash", "playref":"#", "scoreref":"scores", "manref":"manage"} \
-			]
-		
+        context['user_decks'] = GetDecksForUser_test(self.request.user)
         return context
+
 
 class AccountPage(LoginRedirect):
     template_name = 'account_page.html'
 
+
 class ContactPage(LoginRedirect):
     template_name = 'contact_page.html'
-
+        
+                
 class SigninPage(TemplateView):
     template_name = 'signin_page.html'
+
+    def get_context_data(self, **kwargs):
+        invalidLogin = "The username and password combination entered does not match any active user"
+        invalidPassword = "The passwords that were entered do not match"
+        invalidUsername = "The username chosen is invalid. Try another username."
+        context = super(SigninPage, self).get_context_data(**kwargs)
+        if self.request.GET.get('invalid_login', '') == "True":
+            context['invalid_login'] = invalidLogin
+        else:
+            context['invalid_login'] = ''
+        if self.request.GET.get('invalid_password') == "True":
+            context['invalid_signup'] = invalidPassword
+        elif self.request.GET.get('invalid_user') == "True":
+            context['invalid_signup'] = invalidUsername
+        else:
+            context['invalid_signup'] = ''
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('signin'):
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = auth.authenticate(username=username, password=password)
+
+            if user is not None:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('landing_page'))
+            else:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_login=True')
+        else:
+            username = request.POST.get('username', '')
+            password1 = request.POST.get('password1', '')
+            password2 = request.POST.get('password2', '')
+
+            if User.objects.filter(username = username).count() > 0:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_user=True')
+
+            if password1 == password2:
+                newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
+                newUser.set_password(password1)
+                newUser.save()
+                user = auth.authenticate(username=username, password=password1)
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('landing_page'))
+
+            else:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_password=True')
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
+
+class ImportPage(LoginRedirect):
+    template_name = 'import_export_page.html'
+    def post(self, request, *args, **kwargs):
+        decks = parseConfig()
+        deck = request.FILES.get('deck')
+        #deck is an open file handle now
+        decks.importDeck(request, deck)
+        return HttpResponseRedirect(reverse("import_deck"))
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ImportPage, self).get_context_data(**kwargs)
+        context['user_decks'] = GetDecksForUser_test(self.request.user)
+        return context
+
+
 class WelcomePage(TemplateView):
     template_name = 'welcome_page.html'
+
+
+class DeleteDeckPage(View):
+    def post(self, request, *args, **kwargs):
+        deck_id = request.POST.get('deck_id')
+        return HttpResponseRedirect(reverse("manage_decks"))
+
+
+class ResetDeckPage(View):
+    def post(self, request, *args, **kwargs):
+        deck_id = request.POST.get('deck_id')
+        return HttpResponseRedirect(reverse("manage_decks"))

@@ -1,51 +1,72 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
+<script src="{% static 'js/mydecks.js' %}" ></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/mydecks.css' %}" />
     <h1>My Decks</h1>
-	<div id="content">
-		<h2>Take a Look</h2>
-		<div class="section">
-			<p>
-				Below you'll find all the decks you have.
-			</p>
-			<p>
-				Use 
-				<img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/> 
-				to start playing!<br>
-				You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
-				<br>
-				Use 
-				<img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/> 
-				to see your scores!<br>
-				You'll be taken to the My Scores page to see how you're doing on that deck.<br>
-				<br>
-				Use 
-				<img class="inline" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/> 
-				to manage that deck!<br>
-				You'll be taken to the Manage Decks page where you can do things 
-				like edit and delete them.
-			</p>
-		</div>
-		
-		<div id="deckpane">
-		{% for deck in user_decks %}
-		<!-- decks currently fetched in a dictionary -->
-			<div class="deckItem">
-				<span class="deckName">{{ deck.name }}</span>
-				<span class="deckActions">
-					<a href="{{ deck.manref }}">
-						<img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+    <div id="content">
+        <h2>Take a Look</h2>
+        <div class="section">
+            <p>
+                Below you'll find all the decks you have.
+            </p>
+            <p>
+                Use
+                <img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/>
+                to start playing!<br>
+                You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
+                <br>
+                Use
+                <img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+                to see your scores!<br>
+                You'll be taken to the My Scores page to see how you're doing on that deck.<br>
+                <br>
+                Use
+                <img class="inline" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/>
+                to manage that deck!<br>
+                A drawer will come up with a description of the deck along with buttons for
+                permanently deleting that deck with <img class="inline" src="{% static 'img/delete1_drk_64.png' %}" alt="Delete" title="Permanently delete!"/>,
+                resetting your progress on only that deck by clicking <img class="inline" src="{% static 'img/reset_inv_64.png' %}" alt="Reset" title="Reset your progress"/>
+                or editing it using <img class="inline" src="{% static 'img/edit1_inv_64.png' %}" alt="Edit" title="Edit"/>.
+            </p>
+        </div>
+        <div id="deckDrawer">
+            <span id="dTitle">Missing No.</span>
+            <div id="closeButton"></div>
+            <hr/>
+            <img id="dImg" class="cards" src="{% static 'img/cardstack0.png' %}" alt="Cards"/>
+            <div id="dInfo">
+                Description: <em><span id="desc">Missing deck description...</span></em><br>
+                Card count: <span id="cardCount">-1</span><br>
+                Last access: <span id="access">Never -1</span><br>
+                Created by: <span id="author">No one</span><br>
+            </div>
+            <div class="deckActions">
+                <div id="D" class="icon" title="Permanently delete!"/></div>
+                <div id="R" class="icon" title="Reset your progress"/></div>
+                <div id="E" class="icon" title="Edit"></div>
+            </div>
+        </div>
+        <div id="deckPane">
+        <table>
+        {% for deck in user_decks %}
+        <!-- decks currently fetched in a dictionary -->
+            <tr class="deckItem">
+                <td>{{ deck.Name }}</td>
+                <td class="deckActions">
+                    <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
+						<div id="M" class="icon" title="Manage Deck"/></div>
 					</a>
-					<a href="{{ deck.scoreref }}">
-						<img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
+                    <a href="{% url 'scores' deck.id %}">
+						<div id="S" class="icon" title="See Scores"/></div>
 					</a>
-					<a href="{{ deck.playref }}">
-						<img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/>
+                    <a href="{% url 'play_deck' deck.id %}">
+						<div id="P" class="icon" title="Play Deck"/></div>
 					</a>
-				<span>
-			</div>
-		{% endfor %}
-		</div>
-	</div>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,52 +1,184 @@
-div#deckpane {
-	background: #888;
-	border: white solid 4px;
-	border-radius: 24px;
-	box-shadow: 0px 2px 2px 2px #333 inset;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 16px;
-	width: 60%;
+div#deckPane,div#deckDrawer {
+    background: #888;
+    border: white solid 4px;
+    box-shadow: 0px 2px 2px 2px #333 inset;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 16px;
+    width: 80%;
 }
 
-div.deckItem {
-	border-radius: 8px;
-	height: 28px;
-	overflow: auto;
-	padding-top: 12px;
+#deckPane table
+{
+    width: 100%;
 }
 
-div.deckItem:hover {
-	background: #CCC;
-	box-shadow: 0px 2px 2px 2px #333 inset;
-	color: black;
+div#deckDrawer {
+    display: none;
 }
 
-img.icon {
-	height: 16px;
-	float:right;
-	margin-right: 8px;
-	vertical-align: middle;
-	width: 16px;
+.deckItem {
+    border-radius: 8px;
+    height: 28px;
+    overflow: auto;
+    padding-top: 12px;
+}
+
+.deckItem:hover {
+    background: #CCC;
+    box-shadow: 0px 2px 2px 2px #333 inset;
+    color: black;
+}
+
+div#deckDrawer {
+    border-bottom: none;
+    height: 188px;
+}
+
+#dTitle {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+div#dInfo {
+    clear: left;
+    display: inline-block;
+    width: 70%;
+}
+
+
+.deckActions {
+    float: right;
+    padding: 5px;
+    text-align: right;
+    width: 100px;
+}
+
+#dImg
+{
+    max-width: 128px;
+    width: 25%;
+    height: auto;
+}
+
+#E {
+    background-image: url('../img/edit1_inv_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#E:hover {
+    background-image: url('../img/edit1_64.png');
+}
+
+#R {
+    background-image: url('../img/reset_inv_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#R:hover {
+    background-image: url('../img/reset_64.png');
+}
+
+#D {
+    background-image: url('../img/delete1_drk_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#D:hover {
+    background-image: url('../img/delete1_inv_64.png');
+}
+
+#P {
+    background-image: url('../img/play_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#P:hover {
+    background-image: url('../img/play_inv_64.png');
+}
+
+#S {
+    background-image: url('../img/badge_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#S:hover {
+    background-image: url('../img/badge_inv_64.png');
+}
+
+#M {
+    background-image: url('../img/details_64.png');
+    background-size: 16px 16px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+#M:hover {
+    background-image: url('../img/details_inv_64.png');
+}
+
+#closeButton{
+    background-image: url('../img/close.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    position: relative;
+    width: 24px;
+    top: -7px;
+    left: 8px;
+}
+
+#closeButton:hover {
+    background-image: url('../img/close_inv.png');
+}
+
+.icon {
+    height: 16px;
+    float:right;
+    margin-right: 8px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+img.cards {
+    margin-right: 8px;
+    vertical-align: middle;
+    width: 128px;
 }
 
 img.inline {
-	background: #CCC;
-	height: 16px;
-	padding: 2px;
-	vertical-align: top;
-	width: 16px;
+    background: #CCC;
+    height: 16px;
+    padding: 2px;
+    vertical-align: top;
+    width: 16px;
 }
 
 img.icon:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
-span.deckActions {
-	text-align: right;
-}
 
 span.deckName {
-	font-weight: bold;
-	padding: 6px;
+    font-weight: bold;
+    padding: 6px;
+    overflow: hidden;
 }

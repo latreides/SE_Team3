@@ -1,4 +1,7 @@
 import yaml
+from models import Deck, Card
+from db_interactions import *
+from django.contrib.auth.models import User
 
 class parseConfig:
     "Handles parsing, exporting, importing of deck configs"
@@ -7,10 +10,21 @@ class parseConfig:
         self.decks_location = "./decks/"
         self.deck = {}
 
-    def importDeck(self, filename):
+    def importDeck(self, request, filename):
         "Import deck to file"
-        with open(self.decks_location + filename, 'r') as f:
-            self.deck = yaml.load(f)
+            
+        if request.user.is_authenticated():
+            self.deck = yaml.load(filename)
+            decks = self.getListOfDecks()
+            cards = self.getListOfCards(decks[0])
+            deck = CreateDeck(1, decks[0])
+            
+            importedDeck = self.getDeck()
+            for cards in importedDeck.values():
+                for qNa in cards.values():
+                    question = qNa[0].values()[0]
+                    answer = qNa[1].values()[0]
+                    CreateCard(deck.id, False, question, answer)
 
     def getDeck(self):
         return self.deck

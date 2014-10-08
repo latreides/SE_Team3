@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/signin.css' %}" />
-
     <h1>Hello, There!</h1>
 	
 	<div id="content">
@@ -14,11 +12,12 @@
 			</p>
 			<form id="sign-in" method="post" onsubmit="return true;" action="">
 			{% csrf_token %}
-				<input name="username" type="text" placeholder="user name">
+				<input name="username" type="text" placeholder="'Username'">
 				<br>
-				<input name="password" type="password" placeholder="password">
+				<input name="password" type="password" placeholder="'Password'">
 				<br>
-				<input type="submit" value="Sign In">
+				<input type="submit" name="signin" value="Sign In">
+				<div class='ErrorMessage'>{{invalid_login}}</div>
 			</form>
 		</div>
 		<h2>New to MemorizeMe?</h2>
@@ -30,13 +29,14 @@
 			</p>
 			<form id="sign-up" method="post" onsubmit="return true;" action="">
 			{% csrf_token %}
-					<input name="username" type="text" placeholder="Pick a user name">
+					<input name="username" type="text" placeholder="'Pick a user name'">
 				<br>
-					<input name="password" type="password" placeholder="Pick a password">
+					<input name="password1" type="password" placeholder="'Pick a password'">
 				<br>
-					<input name="password" type="password2" placeholder="Retype your password">
+					<input name="password2" type="password" placeholder="'Retype your password'">
 				<br>
-				<input type="submit" value="Sign Up">
+				<input type="submit" name="signup" value="Sign Up">
+				<div class='ErrorMessage'>{{invalid_signup}}</div>
 			</form>
 		</div>
 	</div>

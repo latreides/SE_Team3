@@ -1,0 +1,4 @@
+MemorizeMe
+Django>=1.7
+coverage>=3.7.1
+pyYAML>=3.11
