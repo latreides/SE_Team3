@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Test</h1>
+    <h1>My Scores</h1>
+    
+    <div id="content">
+        <h2>{{ most_recent_deck }}</h2>
+        
+        <div class="section">
+        <p>
+            <table>
+            
+                <tr>
+                    <td><h3>Cards Not Studied:</h3></td>
+                    <td>{{ cards_not_studied }}</td>
+                </tr>
+                
+                <tr>
+                    <td><h3>Memorized:</h3></td>
+                    <td>{{ cards_ranked_one }}</td>
+                </tr>
+                
+                <tr>
+                    <td><h3>Troublesome:</h3></td>
+                    <td>{{ cards_ranked_five }}</td>
+                </tr>
+                
+            </table>
+        </p>
+        
+        </div>
+    </div>
 {% endblock %}

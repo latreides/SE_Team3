@@ -39,6 +39,15 @@ class ManageDecksPage(LoginRedirect):
 class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ScoresPage, self).get_context_data(**kwargs)
+        context['cards_not_studied'] = GetCountCardsNotStudied(1)
+        context['most_recent_deck'] = GetMostRecentDeck(1)
+        context['cards_ranked_one'] = GetCountCardsWithDifficulty(1, 1)
+        context['cards_ranked_five'] = GetCountCardsWithDifficulty(1, 5)
+        
+        return context
+
 
 class ViewDeckPage(LoginRedirect):
     template_name = 'view_deck_page.html'
