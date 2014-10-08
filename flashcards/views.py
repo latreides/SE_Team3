@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
 from django.contrib import auth
 from flashcards.decks import *
+from django.contrib.auth.models import User
 
 class LoginRedirect(TemplateView):
 
@@ -61,25 +62,50 @@ class SigninPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         invalidLogin = "The username and password combination entered does not match any active user"
+        invalidPassword = "The passwords that were entered do not match"
+        invalidUsername = "The username chosen is invalid. Try another username."
         context = super(SigninPage, self).get_context_data(**kwargs)
         if self.request.GET.get('invalid_login', '') == "True":
             context['invalid_login'] = invalidLogin
         else:
             context['invalid_login'] = ''
-
+        if self.request.GET.get('invalid_password') == "True":
+            context['invalid_signup'] = invalidPassword
+        elif self.request.GET.get('invalid_user') == "True":
+            context['invalid_signup'] = invalidUsername
+        else:
+            context['invalid_signup'] = ''
         return context
 
     def post(self, request, *args, **kwargs):
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = auth.authenticate(username=username, password=password)
+        if request.POST.get('signin'):
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = auth.authenticate(username=username, password=password)
 
-        if user is not None:
-            auth.login(request, user)
-            return HttpResponseRedirect(reverse('landing_page'))
+            if user is not None:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('landing_page'))
+            else:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_login=True')
         else:
-            return HttpResponseRedirect(reverse('signin') + '?invalid_login=True')
+            username = request.POST.get('username', '')
+            password1 = request.POST.get('password1', '')
+            password2 = request.POST.get('password2', '')
 
+            if User.objects.filter(username = username).count() > 0:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_user=True')
+
+            if password1 == password2:
+                newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
+                newUser.set_password(password1)
+                newUser.save()
+                user = auth.authenticate(username=username, password=password1)
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('landing_page'))
+
+            else:
+                return HttpResponseRedirect(reverse('signin') + '?invalid_password=True')
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'

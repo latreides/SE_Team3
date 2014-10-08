@@ -16,7 +16,7 @@
 				<br>
 				<input name="password" type="password" placeholder="'Password'">
 				<br>
-				<input type="submit" value="Sign In">
+				<input type="submit" name="signin" value="Sign In">
 				<div class='ErrorMessage'>{{invalid_login}}</div>
 			</form>
 		</div>
@@ -31,11 +31,12 @@
 			{% csrf_token %}
 					<input name="username" type="text" placeholder="'Pick a user name'">
 				<br>
-					<input name="password" type="password" placeholder="'Pick a password'">
+					<input name="password1" type="password" placeholder="'Pick a password'">
 				<br>
-					<input name="password" type="password2" placeholder="'Retype your password'">
+					<input name="password2" type="password" placeholder="'Retype your password'">
 				<br>
-				<input type="submit" value="Sign Up">
+				<input type="submit" name="signup" value="Sign Up">
+				<div class='ErrorMessage'>{{invalid_signup}}</div>
 			</form>
 		</div>
 	</div>
