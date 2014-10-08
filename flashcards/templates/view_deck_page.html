@@ -54,12 +54,15 @@
             <tr class="deckItem">
                 <td>{{ deck.Name }}</td>
                 <td class="deckActions">
-                    <a href="{% url 'play_deck' deck.id %}">
-                    <img class="icon" src="{% static 'img/play_64.png' %}" alt="Play" title="Play Deck"/></a>
-                    <a href="{% url 'scores' deck.id %}">
-                    <img class="icon" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/></a>
                     <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
-                    <img class="icon" src="{% static 'img/details_64.png' %}" alt="Manage" title="Manage Deck"/></a>
+						<div id="M" class="icon" title="Manage Deck"/></div>
+					</a>
+                    <a href="{% url 'scores' deck.id %}">
+						<div id="S" class="icon" title="See Scores"/></div>
+					</a>
+                    <a href="{% url 'play_deck' deck.id %}">
+						<div id="P" class="icon" title="Play Deck"/></div>
+					</a>
                 </td>
             </tr>
         {% endfor %}
