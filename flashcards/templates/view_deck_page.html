@@ -5,16 +5,18 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/mydecks.css' %}" />
     <h1>My Decks</h1>
     <div id="content">
-        <h2>Take a Look</h2>
+        <h2>Your Deck Pane</h2>
         <div class="section">
             <p>
-                Below you'll find all the decks you have.
-            </p>
-            <p>
+                Below, you'll find all the decks you have in the deck pane.<br>
+                <br>
+                If you want to add new decks or download existing ones out of this list, click the 
+                Retrieve Decks button at the top of it.<br>
+                <br>
                 Use
                 <img class="inline" src="{% static 'img/play_64.png' %}" alt="Manage" title="Play Deck"/>
                 to start playing!<br>
-                You'll be taken to the full MemorizeMe app to start or resume that deck.<br>
+                You'll be taken to the full MemorizeMe&reg; flashcard app to start or resume that deck.<br>
                 <br>
                 Use
                 <img class="inline" src="{% static 'img/badge_64.png' %}" alt="Score" title="See Scores"/>
@@ -48,25 +50,28 @@
             </div>
         </div>
         <div id="deckPane">
-        <table>
-        {% for deck in user_decks %}
-        <!-- decks currently fetched in a dictionary -->
-            <tr class="deckItem">
-                <td>{{ deck.Name }}</td>
-                <td class="deckActions">
-                    <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
-						<div id="M" class="icon" title="Manage Deck"/></div>
-					</a>
-                    <a href="{% url 'scores' deck.id %}">
-						<div id="S" class="icon" title="See Scores"/></div>
-					</a>
-                    <a href="{% url 'play_deck' deck.id %}">
-						<div id="P" class="icon" title="Play Deck"/></div>
-					</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </table>
+            <a id="importExport" href="{% url 'import_export_page' %}">
+                Retrieve Decks
+            </a>
+            <table>
+            {% for deck in user_decks %}
+            <!-- decks currently fetched in a dictionary -->
+                <tr class="deckItem">
+                    <td>{{ deck.Name }}</td>
+                    <td class="deckActions">
+                        <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
+                            <div id="M" class="icon" title="Manage Deck"/></div>
+                        </a>
+                        <a href="{% url 'scores' deck.id %}">
+                            <div id="S" class="icon" title="See Scores"/></div>
+                        </a>
+                        <a href="{% url 'play_deck' deck.id %}">
+                            <div id="P" class="icon" title="Play Deck"/></div>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
         </div>
     </div>
 {% endblock %}

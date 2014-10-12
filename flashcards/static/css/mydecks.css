@@ -150,6 +150,29 @@ div#dInfo {
     background-image: url('../img/close_inv.png');
 }
 
+#importExport {
+    background: #222;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: white;
+    color: white;
+    margin-bottom: 8px;
+    text-align: center;
+    padding: 10px 0;
+    display: block;
+    width: 100%;
+}
+
+#importExport:hover {
+    background: #555;
+    color: white;
+}
+
+#importExport:link {
+    color: white;
+    text-decoration: none;
+}
+
 .icon {
     height: 16px;
     float:right;
