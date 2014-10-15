@@ -1,59 +1,65 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
 
-    <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    
-    <script type="text/javascript">
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Rank', 'Count'],
-                ['Rank 1', 50],
-                ['Rank 2', 13],
-                ['Rank 3', 36],
-                ['Rank 4', 15],
-                ['Rank 5', 50],
-                ['Unranked', 20]
-            ]);
+{% block javascript %}
+    {{block.super}}
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Rank', 'Count'],
+                    ['Rank 1', 50],
+                    ['Rank 2', 13],
+                    ['Rank 3', 36],
+                    ['Rank 4', 15],
+                    ['Rank 5', 50],
+                    ['Unranked', 20]
+                ]);
 
-            var options = {
-                width: 400,
-                height: 300,
+                var options = {
+                    width: 400,
+                    height: 300,
 
-                title: 'Deck Rankings',
-                titleTextStyle: {
-                    color: 'white',
-                    fontName: 'Microsoft-Sans-Serif',
-                    fontSize: 24
-                },
-                
-                chartArea : {
-                    'width': '95%',
-                    'height': '81%'
-                },
-
-                colors: ['#62cbff', '#62FFFF', '#629FFF', '#ABDBFF', '#6258FF', '#004BF6'],
-                backgroundColor: '#383838',
-                fontName: 'Microsoft-Sans-Serif',
-                legend : { 
-                    position: 'right', 
-                    textStyle : {
+                    title: 'Deck Rankings',
+                    titleTextStyle: {
                         color: 'white',
-                        fontSize: 16
+                        fontName: 'Microsoft-Sans-Serif',
+                        fontSize: 24
+                    },
+                    
+                    chartArea : {
+                        'width': '95%',
+                        'height': '81%'
+                    },
+
+                    colors: ['#62cbff', '#62FFFF', '#629FFF', '#ABDBFF', '#6258FF', '#004BF6'],
+                    backgroundColor: '#383838',
+                    fontName: 'Microsoft-Sans-Serif',
+                    legend : { 
+                        position: 'right', 
+                        textStyle : {
+                            color: 'white',
+                            fontSize: 16
+                        }
                     }
-                }
-            };
+                };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-            chart.draw(data, options);
-        }
-    </script>
-        
+                chart.draw(data, options);
+            }
+        </script>
+{% endblock %}
+
+{% block css %}
+    {{block.super}}
+        <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
+{% endblock %}
+
+{% block content %}
     <h1>My Scores</h1>
     <div id="content">
         
