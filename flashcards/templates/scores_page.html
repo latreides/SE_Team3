@@ -1,33 +1,76 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>My Scores</h1>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Rank', 'Count'],
+                ['Rank 1', 50],
+                ['Rank 2', 13],
+                ['Rank 3', 36],
+                ['Rank 4', 15],
+                ['Rank 5', 50],
+                ['Unranked', 20]
+            ]);
+
+            var options = {
+                width: 400,
+                height: 300,
+
+                title: 'Deck Rankings',
+                titleTextStyle: {
+                    color: 'white',
+                    fontName: 'Microsoft-Sans-Serif',
+                    fontSize: 24
+                },
+                
+                chartArea : {
+                    'width': '95%',
+                    'height': '81%'
+                },
+
+                colors: ['#62cbff', '#62FFFF', '#629FFF', '#ABDBFF', '#6258FF', '#004BF6'],
+                backgroundColor: '#383838',
+                fontName: 'Microsoft-Sans-Serif',
+                legend : { 
+                    position: 'right', 
+                    textStyle : {
+                        color: 'white',
+                        fontSize: 16
+                    }
+                }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+        
+    <h1>My Scores</h1>
     <div id="content">
+        
         <h2>{{ most_recent_deck }}</h2>
-        
         <div class="section">
-        <p>
-            <table>
-            
-                <tr>
-                    <td><h3>Cards Not Studied:</h3></td>
-                    <td>{{ cards_not_studied }}</td>
-                </tr>
-                
-                <tr>
-                    <td><h3>Memorized:</h3></td>
-                    <td>{{ cards_ranked_one }}</td>
-                </tr>
-                
-                <tr>
-                    <td><h3>Troublesome:</h3></td>
-                    <td>{{ cards_ranked_five }}</td>
-                </tr>
-                
-            </table>
-        </p>
         
+            <p>
+                <div id="piechart"></div>
+                <table>
+                
+                    <tr>
+                        <td><div id="score">{{ cardCount }}</div></td>
+                        <td>Total Cards</td>
+                    </tr>
+                    
+                </table>
+            </p>
         </div>
     </div>
 {% endblock %}

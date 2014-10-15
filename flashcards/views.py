@@ -32,11 +32,17 @@ class ScoresPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ScoresPage, self).get_context_data(**kwargs)
-        context['cards_not_studied'] = GetCountCardsNotStudied(1)
-        context['most_recent_deck'] = GetMostRecentDeck(1)
-        context['cards_ranked_one'] = GetCountCardsWithDifficulty(1, 1)
-        context['cards_ranked_five'] = GetCountCardsWithDifficulty(1, 5)
-        
+        context['cardsNotStudied'] = GetCountCardsNotStudied(1)
+        context['mostRecentDeck'] = GetMostRecentDeck(1)
+        context['cardsRankedOne'] = GetCountCardsWithDifficulty(1, 1)
+        context['cardsRankedTwo'] = GetCountCardsWithDifficulty(1, 2)
+        context['cardsRankedThree'] = GetCountCardsWithDifficulty(1, 3)
+        context['cardsRankedFour'] = GetCountCardsWithDifficulty(1, 4)
+        context['cardsRankedFive'] = GetCountCardsWithDifficulty(1, 5)
+        context['cardCount'] = (GetCountCardsWithDifficulty(1, 1) + GetCountCardsWithDifficulty(1, 2)
+                                + GetCountCardsWithDifficulty(1, 3) + GetCountCardsWithDifficulty(1, 3)
+                                + GetCountCardsWithDifficulty(1, 4) + GetCountCardsWithDifficulty(1, 5)
+                                + GetCountCardsNotStudied(1))
         return context
 
 
