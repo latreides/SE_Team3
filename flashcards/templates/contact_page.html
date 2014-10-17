@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
 
+{% block css %}
+    {{block.super}}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block content %}
     <h1>Contact Information</h1>
 
     <div id="content">
@@ -47,7 +51,4 @@
         </div>
 
     </div>
-
-
-
 {% endblock %}
