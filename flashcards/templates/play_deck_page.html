@@ -1,5 +1,54 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
+
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/play_page.css' %}" />
+{% endblock %}
+
 {% block content %}
-    <h1>Test</h1>
+    <h1>You are now in play mode!</h1>
+    
+    <div class="card">
+        <h1 class="title">
+            Deck Name (Text only example)!
+        </h1>
+        
+        <p class="question">
+            This is a test question that is really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?
+        </p>
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <div class="card">
+        <h1 class="title">
+            Deck Name (Text and Image)!
+        </h1>
+        
+        <p class="question">
+            What is the number that you see?
+        </p>
+        
+        <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <div class="card">
+        <h1 class="title">
+            Deck Name (Image example)!
+        </h1>
+        
+        <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <nav>
+        <ul id="nav-header">
+            <li><a href="#" class="btnLeft">Previous</a></li>
+            <li><a href="#" class="btnRight">Next</a></li>
+        </ul>
+    </nav>
 {% endblock %}

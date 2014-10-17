@@ -1,0 +1,40 @@
+.card {
+   position: relative; 
+   color: #666;
+   text-align: center;
+   margin-left: auto;
+   margin-right: auto;
+   text-align: center;
+   width: 500px;
+}
+
+h1.title{
+   top: -5px;
+   position: absolute; 
+   left: 0; 
+   width: auto;
+   font-size: 30px;
+   text-align: center;
+}
+
+p.question {
+   top: 35px;
+   position: absolute; 
+   left: 0;
+   line-height: 140%;
+}
+
+img.cardImage{
+    position: absolute;
+    bottom: 0;
+}
+
+a.btnLeft{
+    width: 100px;
+    float: left;
+}
+
+a.btnRight{
+    width: 100px;
+    float: right;
+}

@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}" />
-<script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
 
+{% block javascript %}
+    {{block.super}}
+    <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}" />
+{% endblock %}
+
+{% block content %}
 <h1>Welcome to MemorizeMe!</h1>
 
 <div id="content">

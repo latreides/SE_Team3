@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}" />
-    <script type="text/javascript" src="{% static 'js/welcome_page.js' %}"></script>
 
+{% block javascript %}
+    {{block.super}}
+    <script type="text/javascript" src="{% static 'js/welcome_page.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}" />
+{% endblock %}
+
+{% block content %}
     <h1>Welcome, please <a class="greeting" href="{% url 'signin' %}"> Login</a> or <a class= "greeting" href="{% url 'signin' %}"> Signup!</a> </h1>
 
     
