@@ -25,6 +25,9 @@ class parseConfig:
                     question = qNa[0].values()[0]
                     answer = qNa[1].values()[0]
                     CreateCard(deck.id, False, question, answer)
+            return True
+        else:
+            return False
 
     def getDeck(self):
         return self.deck

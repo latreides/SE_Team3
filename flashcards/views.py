@@ -1,4 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.template import RequestContext, loader
 from django.views.generic import TemplateView, ListView, CreateView, View
 from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
@@ -123,8 +125,13 @@ class ImportPage(LoginRedirect):
         decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
-        decks.importDeck(request, deck)
-        return HttpResponseRedirect(reverse("import_deck"))
+        if decks.importDeck(request, deck):
+            t = loader.get_template('import_export_page.html')
+            c = RequestContext(request)
+            c['user_decks'] = GetDecksForUser_test(self.request.user)
+            return HttpResponse(t.render(c), status=200)
+        else:
+            return HttpResponseRedirect(reverse("import_export_page"))
 
 
     def get_context_data(self, **kwargs):
