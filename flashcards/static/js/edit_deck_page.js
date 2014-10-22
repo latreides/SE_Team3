@@ -7,7 +7,7 @@ function updateText()
 
     var miniPreview = $('.cardMiniPreview[data-cardId="' + cardId + '"]');
     miniPreview.text(txt)
-    miniPreview.attr('data-text', txt)
+    miniPreview.attr('data-text-front', txt)
 }
 
 function updateTheme(theme)
@@ -35,7 +35,7 @@ $(document).ready(function(){
 
     $('#addCard').click(function(){
         var cardImage = $('.cardSelected').css('background-image');
-        $('<div class="cardMiniPreview" data-text="" data-cardId="new_'+ (newCardCounter++) +'" style="background-image:' + cardImage + '" ></div>').insertBefore($(this));
+        $('<div class="cardMiniPreview" data-text-front="" data-text-back="" data-cardId="new_'+ (newCardCounter++) +'" style="background-image:' + cardImage + '" ></div>').insertBefore($(this));
 
     });
 
