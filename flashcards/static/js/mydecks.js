@@ -1,3 +1,5 @@
+
+
 var drawerVis = false;
 
 function drawerSlide() {
@@ -28,11 +30,22 @@ function updateDeckDrawer(child) {
     desc.html($(this).attr("data-deckDesc") );
     count.html($(this).attr("data-cardCount") );
     acc.html( $(this).attr("data-lastAccess") );
-    auth.html( $(this).attr("data-author") );
+
+    var selectedDeckId = $(this).attr('data-deckId');
+    $('#deckManagement').attr('data-deckId', selectedDeckId)
+
 }
 
-window.onload = function() {
+$(document).ready(function(){
         $(".manage").click( drawerSlide      );
         $(".manage").click( updateDeckDrawer );
         $("#closeButton").click( closeDrawer );
-    };
+
+        $("div.manageDecks").click(function(){
+            $("#createDeck").submit();
+        });
+
+        $('#editDeckBtn').click(function(){
+            window.location = $(this).data('url') + '?deckId=' + $('#deckManagement').attr('data-deckId');
+        });
+});

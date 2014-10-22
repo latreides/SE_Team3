@@ -62,7 +62,7 @@ div#dInfo {
     height: auto;
 }
 
-#E {
+#editDeckBtn {
     background-image: url('../img/edit1_inv_64.png');
     background-size: 16px 16px;
     cursor: pointer;
@@ -70,7 +70,7 @@ div#dInfo {
     width: 16px;
 }
 
-#E:hover {
+#editDeckBtn:hover {
     background-image: url('../img/edit1_64.png');
 }
 
@@ -150,7 +150,8 @@ div#dInfo {
     background-image: url('../img/close_inv.png');
 }
 
-#importExport {
+
+.manageDecks {
     background: #222;
     border-bottom-style: solid;
     border-bottom-width: medium;
@@ -159,16 +160,17 @@ div#dInfo {
     margin-bottom: 8px;
     text-align: center;
     padding: 10px 0;
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: 50%;
+    cursor: pointer;
 }
 
-#importExport:hover {
+.manageDecks:hover {
     background: #555;
     color: white;
 }
 
-#importExport:link {
+.manageDecks:link {
     color: white;
     text-decoration: none;
 }
@@ -204,4 +206,10 @@ span.deckName {
     font-weight: bold;
     padding: 6px;
     overflow: hidden;
+}
+
+
+#manageDecksContainer{
+    display: inline-table;
+    width: 100%;
 }

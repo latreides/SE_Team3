@@ -9,11 +9,20 @@ Deck is a database table that stores information specific to a single deck
     Accessed_Date- Last time the deck was used
 '''
 class Deck(models.Model):
+    THEME_LIST = (('Blank White', 'BlankWhite.png'),
+    ('Index Card', 'IndexCard.png'),
+    ('Film Strip', 'FilmStrip.png'),
+    ('Scroll', 'Scroll.png'),
+    ('Parchment', 'Parchment.png'),
+    ('White Scroll', 'WhiteScroll.png'))
+
     User_ID = models.ForeignKey(settings.AUTH_USER_MODEL)
     Name = models.CharField(max_length = 100)
     Create_Date = models.DateTimeField()
     Accessed_Date = models.DateTimeField(blank=True, null=True)
     Public = models.BooleanField(default=False)
+    Theme = models.CharField(default='Blank', max_length=32, choices=THEME_LIST)
+    Tags = models.TextField(blank=True, null=True)
 
     #Return the Decks name as the text for the object
     def __unicode__(self):
@@ -58,11 +67,10 @@ class Card(models.Model):
     Difficulty = models.IntegerField(blank=True, null=True)
     Last_Attempted = models.DateTimeField(blank=True, null=True)
     Two_Sided = models.BooleanField(default=False)
-    Categories = models.TextField(null=True)
 
     #Return the Cards front side text as the text for the object
     def __unicode__(self):
         return str(self.id)
-    
+
     class Meta:
         app_label = 'flashcards'

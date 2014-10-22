@@ -15,6 +15,8 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ('flashcards/static',)
+THEME_ROOT = 'flashcards/static/themes/'
+THEME_URL =  STATIC_URL + 'themes/'
 
 # Application definition
 INSTALLED_APPS = (

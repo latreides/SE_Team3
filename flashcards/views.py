@@ -7,6 +7,9 @@ from flashcards.db_interactions import *
 from django.contrib import auth
 from flashcards.decks import *
 from django.contrib.auth.models import User
+import glob
+import ntpath
+import os
 
 class LoginRedirect(TemplateView):
 
@@ -63,8 +66,8 @@ class AccountPage(LoginRedirect):
 
 class ContactPage(LoginRedirect):
     template_name = 'contact_page.html'
-        
-                
+
+
 class SigninPage(TemplateView):
     template_name = 'signin_page.html'
 
@@ -146,11 +149,42 @@ class WelcomePage(TemplateView):
 
 class DeleteDeckPage(View):
     def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deck_id')
+        deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
 
 
 class ResetDeckPage(View):
     def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deck_id')
+        deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
+
+class CreateDeckPage(View):
+    def post(self, request, *args, **kwargs):
+        newDeck = CreateDeck(self.request.user.id, 'Untitled Deck')
+        newCard = CreateCard(newDeck.id, True, "Front Side", "Back Side", None, None)
+
+        return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
+
+class EditDeckPage(LoginRedirect):
+    template_name = 'edit_deck_page.html'
+
+    def get_context_data(self, **kwargs):
+        deckId = self.request.GET.get('deckId')
+        if deckId:
+            context = super(EditDeckPage, self).get_context_data(**kwargs)
+            context['deck'] = getDeck(deckId)
+            if context['deck']:
+                context['cards'] = GetCardsForDeck(deckId)
+                #themeImageList = sorted(glob.glob(settings.THEME_ROOT + '*.*'))
+                #themePairList = []
+                #for theme in themeImageList:
+                #    displayName = ntpath.basename(theme)
+                #    theme = theme.replace(settings.THEME_ROOT, settings.THEME_URL, 1);
+                #    displayName = os.path.splitext(displayName)[0]
+                #    displayName = displayName[displayName.find(':')+1:]
+                #    themePairList.append([displayName, theme])
+                #context['themes'] =  themePairList
+                context['themes'] = Deck.THEME_LIST
+            return context
+        else:
+            pass
