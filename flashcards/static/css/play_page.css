@@ -42,6 +42,7 @@ a.btnRight{
 
 #uiCard {
     background-image: url('../img/card.png');
+    background-repeat:no-repeat;
     box-shadow: 0px 2px 2px black;
     color: black;
     cursor: pointer;
@@ -49,7 +50,7 @@ a.btnRight{
     margin-bottom: 16px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 500px;
+    width: 500px;
     overflow: hidden;
 }
 
@@ -64,15 +65,18 @@ a.btnRight{
 }
 
 #uiQuestion {
-    line-height: 25px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    max-height: 200px;
-    max-width: 400px;
-    overflow: hidden;
-    position: relative;
+    font-size: 300%;
+    top: 0px;
+    margin-left: 32px;
+    width: 80%;
     text-align: center;
+    margin-top:46px;
+    margin-left:10%;
+    margin-right:10%;
+    white-space:pre-wrap;
+    line-height: 51px;
+    height: 230px;
+    overflow: hidden;
 }
 
 #deckTitle {
@@ -83,6 +87,8 @@ a.btnRight{
 }
 
 #playField {
+    height: 800px;
+    overflow: hidden;
     padding-left: 8px;
     padding-right: 8px;
 }
@@ -127,6 +133,8 @@ div #playFrame {
     box-shadow: 0px 2px 2px #222;
     color: white;
     display: inline-block;
+    font-size: 85%;
+    font-weight: bold;
     margin-bottom: 8px;
     padding: 10px;
     text-align: center;
@@ -153,6 +161,8 @@ div #playFrame {
     color: #666;
     cursor: default;
     display: inline-block;
+    font-size: 85%;
+    font-weight: bold;
     margin-bottom: 8px;
     padding: 10px;
     text-align: center;
@@ -199,3 +209,6 @@ div #playFrame {
     background: #B3FBFF;
 }
 
+.hide {
+    display: none;
+}
