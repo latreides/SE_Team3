@@ -25,14 +25,17 @@ class parseConfig:
                     question = qNa[0].values()[0]
                     answer = qNa[1].values()[0]
                     CreateCard(deck.id, False, question, answer)
+            return True
+        else:
+            return False
 
     def getDeck(self):
         return self.deck
 
-    def exportDeck(self, filename):
-        "Export deck to file"
-        with open(self.decks_location + filename, 'w') as f:
-            f.write(yaml.dump(self.deck, default_flow_style=False))
+    #def exportDeck(self, filename):
+        #"Export deck to file"
+        #with open(self.decks_location + filename, 'w') as f:
+            #f.write(yaml.dump(self.deck, default_flow_style=False))
 
     def getListOfDecks(self):
         """Get list of decks in file
@@ -50,14 +53,3 @@ class parseConfig:
         if self.deck and self.deck[deckName]:
             retVal = [card for card in self.deck[deckName]]
         return retVal
-
-
-#Testing below
-if __name__ == "__main__":
-    parser = parseConfig()
-    parser.importDeck("testdeck.yml")
-    decks = parser.getListOfDecks()
-    cards = parser.getListOfCards(decks[0])
-    print decks
-    print cards
-    print yaml.dump(parser.getDeck(), default_flow_style=False)

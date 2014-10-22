@@ -71,7 +71,6 @@ MyDeck1:
         resp = client_obj.post(self.path, file_data)
         self.assertEqual(resp.status_code, 302, str(client_obj) + ' returned: ' + str(resp.status_code) + ' expected: 302')
 
-    #This below returns a 302 instead of a 200
     def test_import(self):
         client_obj = Client()
         test_user = User.objects.create(username='test', is_active=True, is_staff=True, is_superuser=True)

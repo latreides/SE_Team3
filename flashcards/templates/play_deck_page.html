@@ -1,5 +1,91 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
+
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/play_page.css' %}" />
+{% endblock %}
+
+{% block javascript %}
+    {{block.super}}
+    <script type="text/javascript" src="{% static 'js/play.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-    <h1>Test</h1>
+    <h1>You are now in play mode!</h1>
+
+    <!--Testing element, also removed for presentation purposes -->
+    <!--div id="myDiv">
+        <h2>XML_HTTP</h2>
+    </div>
+    <button type="button" onclick="loadXMLDoc()">Change Content</button-->
+    
+    <div id="playField">
+        <div>
+            <h5>Now Playing</h5>
+            <div id="deckTitle">DECK TITLE</div>
+        </div>
+        <div id="playFrame">
+            <div id="uiCard" title="Click to flip">
+                <!--h1 id="uiTitle">Deck Name : Card Number</h1-->
+                <div id="uiQuestion">
+                    Is this a test question that is really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?
+                </div>
+            </div>
+            <ul id="buttonPanel">
+                <!--div class="uiButton" id="uiPrev" title="Skip backward one card">Previous</div-->
+                <li class="uiButton uiButton-resize" id="ui5" title="I don't know what I'm looking at.">5</li>
+                <li class="uiButton uiButton-resize" id="ui4" title="I'm unfamiliar with this.">4</li>
+                <li class="uiButton uiButton-resize" id="ui3" title="I'm familiar with this.">3</li>
+                <li class="uiButton uiButton-resize" id="ui2" title="I'm comfortable with this.">2</li>
+                <li class="uiButton uiButton-resize" id="ui1" title="I have mastered this.">1</li>
+                <!--div class="uiButton" id="uiNext" title="Skip forward one card">Next</div--><br>
+                <div class="uiButton" id="uiNew" title="Skip this card.">Skip</div>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Removed for presentation purposes -->
+    <!--div class="card">
+        <h1 class="title">
+            Deck Name (Text only example)!
+        </h1>
+        
+        <p class="question">
+            This is a test question that is really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?
+        </p>
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <div class="card">
+        <h1 class="title">
+            Deck Name (Text and Image)!
+        </h1>
+        
+        <p class="question">
+            What is the number that you see?
+        </p>
+        
+        <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <div class="card">
+        <h1 class="title">
+            Deck Name (Image example)!
+        </h1>
+        
+        <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
+        
+        <img src="{% static 'img/card.png' %}" alt="" />
+    </div>
+    
+    <nav>
+        <ul id="nav-header">
+            <li><a href="#" class="btnLeft">Previous</a></li>
+            <li><a href="#" class="btnRight">Next</a></li>
+        </ul>
+    </nav-->
 {% endblock %}

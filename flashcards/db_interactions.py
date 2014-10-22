@@ -78,9 +78,15 @@ Returns a list containing all the decks that the current user has as Deck object
 def GetDecksForUser(userID):
 	return Deck.objects.filter(User_ID=userID)
 
+'''
+Returns a single specific Deck
+'''
+def getDeck(deckID):
+    return Deck.objects.get(id=deckID)
+
 # Abstract Test Data Function, to be removed for final product.
 def GetDecksForUser_test(userID):
-    return [\
+    deckList = [\
             Deck(id=0, Name = "How to Use MemorizeMe", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
             Deck(id=1, Name = "My Deck", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow().replace(tzinfo=utc)), \
             Deck(id=2, Name = "How To Swahili with Dr. Shade", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
@@ -90,6 +96,8 @@ def GetDecksForUser_test(userID):
             Deck(id=6, Name = "Mitt Flashcard", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
             Deck(id=7, Name = "Mi Tarjeta de Memoria Flash", User_ID = userID, Create_Date = GetNow(), Accessed_Date = GetNow()), \
             ]
+    deckList.extend(list(GetDecksForUser(userID)))
+    return deckList
 
 '''
 Returns a list containing all the cards as objects belonging to the deck ID that was passed in

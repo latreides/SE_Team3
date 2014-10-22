@@ -21,19 +21,38 @@ a.show{
 }
 
 #carousel {
+    width:100%;
+    overflow:hidden;
+    position: relative;
+    height:10000px;
+}
+
+#carousel .slide {
+    width:auto;
+    position: absolute;
+    height: auto;
+    display: inline-block;
+}
+
+.button   {
+    background:#999;
+    padding:6px;
+    display: inline-block;
+    margin-right:5px;
+}
+
+#buttons {
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
-    background: none;
+    padding-top: 10px;
 }
 
-#carouselNav img {
-    list-style: none;
+.active {
+    background:#111;
+    padding:6px;
+    display:inline-block;
+    outline:none;
 }
-
-#carouselNav img {
-    display: none;
-}
-
-img.home{
-    width: 100%;
-    height: 350px;
-}
+.clear { clear: both; }
