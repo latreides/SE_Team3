@@ -51,9 +51,9 @@
                 Created by: <span id="author">No one</span><br>
             </div>
             <div id="deckManagement" class="deckActions" data-deckId="1">
-                <div id="D" class="icon" title="Permanently delete!"/></div>
-                <div id="R" class="icon" title="Reset your progress"/></div>
-                <div id="editDeckBtn" class="icon" title="Edit" data-url="{% url 'edit' %}"></div>
+                <div id="deleteIcon" class="icon" title="Permanently delete!"/></div>
+                <div id="resetIcon"  class="icon" title="Reset your progress"/></div>
+                <div id="editIcon"   class="icon" title="Edit" data-url="{% url 'edit' %}"></div>
             </div>
         </div>
         <div id="deckPane">
@@ -75,13 +75,13 @@
                     <td>{{ deck.Name }}</td>
                     <td class="deckActions">
                         <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
-                            <div id="M" class="icon" title="Manage Deck"/></div>
+                            <div id="manageIcon" class="icon" title="Manage Deck"/></div>
                         </a>
                         <a href="{% url 'scores' deck.id %}">
-                            <div id="S" class="icon" title="See Scores"/></div>
+                            <div id="scoresIcon" class="icon" title="See Scores"/></div>
                         </a>
                         <a href="{% url 'play_deck' deck.id %}">
-                            <div id="P" class="icon" title="Play Deck"/></div>
+                            <div id="playIcon" class="icon" title="Play Deck"/></div>
                         </a>
                     </td>
                 </tr>
