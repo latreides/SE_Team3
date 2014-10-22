@@ -1,27 +1,28 @@
 .card {
-   position: relative; 
-   color: #666;
-   text-align: center;
-   margin-left: auto;
-   margin-right: auto;
-   text-align: center;
-   width: 500px;
+    /* box-shadow: 0px 2px 2px #444; */
+    position: relative; 
+    color: #666;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 500px;
 }
 
 h1.title{
-   top: -5px;
-   position: absolute; 
-   left: 0; 
-   width: auto;
-   font-size: 30px;
-   text-align: center;
+    top: -5px;
+    position: absolute; 
+    left: 0; 
+    width: auto;
+    font-size: 30px;
+    text-align: center;
 }
 
 p.question {
-   top: 35px;
-   position: absolute; 
-   left: 0;
-   line-height: 140%;
+    top: 35px;
+    position: absolute; 
+    left: 0;
+    line-height: 140%;
 }
 
 img.cardImage{
@@ -38,3 +39,163 @@ a.btnRight{
     width: 100px;
     float: right;
 }
+
+#uiCard {
+    background-image: url('../img/card.png');
+    box-shadow: 0px 2px 2px black;
+    color: black;
+    cursor: pointer;
+    height: 300px;
+    margin-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+#uiCard:hover {
+    box-shadow: 0px 0px 8px 4px white;
+}
+
+#uiTitle {
+    position: relative;
+    text-align: left;
+    top: 16px;
+}
+
+#uiQuestion {
+    line-height: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    max-height: 200px;
+    max-width: 400px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+
+#deckTitle {
+    color: #62CBFF;
+    font-size: 32pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+#playField {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#playField h5 {
+    margin: 0px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+#playField > div{
+    background: #888;
+    border: white solid 4px;
+    box-shadow: 0px 2px 2px 2px #333 inset;
+    margin-bottom: 8px;
+    padding: 4px;
+}
+
+div #playFrame {
+    background: #888;
+    border: white solid 4px;
+    box-shadow: 0px 2px 2px 2px #333 inset;
+    margin-bottom: 8px;
+    padding: 16px;
+    padding-bottom: 4px;
+}
+
+#buttonPanel {
+    list-style: none;
+    margin: auto;
+    margin-bottom: 16px;
+    max-width: 500px;
+    padding: 0px;
+    text-align: center;
+}
+
+.uiButton {
+    background: #222;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: white;
+    box-shadow: 0px 2px 2px #222;
+    color: white;
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 480px;
+}
+
+.uiButton:hover {
+    background: #555;
+    color: white;
+    box-shadow: 0px 2px 3px #222 inset;
+    cursor: pointer;
+}
+
+.uiButton-resize {
+    width: 76px;
+}
+
+.uiButtonDisabled, .uiButtonDisabled:hover {
+    background: #DDD;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: #666;
+    box-shadow: 0px 2px 3px #222 inset;
+    color: #666;
+    cursor: default;
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 76px;
+}
+
+#ui5.uiButton {
+    background: red;
+    color: black;
+}
+#ui5.uiButton:hover { 
+    background: #FC9B9B;
+}
+
+#ui4.uiButton {
+    background: orange;
+    color: black;
+}
+#ui4.uiButton:hover {
+    background: #FCC79B;
+}
+
+#ui3.uiButton {
+    background: yellow;
+    color: black;
+}
+#ui3.uiButton:hover {
+    background: #FCFA9B;
+}
+
+#ui2.uiButton {
+    background: #45FF45;
+    color: black;
+}
+#ui2.uiButton:hover {
+    background: #A8FFA8;
+}
+
+#ui1.uiButton {
+    background: #00F2FF;
+    color: black;
+}
+#ui1.uiButton:hover {
+    background: #B3FBFF;
+}
+
