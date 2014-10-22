@@ -10,10 +10,10 @@
     width: 80%;
 }
 
-tr:hover { 
+tr:hover {
     background: #CCC;
     box-shadow: 2px 2px 2px 2px #333 inset;
-    color: black; 
+    color: black;
     border-collapse:collapse;
 }
 

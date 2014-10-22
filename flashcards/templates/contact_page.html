@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
 
+{% block css %}
+    {{block.super}}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block content %}
     <h1>Contact Information</h1>
 
     <div id="content">
         <h2>Mailing Address</h2>
 
         <div class = "section">
-            <p>
-                This is our mailing address: <br>
-            </p>
             <p class="address">
                 Attn: MemorizeMe <br>
                 Missouri State University <br>
@@ -28,15 +29,15 @@
                 </p>
                 <fieldset>
                         <label class="name" for="Name">Name:</label>
-                        <input type="text" class="textbox" name="Name" placeholder="'First Last'">
+                        <input type="text" class="textbox" name="Name" placeholder="First Last">
                         <br>
 
                         <label class="name" for="Email">Email:</label>
-                        <input type="text" class="textbox" name="mail" placeholder="'sample@email.com'" />
+                        <input type="text" class="textbox" name="mail" placeholder="sample@email.com" />
                         <br>
 
                         <label class="name" for="Message">Message:</label>
-                        <textarea placeholder="'Max length is 250 characters'" maxlength="250" name="Message" wrap="hard" rows="8" cols="50"></textarea>
+                        <textarea placeholder="Max length is 250 characters" maxlength="250" name="Message" wrap="hard" rows="8" cols="50"></textarea>
                         <br>
                         <div id="contactButtons">
                             <input type="submit" value="Send"></br>
@@ -47,7 +48,4 @@
         </div>
 
     </div>
-
-
-
 {% endblock %}

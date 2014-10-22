@@ -1,33 +1,75 @@
-var carouselInterval = 5000;
-var carouselScroll;
+var carouselBaseHeight = 360;
+var carouselBaseWidth = 725;
 
-function carouselInit()
-{
-    $('#carouselNav img:first-child').show();
-    carouselScroll = setInterval(carouselSlide,carouselInterval);
+function nextSlide(){
+    var _next = false;
+    $('.button').each(function(){
+        if(_next){
+            $(this).addClass('active');
+            _next = false;
+        }
+        else if($(this).hasClass('active')){
+            _next = true;
+            $(this).removeClass('active')
+        }
+    });
+    if(_next)
+        $(".button:eq(0)").addClass("active");
+
+    var activeIndex = parseInt($(".active").attr("rel"));
+    var slideHeight = $('#carousel').innerHeight();
+   $('#carousel .slide').animate({top:-slideHeight*(parseInt(activeIndex)-1)});
 }
 
-function carouselSlide()
+function adjustCarouselSize()
 {
-    if( $('#carouselNav img:visible').next().length == 0 )
-    {
-        $('#carouselNav img:last-child').slideUp('fast');
-        $('#carouselNav img:first-child').slideDown('fast');
-    }
-    else
-    {
-        $('#carouselNav img:visible').slideUp('fast').next('img:hidden').slideDown('fast');
-    }
-}
+    var maxWidth = $('#carousel').innerWidth();
+    var scaleRatio = (maxWidth/carouselBaseWidth);
+    var newHeight = carouselBaseHeight * scaleRatio;
 
-$(document).ready(function(){
-    $('#carousel').hover(function() {
-        clearInterval(carouselScroll);
-    }, function() {
-        carouselScroll = setInterval(carouselSlide,carouselInterval);
-        carouselSlide();
+    $('#carousel .slide').css('width', $('.image').length * carouselBaseWidth);
+    $('#carousel').css('height', newHeight);
+
+    $('.image').css('height', newHeight);
+    $('.image').css('width', maxWidth);
+
+    $('.image img').each(function(){
+        var origWidth = $(this).attr('data-width');
+        var newWidth = origWidth*scaleRatio;
+        if (newWidth > origWidth) {
+            newWIdth = origWidth;
+        }
+        $(this).css('width', newWidth);
     });
 
-    carouselInit();
+    activeIndex = $('.active').attr('rel');
+    $('#carousel .slide').css('left', -(maxWidth*(parseInt(activeIndex)-1)));
+}
 
+function storeOriginalImageWidth()
+{
+    $('.image img').each(function(){
+     $(this).attr('data-width', $(this).width())
+    });
+
+}
+
+$(document).ready(function (){
+    $('.button').click(function(){
+        var slideHeight = $('#carousel').innerHeight();
+        clearInterval(interval);
+        var relatedId = $(this).attr('rel');
+        $('#carousel .slide').animate({top: -slideHeight * (parseInt(relatedId) - 1)})
+        $('.button').each(function(){
+            $(this).removeClass('active');
+            if($(this).attr('rel') == relatedId){
+                $(this).addClass('active')}
+        });
+    });
+
+    $(window).on('resize', adjustCarouselSize);
+
+    storeOriginalImageWidth();
+    adjustCarouselSize();
+    interval = setInterval ( function(){ nextSlide(); }, 5000  );
 });

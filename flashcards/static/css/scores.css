@@ -1,0 +1,7 @@
+div#score {
+  font-size:  24pt;
+  text-align: left;
+  font-weight: bold;
+  text-decoration: underline;
+  padding-left: 75px;
+}

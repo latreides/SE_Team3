@@ -1,33 +1,89 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
+
+{% block javascript %}
+    {{block.super}}
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Rank', 'Count'],
+                    ['Rank 1', 5],
+                    ['Rank 2', 8],
+                    ['Rank 3', 7],
+                    ['Rank 4', 6],
+                    ['Rank 5', 15],
+                    ['Unranked', 4]
+                ]);
+
+                var options = {
+                    width: 400,
+                    height: 300,
+
+                    title: 'Deck Rankings',
+                    titleTextStyle: {
+                        color: 'white',
+                        fontName: 'Microsoft Sans Serif',
+                        fontSize: 24
+                    },
+                    
+                    tooltip: { 
+                        textStyle: { 
+                            fontName: 'Microsoft Sans Serif', 
+                            fontSize: 14
+                        } 
+                    },
+                    
+                    chartArea : {
+                        'width': '95%',
+                        'height': '81%'
+                    },
+
+                    colors: ['#0489B1', '#045FB4', '#0431B4', '#08088A', '#3104B4', '#000000'],
+                    backgroundColor: '#383838',
+                    fontName: 'Microsoft Sans Serif',
+                    legend : { 
+                        position: 'right', 
+                        textStyle : {
+                            color: 'white',
+                            fontSize: 14
+                        }
+                    }
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                chart.draw(data, options);
+            }
+        </script>
+{% endblock %}
+
+{% block css %}
+    {{block.super}}
+        <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
+{% endblock %}
+
 {% block content %}
     <h1>My Scores</h1>
-    
     <div id="content">
-        <h2>{{ most_recent_deck }}</h2>
         
+        <h2>{{ mostRecentDeck }}</h2>
         <div class="section">
-        <p>
-            <table>
-            
-                <tr>
-                    <td><h3>Cards Not Studied:</h3></td>
-                    <td>{{ cards_not_studied }}</td>
-                </tr>
-                
-                <tr>
-                    <td><h3>Memorized:</h3></td>
-                    <td>{{ cards_ranked_one }}</td>
-                </tr>
-                
-                <tr>
-                    <td><h3>Troublesome:</h3></td>
-                    <td>{{ cards_ranked_five }}</td>
-                </tr>
-                
-            </table>
-        </p>
         
+            <p>
+                <div id="piechart"></div>
+                <table>
+                
+                    <tr>
+                        <td><div id="score">45</div></td>
+                        <td>Total Cards</td>
+                    </tr>
+                    
+                </table>
+            </p>
         </div>
     </div>
 {% endblock %}

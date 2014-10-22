@@ -1,10 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.template import RequestContext, loader
 from django.views.generic import TemplateView, ListView, CreateView, View
 from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
 from django.contrib import auth
 from flashcards.decks import *
 from django.contrib.auth.models import User
+import glob
+import ntpath
+import os
 
 class LoginRedirect(TemplateView):
 
@@ -32,11 +37,17 @@ class ScoresPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ScoresPage, self).get_context_data(**kwargs)
-        context['cards_not_studied'] = GetCountCardsNotStudied(1)
-        context['most_recent_deck'] = GetMostRecentDeck(1)
-        context['cards_ranked_one'] = GetCountCardsWithDifficulty(1, 1)
-        context['cards_ranked_five'] = GetCountCardsWithDifficulty(1, 5)
-        
+        context['cardsNotStudied'] = GetCountCardsNotStudied(1)
+        context['mostRecentDeck'] = GetMostRecentDeck(1)
+        context['cardsRankedOne'] = GetCountCardsWithDifficulty(1, 1)
+        context['cardsRankedTwo'] = GetCountCardsWithDifficulty(1, 2)
+        context['cardsRankedThree'] = GetCountCardsWithDifficulty(1, 3)
+        context['cardsRankedFour'] = GetCountCardsWithDifficulty(1, 4)
+        context['cardsRankedFive'] = GetCountCardsWithDifficulty(1, 5)
+        context['cardCount'] = (GetCountCardsWithDifficulty(1, 1) + GetCountCardsWithDifficulty(1, 2)
+                                + GetCountCardsWithDifficulty(1, 3) + GetCountCardsWithDifficulty(1, 3)
+                                + GetCountCardsWithDifficulty(1, 4) + GetCountCardsWithDifficulty(1, 5)
+                                + GetCountCardsNotStudied(1))
         return context
 
 
@@ -55,8 +66,8 @@ class AccountPage(LoginRedirect):
 
 class ContactPage(LoginRedirect):
     template_name = 'contact_page.html'
-        
-                
+
+
 class SigninPage(TemplateView):
     template_name = 'signin_page.html'
 
@@ -117,8 +128,13 @@ class ImportPage(LoginRedirect):
         decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
-        decks.importDeck(request, deck)
-        return HttpResponseRedirect(reverse("import_deck"))
+        if decks.importDeck(request, deck):
+            t = loader.get_template('import_export_page.html')
+            c = RequestContext(request)
+            c['user_decks'] = GetDecksForUser_test(self.request.user)
+            return HttpResponse(t.render(c), status=200)
+        else:
+            return HttpResponseRedirect(reverse("import_export_page"))
 
 
     def get_context_data(self, **kwargs):
@@ -133,11 +149,42 @@ class WelcomePage(TemplateView):
 
 class DeleteDeckPage(View):
     def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deck_id')
+        deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
 
 
 class ResetDeckPage(View):
     def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deck_id')
+        deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
+
+class CreateDeckPage(View):
+    def post(self, request, *args, **kwargs):
+        newDeck = CreateDeck(self.request.user.id, 'Untitled Deck')
+        newCard = CreateCard(newDeck.id, True, "Front Side", "Back Side", None, None)
+
+        return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
+
+class EditDeckPage(LoginRedirect):
+    template_name = 'edit_deck_page.html'
+
+    def get_context_data(self, **kwargs):
+        deckId = self.request.GET.get('deckId')
+        if deckId:
+            context = super(EditDeckPage, self).get_context_data(**kwargs)
+            context['deck'] = getDeck(deckId)
+            if context['deck']:
+                context['cards'] = GetCardsForDeck(deckId)
+                #themeImageList = sorted(glob.glob(settings.THEME_ROOT + '*.*'))
+                #themePairList = []
+                #for theme in themeImageList:
+                #    displayName = ntpath.basename(theme)
+                #    theme = theme.replace(settings.THEME_ROOT, settings.THEME_URL, 1);
+                #    displayName = os.path.splitext(displayName)[0]
+                #    displayName = displayName[displayName.find(':')+1:]
+                #    themePairList.append([displayName, theme])
+                #context['themes'] =  themePairList
+                context['themes'] = Deck.THEME_LIST
+            return context
+        else:
+            pass

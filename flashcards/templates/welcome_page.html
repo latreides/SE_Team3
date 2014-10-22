@@ -1,18 +1,41 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}" />
-    <script type="text/javascript" src="{% static 'js/welcome_page.js' %}"></script>
 
+{% block javascript %}
+    {{block.super}}
+    <script type="text/javascript" src="{% static 'js/welcome_page.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}" />
+{% endblock %}
+
+{% block content %}
     <h1>Welcome, please <a class="greeting" href="{% url 'signin' %}"> Login</a> or <a class= "greeting" href="{% url 'signin' %}"> Signup!</a> </h1>
 
-    <div id="carousel">
-        <div id="carouselNav">
-            <img class="home" src="{% static 'img/home0.jpg' %}" />
-            <img class="home" src="{% static 'img/home1.jpg' %}" />
-            <img class="home" src="{% static 'img/home2.jpg' %}" />
+    
+<div id="carousel">
+    <div class="slide">
+        <div class="image">
+            <img src="{% static 'img/home0.jpg' %}" alt="My image" />
         </div>
+        <div class="image">
+            <img src="{% static 'img/home1.jpg' %}" alt="My image" />
+        </div>
+        <!--<div class="image">
+            <img src="{% static 'img/home2.jpg' %}" alt="My image" />
+        </div>-->
     </div>
+</div>
+
+<div id="buttons" >
+    <a class="button active" rel="1"></a>
+    <a class="button" rel="2"></a>
+    <!--<a class="button" rel="3"></a>-->
+</div>
+<div class="clear"></div>
+
 
     <p>
         Welcome to MemorizeMe!<br><br>

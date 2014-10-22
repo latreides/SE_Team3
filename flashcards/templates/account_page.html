@@ -18,11 +18,11 @@
 
             <form id="change_pw" method="post" onsubmit="return true;" action="">
                 {% csrf_token %}
-                <input name="old_password" type="password" placeholder="'Old Password'">
+                <input name="old_password" type="password" placeholder="Old Password">
                 <br />
-                <input name="new_password" type="password" placeholder="'New Password'">
+                <input name="new_password" type="password" placeholder="New Password">
                 <br />
-                <input name="confirm_password" type="password" placeholder="'Retype New Password'">
+                <input name="confirm_password" type="password" placeholder="Retype New Password">
                 <br />
                 <input type="submit" value="Change">
             </form><br />
@@ -36,7 +36,7 @@
             
             <form id="change_email" method="post" onsubmit="return true;" action="">
                 {% csrf_token %}
-                <input name="new_email" type="text" placeholder="'New Email'">
+                <input name="new_email" type="text" placeholder="New Email">
                 <br />
                 <input type="submit" value="Change">
             </form>
@@ -52,7 +52,7 @@
 
             <form id="delete_account" method="post" onsubmit="return true;" action="">
                 {% csrf_token %}
-                <input name="password" type="password" placeholder="'Password'">
+                <input name="password" type="password" placeholder="Password">
                 <br />
                 <input type="submit" value="Accept">
             </form>
