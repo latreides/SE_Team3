@@ -53,20 +53,6 @@ function toggleButtons() {
     $("#ui3").toggleClass("uiButton").toggleClass("uiButtonDisabled");
     $("#ui2").toggleClass("uiButton").toggleClass("uiButtonDisabled");
     $("#ui1").toggleClass("uiButton").toggleClass("uiButtonDisabled");
-    
-    if (buttonsDisabled) {
-        $("#ui5").attr("title", "Please flip the card by clicking on it before rating its difficulty.");
-        $("#ui4").attr("title", "Please flip the card by clicking on it before rating its difficulty.");
-        $("#ui3").attr("title", "Please flip the card by clicking on it before rating its difficulty.");
-        $("#ui2").attr("title", "Please flip the card by clicking on it before rating its difficulty.");
-        $("#ui1").attr("title", "Please flip the card by clicking on it before rating its difficulty.");
-    } else {
-        $("#ui5").attr("title", "I don't know what I'm looking at.");
-        $("#ui4").attr("title", "I'm unfamiliar with this.");
-        $("#ui3").attr("title", "I'm familiar with this.");
-        $("#ui2").attr("title", "I'm comfortable with this.");
-        $("#ui1").attr("title", "I have mastered this.");
-    }
 }
 
 function flip() {
