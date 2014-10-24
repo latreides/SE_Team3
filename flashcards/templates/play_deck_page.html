@@ -13,12 +13,6 @@
 
 {% block content %}
     <h1>You are now in play mode!</h1>
-
-    <!--Testing element, also removed for presentation purposes -->
-    <!--div id="myDiv">
-        <h2>XML_HTTP</h2>
-    </div>
-    <button type="button" onclick="loadXMLDoc()">Change Content</button-->
     
     <div id="playField">
         <div>
@@ -26,7 +20,20 @@
             <div id="deckTitle">DECK TITLE</div>
         </div>
         <div id="playFrame">
-            <div id="uiCard" class="dontStack" title="Click to flip">
+            <div id="uiSettingsDrawer">
+                <span class="drawerTitle">SETTINGS</span>
+                <hr>
+                <form action="">
+                    {% csrf_token %}
+                    <span id="cardOrder">Present cards to me: </span>
+                    <label><input type="radio" name="order" value="frontFirst" checked="checked">Front side first</label>
+                    <label><input type="radio" name="order" value="backFirst">Back side first</label>
+                    <label><input type="radio" name="order" value="random">Front or back at random</label>
+                </form>
+            </div>
+            <div id="uiSettingsButton" title="settings"></div>
+            
+            <div id="uiCard" title="Click to flip">
                 <div id="uiCardFront">
                     <div id="uiQuestion">FRONT
 Sample card
@@ -38,29 +45,64 @@ Sample card
 [Something here]</div>
                 </div>
             </div>
-            <!--div id="uiCard" class="dontStack" title="Click to flip">
-                <div id="uiCardFront">
-                    <div id="uiQuestion">FRONT 2
-Sample card
-[Example here]</div>
-                </div>
-            <div id="uiCardBack" class="hide">
-                <div id="uiQuestion">BACK 2
-Sample card
-[Something here]</div>
-                </div>
-            </div-->
-            
             <ul id="buttonPanel">
-                <!--div class="uiButton" id="uiPrev" title="Skip backward one card">Previous</div-->
-                <li class="uiButton uiButton-resize" id="ui5">Very Hard</li>
-                <li class="uiButton uiButton-resize" id="ui4">Hard</li>
-                <li class="uiButton uiButton-resize" id="ui3">OK</li>
-                <li class="uiButton uiButton-resize" id="ui2">Easy</li>
-                <li class="uiButton uiButton-resize" id="ui1">Very Easy</li>
-                <!--div class="uiButton" id="uiNext" title="Skip forward one card">Next</div--><br>
-                <div class="uiButton" id="uiNew" title="Skip this card.">Skip</div>
+                <li class="uiButton uiButton-resize" id="ui5" data-id="5">
+                    <div id="uiBtnIcon5">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+                    </div>
+                    Very Hard
+                </li>
+                <li class="uiButton uiButton-resize" id="ui4" data-id="4">
+                    <div id="uiBtnIcon4">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
+                    </div>
+                    Hard
+                </li>
+                <li class="uiButton uiButton-resize" id="ui3" data-id="3">
+                    <div id="uiBtnIcon3">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
+                    </div>
+                    OK
+                </li>
+                <li class="uiButton uiButton-resize" id="ui2" data-id="2">
+                    <div id="uiBtnIcon2">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
+                    </div>
+                    Easy
+                </li>
+                <li class="uiButton uiButton-resize" id="ui1" data-id="1">
+                    <div id="uiBtnIcon1">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
+                    </div>
+                    Very Easy
+                </li>
+                <br>
+                <div class="uiButton" id="uiSkip" data-id="6">
+                    <div id="uiBtnIconSkip">
+                        <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
+                    </div>
+                    Skip
+                </div>
             </ul>
+            <div id="uiHelpButton" title="Help"></div>
+            <div id="uiHelpDrawer">
+                <span class="drawerTitle">HELP</span>
+                <hr>
+                Click the card or hit the space bar to "flip" the current card.<br>
+                <br>
+                Once the card has been flipped, rate how difficult you thought the card was
+                using the "Very Hard... Very Easy" buttons. You can either click on them, or
+                use the 1, 2, 3, 4 and 5 buttons at the top of your keyboard for Very Hard,
+                Hard, etc, respectively.<br>
+                <br>
+                You can also just skip the card altogether by clicking the "Skip" button, 
+                or by using either the left or right arrow key.<br>
+                <br>
+                You can click the wrench in the upper right hand corner to access your Settings 
+                where you can change which side of the card is initially displayed to you.<br>
+                <br>
+                Click the "?" Help button again to close this drawer.
+            </div>
         </div>
     </div>
     

@@ -44,6 +44,7 @@ a.btnRight{
     background-image: url('../img/card.png');
     background-repeat:no-repeat;
     box-shadow: 0px 2px 2px black;
+    clear: right;
     color: black;
     cursor: pointer;
     height: 300px;
@@ -56,12 +57,6 @@ a.btnRight{
 
 #uiCard:hover {
     box-shadow: 0px 0px 8px 4px white;
-}
-
-#uiTitle {
-    position: relative;
-    text-align: left;
-    top: 16px;
 }
 
 #uiQuestion {
@@ -87,10 +82,11 @@ a.btnRight{
 }
 
 #playField {
-    height: 800px;
-    overflow: hidden;
+    min-width: 540px;
+    overflow: hidden; 
     padding-left: 8px;
     padding-right: 8px;
+    
 }
 
 #playField h5 {
@@ -104,7 +100,7 @@ a.btnRight{
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    padding: 4px;
+    /* padding: 4px; */
 }
 
 div #playFrame {
@@ -112,8 +108,8 @@ div #playFrame {
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    padding: 16px;
-    padding-bottom: 4px;
+    /* padding: 16px;
+    padding-bottom: 4px; */
 }
 
 #buttonPanel {
@@ -123,6 +119,11 @@ div #playFrame {
     max-width: 500px;
     padding: 0px;
     text-align: center;
+}
+
+ul#buttonPanel li, #uiSkip {
+    max-height: 15px;
+    overflow: hidden;
 }
 
 .uiButton {
@@ -136,6 +137,7 @@ div #playFrame {
     font-size: 85%;
     font-weight: bold;
     margin-bottom: 8px;
+    overflow: hidden;
     padding: 10px;
     text-align: center;
     width: 480px;
@@ -212,3 +214,98 @@ div #playFrame {
 .hide {
     display: none;
 }
+
+#uiBtnIcon1, #uiBtnIcon2, #uiBtnIcon3, #uiBtnIcon4, #uiBtnIcon5, #uiBtnIconSkip {
+    display: none;
+}
+
+.uiButtonIcon {
+    margin-bottom: 16px;
+    vertical-align: middle;
+}
+
+span.drawerTitle {
+    font-weight: bold;
+    font-style: italic;
+}
+
+#uiSettingsButton {
+    background-image: url('../img/settings.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    margin: 8px;
+    position: relative;
+    width: 24px;
+}
+
+#uiSettingsButton:hover {
+    background-image: url('../img/settings_inv.png');
+}
+
+#uiSettingsButton.settingsOpen {
+    background-image: url('../img/settings_inv.png');
+}
+
+#uiSettingsDrawer {
+    background: #CCC;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: white;
+    color: black;
+    display: none;
+    margin: 0px;
+    padding: 16px;
+}
+
+#uiSettingsDrawer form {
+    text-align: left;
+}
+
+label {
+    margin-right: 1em;
+}
+
+#uiSettingsDrawer form input[type="radio"]{
+    height: 16px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+#cardOrder {
+    font-weight: bold;
+}
+
+#uiHelpButton {
+    background-image: url('../img/help.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    margin: 8px;
+    position: relative;
+    bottom: 38px;
+    width: 24px;
+}
+
+#uiHelpButton:hover {
+    background-image: url('../img/help_inv.png');
+}
+
+#uiHelpButton.helpOpen {
+    background-image: url('../img/help_inv.png');
+}
+
+#uiHelpDrawer {
+    background: #CCC;
+    border-top-style: solid;
+    border-top-width: medium;
+    border-top-color: white;
+    clear: right;
+    color: black;
+    display: none;
+    margin: 0px;
+    padding: 16px;
+}
+
