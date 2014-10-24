@@ -2,12 +2,28 @@ var cardHasBeenFlipped = false;
 var buttonsDisabled = false;
 var showingFront    = true;
 
+var settingsOpen = false;
+var helpOpen     = false;
+
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
 
 window.onload = function() {
     toggleButtons();
     $("#uiCard").click(flip);
+    $("#uiSettingsButton").click(toggleSettingsDrawer);
+    $("#uiHelpButton").click(toggleHelpDrawer);
+    $("#ui1").hover(rollIconDown, rollIconUp);
+    $("#ui2").hover(rollIconDown, rollIconUp);
+    $("#ui3").hover(rollIconDown, rollIconUp);
+    $("#ui4").hover(rollIconDown, rollIconUp);
+    $("#ui5").hover(rollIconDown, rollIconUp);
+    $("#uiSkip").hover(rollIconDown, rollIconUp);
+};
+
+// disable space bar scrolling
+window.onkeydown = function(event) {
+    return !(event.keyCode == 32);
 };
 
 document.addEventListener( "keyup", function(event) {
@@ -62,6 +78,54 @@ function flip() {
     showingFront = !showingFront;
     $("#uiCardFront").toggleClass("hide")
     $("#uiCardBack").toggleClass("hide")
+}
+
+function toggleSettingsDrawer() {
+    if (settingsOpen) {
+        $("#uiSettingsButton").removeClass("settingsOpen");
+        $("#uiSettingsDrawer").slideUp("fast");
+    } else {
+        $("#uiSettingsButton").addClass("settingsOpen");
+        $("#uiSettingsDrawer").slideDown("fast");
+    }
+    settingsOpen = !settingsOpen;
+}
+
+function toggleHelpDrawer() {
+    if (helpOpen) {
+        $("#uiHelpButton").removeClass("helpOpen");
+        $("#uiHelpDrawer").slideUp("fast");
+    } else {
+        $("#uiHelpButton").addClass("helpOpen");
+        $("#uiHelpDrawer").slideDown("fast");
+    }
+    helpOpen = !helpOpen;
+}
+
+function rollIconDown() {
+    var index = parseInt( $(this).attr("data-id") );
+    if (!cardHasBeenFlipped && index != 6)
+        return;
+    
+    switch (index) {
+        case 1: $("#uiBtnIcon1").slideDown("fast"); break;
+        case 2: $("#uiBtnIcon2").slideDown("fast"); break;
+        case 3: $("#uiBtnIcon3").slideDown("fast"); break;
+        case 4: $("#uiBtnIcon4").slideDown("fast"); break;
+        case 5: $("#uiBtnIcon5").slideDown("fast"); break;
+        case 6: $("#uiBtnIconSkip").slideDown("fast"); break;
+    }
+}
+function rollIconUp() {
+    var index = parseInt( $(this).attr("data-id") );
+    switch (index) {
+        case 1: $("#uiBtnIcon1").slideUp("fast"); break;
+        case 2: $("#uiBtnIcon2").slideUp("fast"); break;
+        case 3: $("#uiBtnIcon3").slideUp("fast"); break;
+        case 4: $("#uiBtnIcon4").slideUp("fast"); break;
+        case 5: $("#uiBtnIcon5").slideUp("fast"); break;
+        case 6: $("#uiBtnIconSkip").slideUp("fast"); break;
+    }
 }
 
 function rate(rating) {
