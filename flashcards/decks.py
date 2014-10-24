@@ -17,14 +17,14 @@ class parseConfig:
             self.deck = yaml.load(filename)
             decks = self.getListOfDecks()
             cards = self.getListOfCards(decks[0])
-            deck = CreateDeck(1, decks[0])
+            deck = createDeck(1, decks[0])
             
             importedDeck = self.getDeck()
             for cards in importedDeck.values():
                 for qNa in cards.values():
                     question = qNa[0].values()[0]
                     answer = qNa[1].values()[0]
-                    CreateCard(deck.id, False, question, answer)
+                    createCard(deck.id, False, question, answer)
             return True
         else:
             return False

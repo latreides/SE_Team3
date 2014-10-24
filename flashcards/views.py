@@ -25,9 +25,9 @@ class LandingPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
-        context['most_recent_deck'] = GetMostRecentDeck(1)
-        context['cards_for_deck'] = GetCardsForDeck(1)
-        context['last_time_logged_in'] = GetLastTimeLoggedIn(1)
+        context['most_recent_deck'] = getMostRecentDeck(1)
+        context['cards_for_deck'] = getCardsForDeck(1)
+        context['last_time_logged_in'] = getLastTimeLoggedIn(1)
 
         return context
 
@@ -37,17 +37,17 @@ class ScoresPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ScoresPage, self).get_context_data(**kwargs)
-        context['cardsNotStudied'] = GetCountCardsNotStudied(1)
-        context['mostRecentDeck'] = GetMostRecentDeck(1)
-        context['cardsRankedOne'] = GetCountCardsWithDifficulty(1, 1)
-        context['cardsRankedTwo'] = GetCountCardsWithDifficulty(1, 2)
-        context['cardsRankedThree'] = GetCountCardsWithDifficulty(1, 3)
-        context['cardsRankedFour'] = GetCountCardsWithDifficulty(1, 4)
-        context['cardsRankedFive'] = GetCountCardsWithDifficulty(1, 5)
-        context['cardCount'] = (GetCountCardsWithDifficulty(1, 1) + GetCountCardsWithDifficulty(1, 2)
-                                + GetCountCardsWithDifficulty(1, 3) + GetCountCardsWithDifficulty(1, 3)
-                                + GetCountCardsWithDifficulty(1, 4) + GetCountCardsWithDifficulty(1, 5)
-                                + GetCountCardsNotStudied(1))
+        context['cardsNotStudied'] = getCountCardsNotStudied(1)
+        context['mostRecentDeck'] = getMostRecentDeck(1)
+        context['cardsRankedOne'] = getCountCardsWithDifficulty(1, 1)
+        context['cardsRankedTwo'] = getCountCardsWithDifficulty(1, 2)
+        context['cardsRankedThree'] = getCountCardsWithDifficulty(1, 3)
+        context['cardsRankedFour'] = getCountCardsWithDifficulty(1, 4)
+        context['cardsRankedFive'] = getCountCardsWithDifficulty(1, 5)
+        context['cardCount'] = (getCountCardsWithDifficulty(1, 1) + getCountCardsWithDifficulty(1, 2)
+                                + getCountCardsWithDifficulty(1, 3) + getCountCardsWithDifficulty(1, 3)
+                                + getCountCardsWithDifficulty(1, 4) + getCountCardsWithDifficulty(1, 5)
+                                + getCountCardsNotStudied(1))
         return context
 
 
@@ -56,7 +56,7 @@ class ViewDeckPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ViewDeckPage, self).get_context_data(**kwargs)
-        context['user_decks'] = GetDecksForUser_test(self.request.user)
+        context['user_decks'] = getDecksForUser_test(self.request.user)
         return context
 
 
@@ -73,50 +73,59 @@ class SigninPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         invalidLogin = "The username and password combination entered does not match any active user"
-        invalidPassword = "The passwords that were entered do not match"
-        invalidUsername = "The username chosen is invalid. Try another username."
+        invalidSignup = "The Signup credentials are invalid. Make sure your password entries match or select a new username"
         context = super(SigninPage, self).get_context_data(**kwargs)
         if self.request.GET.get('invalid_login', '') == "True":
             context['invalid_login'] = invalidLogin
         else:
             context['invalid_login'] = ''
-        if self.request.GET.get('invalid_password') == "True":
-            context['invalid_signup'] = invalidPassword
-        elif self.request.GET.get('invalid_user') == "True":
-            context['invalid_signup'] = invalidUsername
+        if self.request.GET.get('invalid_signup') == "True":
+            context['invalid_signup'] = invalidSignup
         else:
             context['invalid_signup'] = ''
-        return context
+        return context        
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('signin'):
-            username = request.POST.get('username', '')
-            password = request.POST.get('password', '')
-            user = auth.authenticate(username=username, password=password)
-
-            if user is not None:
-                auth.login(request, user)
+            if self.signIn(request):
                 return HttpResponseRedirect(reverse('landing_page'))
             else:
                 return HttpResponseRedirect(reverse('signin') + '?invalid_login=True')
         else:
-            username = request.POST.get('username', '')
-            password1 = request.POST.get('password1', '')
-            password2 = request.POST.get('password2', '')
-
-            if User.objects.filter(username = username).count() > 0:
-                return HttpResponseRedirect(reverse('signin') + '?invalid_user=True')
-
-            if password1 == password2:
-                newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
-                newUser.set_password(password1)
-                newUser.save()
-                user = auth.authenticate(username=username, password=password1)
-                auth.login(request, user)
+            if self.signUp(request):
                 return HttpResponseRedirect(reverse('landing_page'))
-
             else:
-                return HttpResponseRedirect(reverse('signin') + '?invalid_password=True')
+                return HttpResponseRedirect(reverse('signin') + '?invalid_signup=True')
+
+    def signIn(self, request):
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return True
+        else:
+            return False
+
+    def signUp(self, request):
+        username = request.POST.get('username', '')
+        password1 = request.POST.get('password1', '')
+        password2 = request.POST.get('password2', '')
+
+        if User.objects.filter(username = username).count() > 0:
+            return False
+
+        if password1 == password2:
+            newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
+            newUser.set_password(password1)
+            newUser.save()
+            user = auth.authenticate(username=username, password=password1)
+            auth.login(request, user)
+            return True
+
+        else:
+            return False
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
@@ -131,7 +140,7 @@ class ImportPage(LoginRedirect):
         if decks.importDeck(request, deck):
             t = loader.get_template('import_export_page.html')
             c = RequestContext(request)
-            c['user_decks'] = GetDecksForUser_test(self.request.user)
+            c['user_decks'] = getDecksForUser_test(self.request.user)
             return HttpResponse(t.render(c), status=200)
         else:
             return HttpResponseRedirect(reverse("import_export_page"))
@@ -139,7 +148,7 @@ class ImportPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ImportPage, self).get_context_data(**kwargs)
-        context['user_decks'] = GetDecksForUser_test(self.request.user)
+        context['user_decks'] = getDecksForUser_test(self.request.user)
         return context
 
 
@@ -160,8 +169,8 @@ class ResetDeckPage(View):
 
 class CreateDeckPage(View):
     def post(self, request, *args, **kwargs):
-        newDeck = CreateDeck(self.request.user.id, 'Untitled Deck')
-        newCard = CreateCard(newDeck.id, True, "Front Side", "Back Side", None, None)
+        newDeck = createDeck(self.request.user.id, 'Untitled Deck')
+        newCard = createCard(newDeck.id, True, "Front Side", "Back Side", None, None)
 
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
 
@@ -174,7 +183,7 @@ class EditDeckPage(LoginRedirect):
             context = super(EditDeckPage, self).get_context_data(**kwargs)
             context['deck'] = getDeck(deckId)
             if context['deck']:
-                context['cards'] = GetCardsForDeck(deckId)
+                context['cards'] = getCardsForDeck(deckId)
                 #themeImageList = sorted(glob.glob(settings.THEME_ROOT + '*.*'))
                 #themePairList = []
                 #for theme in themeImageList:
