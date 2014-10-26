@@ -4,6 +4,7 @@ var showingFront    = true;
 
 var settingsOpen = false;
 var helpOpen     = false;
+var showingHelpSection = [false, false, false, false];
 
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
@@ -13,12 +14,19 @@ window.onload = function() {
     $("#uiCard").click(flip);
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
+    
     $("#ui1").hover(rollIconDown, rollIconUp);
     $("#ui2").hover(rollIconDown, rollIconUp);
     $("#ui3").hover(rollIconDown, rollIconUp);
     $("#ui4").hover(rollIconDown, rollIconUp);
     $("#ui5").hover(rollIconDown, rollIconUp);
+    
     $("#uiSkip").hover(rollIconDown, rollIconUp);
+    
+    $("#whatDoIDoT").click(showHelpSection);
+    $("#movingBetweenCardsT").click(showHelpSection);
+    $("#shortcutsT").click(showHelpSection);
+    $("#settingsT").click(showHelpSection);
 };
 
 // disable space bar scrolling
@@ -125,6 +133,60 @@ function rollIconUp() {
         case 4: $("#uiBtnIcon4").slideUp("fast"); break;
         case 5: $("#uiBtnIcon5").slideUp("fast"); break;
         case 6: $("#uiBtnIconSkip").slideUp("fast"); break;
+    }
+}
+
+function showHelpSection() {
+    var index = parseInt( $(this).attr("data-helpID") );
+    
+    if ( showingHelpSection[index] ) {
+        showingHelpSection[index] = false;
+        switch (index) {
+            case 0:
+                $("#whatDoIDoD").slideUp("fast");
+                return;
+            case 1:
+                $("#movingBetweenCardsD").slideUp("fast");
+                return;
+            case 2:
+                $("#shortcutsD").slideUp("fast");
+                return;
+            case 3:
+                $("#settingsD").slideUp("fast");
+                return;
+        }
+    }
+    
+    for( var i = 0; i < showingHelpSection.length; i += 1 ) {
+        showingHelpSection[i] = false;
+    }
+    showingHelpSection[index] = true;
+    
+    switch (index) {
+        case 0:
+            $("#whatDoIDoD").slideDown("fast");
+            $("#movingBetweenCardsD").slideUp("fast");
+            $("#shortcutsD").slideUp("fast");
+            $("#settingsD").slideUp("fast");
+            break;
+        case 1:
+            $("#whatDoIDoD").slideUp("fast");
+            $("#movingBetweenCardsD").slideDown("fast");
+            $("#shortcutsD").slideUp("fast");
+            $("#settingsD").slideUp("fast");
+            break;
+        case 2:
+            $("#whatDoIDoD").slideUp("fast");
+            $("#movingBetweenCardsD").slideUp("fast");
+            $("#shortcutsD").slideDown("fast");
+            $("#settingsD").slideUp("fast");
+            break;
+        case 3:
+            $("#whatDoIDoD").slideUp("fast");
+            $("#movingBetweenCardsD").slideUp("fast");
+            $("#shortcutsD").slideUp("fast");
+            $("#settingsD").slideDown("fast");
+            break;
     }
 }
 

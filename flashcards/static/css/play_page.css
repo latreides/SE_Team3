@@ -100,7 +100,6 @@ a.btnRight{
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    /* padding: 4px; */
 }
 
 div #playFrame {
@@ -108,8 +107,6 @@ div #playFrame {
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    /* padding: 16px;
-    padding-bottom: 4px; */
 }
 
 #buttonPanel {
@@ -285,7 +282,7 @@ label {
     height: 24px;
     margin: 8px;
     position: relative;
-    bottom: 38px;
+    bottom: 22px;
     width: 24px;
 }
 
@@ -309,3 +306,19 @@ label {
     padding: 16px;
 }
 
+.helpTitle {
+    color: #4DA0C9;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1em;
+    text-decoration: underline;
+}
+
+.helpTitle:hover {
+    color: white;
+}
+
+.helpSection {
+    display: none;
+    margin-bottom: 1em;
+}
