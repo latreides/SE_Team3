@@ -2,12 +2,13 @@ import yaml
 from models import Deck, Card
 from db_interactions import *
 from django.contrib.auth.models import User
+#from os import getcwd
 
 class parseConfig:
     "Handles parsing, exporting, importing of deck configs"
 
     def __init__(self):
-        self.decks_location = "./decks/"
+        self.decks_location = "/decks/"
         self.deck = {}
 
     def importDeck(self, request, filename):
@@ -17,14 +18,14 @@ class parseConfig:
             self.deck = yaml.load(filename)
             decks = self.getListOfDecks()
             cards = self.getListOfCards(decks[0])
-            deck = CreateDeck(1, decks[0])
+            deck = createDeck(1, decks[0])
             
             importedDeck = self.getDeck()
             for cards in importedDeck.values():
                 for qNa in cards.values():
-                    question = qNa[0].values()[0]
-                    answer = qNa[1].values()[0]
-                    CreateCard(deck.id, False, question, answer)
+                    front = qNa[0].values()[0]
+                    back = qNa[1].values()[0]
+                    createCard(deck.id, False, front, back)
             return True
         else:
             return False
@@ -32,9 +33,24 @@ class parseConfig:
     def getDeck(self):
         return self.deck
 
-    #def exportDeck(self, filename):
-        #"Export deck to file"
-        #with open(self.decks_location + filename, 'w') as f:
+    def exportDeck(self, request, deckID):
+        "Export deck to file"
+        exportDeck = Deck.objects.get(pk = deckID)
+        dictOfCards = {}
+        cards = getCardsForDeck(exportDeck)
+        for card in cards:
+            front = {'q': str(card.Front_Text)}
+            back = {'a': str(card.Back_Text)}
+            exportList = [front, back]
+            exportCard = {("card" + str(card.id)): exportList}
+            
+            dictOfCards.update(exportCard)
+        
+        self.deck = {str(exportDeck.Name): dictOfCards}
+        formattedDeck = yaml.dump(self.deck, default_flow_style = False)
+        return formattedDeck
+            
+        #with open(getcwd() + "/flashcards/decks/" + exportDeck.Name + ".yml", 'w') as f:
             #f.write(yaml.dump(self.deck, default_flow_style=False))
 
     def getListOfDecks(self):

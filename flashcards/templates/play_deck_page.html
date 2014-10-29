@@ -13,12 +13,6 @@
 
 {% block content %}
     <h1>You are now in play mode!</h1>
-
-    <!--Testing element, also removed for presentation purposes -->
-    <!--div id="myDiv">
-        <h2>XML_HTTP</h2>
-    </div>
-    <button type="button" onclick="loadXMLDoc()">Change Content</button-->
     
     <div id="playField">
         <div>
@@ -26,22 +20,122 @@
             <div id="deckTitle">DECK TITLE</div>
         </div>
         <div id="playFrame">
+            <div id="uiSettingsDrawer">
+                <span class="drawerTitle">SETTINGS</span>
+                <hr>
+                <form action="">
+                    {% csrf_token %}
+                    <span id="cardOrder">Present cards to me: </span>
+                    <label><input type="radio" name="order" value="frontFirst" checked="checked">Front side first</label>
+                    <label><input type="radio" name="order" value="backFirst">Back side first</label>
+                    <label><input type="radio" name="order" value="random">Front or back at random</label>
+                </form>
+            </div>
+            <div id="uiSettingsButton" title="settings"></div>
+            
             <div id="uiCard" title="Click to flip">
-                <!--h1 id="uiTitle">Deck Name : Card Number</h1-->
-                <div id="uiQuestion">
-                    Is this a test question that is really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?
+                <div id="uiCardFront">
+                    <div id="uiQuestion">FRONT
+Sample card
+[Example here]</div>
+                </div>
+                <div id="uiCardBack" class="hide">
+                    <div id="uiQuestion">BACK
+Sample card
+[Something here]</div>
                 </div>
             </div>
             <ul id="buttonPanel">
-                <!--div class="uiButton" id="uiPrev" title="Skip backward one card">Previous</div-->
-                <li class="uiButton uiButton-resize" id="ui5" title="I don't know what I'm looking at.">5</li>
-                <li class="uiButton uiButton-resize" id="ui4" title="I'm unfamiliar with this.">4</li>
-                <li class="uiButton uiButton-resize" id="ui3" title="I'm familiar with this.">3</li>
-                <li class="uiButton uiButton-resize" id="ui2" title="I'm comfortable with this.">2</li>
-                <li class="uiButton uiButton-resize" id="ui1" title="I have mastered this.">1</li>
-                <!--div class="uiButton" id="uiNext" title="Skip forward one card">Next</div--><br>
-                <div class="uiButton" id="uiNew" title="Skip this card.">Skip</div>
+                <li class="uiButton uiButton-resize" id="ui5" data-id="5">
+                    <div id="uiBtnIcon5">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+                    </div>
+                    Very Hard
+                </li>
+                <li class="uiButton uiButton-resize" id="ui4" data-id="4">
+                    <div id="uiBtnIcon4">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
+                    </div>
+                    Hard
+                </li>
+                <li class="uiButton uiButton-resize" id="ui3" data-id="3">
+                    <div id="uiBtnIcon3">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
+                    </div>
+                    OK
+                </li>
+                <li class="uiButton uiButton-resize" id="ui2" data-id="2">
+                    <div id="uiBtnIcon2">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
+                    </div>
+                    Easy
+                </li>
+                <li class="uiButton uiButton-resize" id="ui1" data-id="1">
+                    <div id="uiBtnIcon1">
+                        <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
+                    </div>
+                    Very Easy
+                </li>
+                <br>
+                <div class="uiButton" id="uiSkip" data-id="6">
+                    <div id="uiBtnIconSkip">
+                        <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
+                    </div>
+                    Skip
+                </div>
             </ul>
+            <div id="uiHelpButton" title="Help"></div>
+            <br><br>
+            <div id="uiHelpDrawer">
+                <span class="drawerTitle">HELP</span>
+                <hr>
+                <div class="helpTitle" id="whatDoIDoT" data-helpID="0">
+                    &rsaquo; What do I do Here?
+                </div>
+                <div class="helpSection" id="whatDoIDoD">
+                    This is where you play your deck!<br>
+                    Read the side of the card displayed to you and think about what 
+                    the answer could be. Then, click the card to flip it and find out 
+                    if you were right. Click one of the difficulty buttons to rate how 
+                    hard of a card it was. You can rate cards as very hard, very 
+                    easy or something in between.
+                </div>
+                <div class="helpTitle" id="movingBetweenCardsT" data-helpID="1">
+                    &rsaquo; Moving Between Cards
+                </div>
+                <div class="helpSection" id="movingBetweenCardsD">
+                    Once the card has been flipped, rating it using one of the 
+                    difficulty buttons will automatically draw another card for 
+                    you. If for any reason you don't want to rate it or don't 
+                    want the card you've been presented, you can skip it at any 
+                    time using the aptly named Skip button.
+                </div>
+                <div class="helpTitle" id="shortcutsT" data-helpID="2">
+                    &rsaquo; Short-Cuts
+                </div>
+                <div class="helpSection" id="shortcutsD">
+                    Don't want to use the mouse? No problem! You can use the 
+                    following keyboard short-cuts to do the same tasks:
+                    <ul>
+                        <li>Space bar - flip the card</li>
+                        <li>1 - rate the card as <em>very hard</em>.</li>
+                        <li>2 - rate the card as <em>hard</em>.</li>
+                        <li>3 - rate the card as <em>OK</em>.</li>
+                        <li>4 - rate the card as <em>easy</em>.</li>
+                        <li>5 - rate the card as <em>very easy</em>.</li>
+                        <li>Left/Right arrow key - skip the current card</li>
+                    </ul>
+                </div>
+                <div class="helpTitle" id="settingsT" data-helpID="3">
+                    &rsaquo; Settings
+                </div>
+                <div class="helpSection" id="settingsD">
+                    You can click the wrench in the upper right hand corner to 
+                    access the Settings.There, you can change which side of the 
+                    card is initially displayed to you.
+                </div>
+                Click the "?" Help button again to close this drawer.
+            </div>
         </div>
     </div>
     

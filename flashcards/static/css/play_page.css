@@ -1,5 +1,4 @@
 .card {
-    /* box-shadow: 0px 2px 2px #444; */
     position: relative; 
     color: #666;
     text-align: center;
@@ -42,14 +41,16 @@ a.btnRight{
 
 #uiCard {
     background-image: url('../img/card.png');
+    background-repeat:no-repeat;
     box-shadow: 0px 2px 2px black;
+    clear: right;
     color: black;
     cursor: pointer;
     height: 300px;
     margin-bottom: 16px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 500px;
+    width: 500px;
     overflow: hidden;
 }
 
@@ -57,22 +58,19 @@ a.btnRight{
     box-shadow: 0px 0px 8px 4px white;
 }
 
-#uiTitle {
-    position: relative;
-    text-align: left;
-    top: 16px;
-}
-
 #uiQuestion {
-    line-height: 25px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    max-height: 200px;
-    max-width: 400px;
-    overflow: hidden;
-    position: relative;
+    font-size: 300%;
+    top: 0px;
+    margin-left: 32px;
+    width: 80%;
     text-align: center;
+    margin-top:46px;
+    margin-left:10%;
+    margin-right:10%;
+    white-space:pre-wrap;
+    line-height: 51px;
+    height: 230px;
+    overflow: hidden;
 }
 
 #deckTitle {
@@ -83,8 +81,11 @@ a.btnRight{
 }
 
 #playField {
+    min-width: 540px;
+    overflow: hidden; 
     padding-left: 8px;
     padding-right: 8px;
+    
 }
 
 #playField h5 {
@@ -98,7 +99,6 @@ a.btnRight{
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    padding: 4px;
 }
 
 div #playFrame {
@@ -106,8 +106,6 @@ div #playFrame {
     border: white solid 4px;
     box-shadow: 0px 2px 2px 2px #333 inset;
     margin-bottom: 8px;
-    padding: 16px;
-    padding-bottom: 4px;
 }
 
 #buttonPanel {
@@ -119,6 +117,11 @@ div #playFrame {
     text-align: center;
 }
 
+ul#buttonPanel li, #uiSkip {
+    max-height: 15px;
+    overflow: hidden;
+}
+
 .uiButton {
     background: #222;
     border-bottom-style: solid;
@@ -127,7 +130,10 @@ div #playFrame {
     box-shadow: 0px 2px 2px #222;
     color: white;
     display: inline-block;
+    font-size: 85%;
+    font-weight: bold;
     margin-bottom: 8px;
+    overflow: hidden;
     padding: 10px;
     text-align: center;
     width: 480px;
@@ -153,6 +159,8 @@ div #playFrame {
     color: #666;
     cursor: default;
     display: inline-block;
+    font-size: 85%;
+    font-weight: bold;
     margin-bottom: 8px;
     padding: 10px;
     text-align: center;
@@ -199,3 +207,120 @@ div #playFrame {
     background: #B3FBFF;
 }
 
+.hide {
+    display: none;
+}
+
+#uiBtnIcon1, #uiBtnIcon2, #uiBtnIcon3, #uiBtnIcon4, #uiBtnIcon5, #uiBtnIconSkip {
+    display: none;
+}
+
+.uiButtonIcon {
+    margin-bottom: 16px;
+    vertical-align: middle;
+}
+
+span.drawerTitle {
+    font-weight: bold;
+    font-style: italic;
+}
+
+#uiSettingsButton {
+    background-image: url('../img/settings.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    margin: 8px;
+    position: relative;
+    width: 24px;
+}
+
+#uiSettingsButton:hover {
+    background-image: url('../img/settings_inv.png');
+}
+
+#uiSettingsButton.settingsOpen {
+    background-image: url('../img/settings_inv.png');
+}
+
+#uiSettingsDrawer {
+    background: #CCC;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: white;
+    color: black;
+    display: none;
+    margin: 0px;
+    padding: 16px;
+}
+
+#uiSettingsDrawer form {
+    text-align: left;
+}
+
+label {
+    margin-right: 1em;
+}
+
+#uiSettingsDrawer form input[type="radio"]{
+    height: 16px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+#cardOrder {
+    font-weight: bold;
+}
+
+#uiHelpButton {
+    background-image: url('../img/help.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    margin: 8px;
+    position: relative;
+    bottom: 22px;
+    width: 24px;
+}
+
+#uiHelpButton:hover {
+    background-image: url('../img/help_inv.png');
+}
+
+#uiHelpButton.helpOpen {
+    background-image: url('../img/help_inv.png');
+}
+
+#uiHelpDrawer {
+    background: #CCC;
+    border-top-style: solid;
+    border-top-width: medium;
+    border-top-color: white;
+    clear: right;
+    color: black;
+    display: none;
+    height: 225px;
+    margin: 0px;
+    max-height: 225px;
+    overflow: auto;
+    padding: 16px;
+}
+
+.helpTitle {
+    color: #4DA0C9;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1em;
+    text-decoration: underline;
+}
+
+.helpTitle:hover {
+    color: white;
+}
+
+.helpSection {
+    display: none;
+    margin-bottom: 1em;
+}
