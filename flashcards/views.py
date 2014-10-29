@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 import glob
 import ntpath
 import os
+import yaml
+from django.core.files.base import ContentFile
 
 class LoginRedirect(TemplateView):
 
@@ -137,13 +139,25 @@ class ImportPage(LoginRedirect):
         decks = parseConfig()
         deck = request.FILES.get('deck')
         #deck is an open file handle now
-        if decks.importDeck(request, deck):
-            t = loader.get_template('import_export_page.html')
-            c = RequestContext(request)
-            c['user_decks'] = getDecksForUser_test(self.request.user)
-            return HttpResponse(t.render(c), status=200)
+        if deck != None:
+            if decks.importDeck(request, deck):
+                t = loader.get_template('import_export_page.html')
+                c = RequestContext(request)
+                c['user_decks'] = getDecksForUser_test(self.request.user)
+                return HttpResponse(t.render(c), status=200)
+            else:
+                return HttpResponseRedirect(reverse("import_export_page"))
         else:
-            return HttpResponseRedirect(reverse("import_export_page"))
+            exportFile = decks.exportDeck(request, request.POST.get('deck'))
+            exportFileName = str(exportFile) + ".yml"
+            deckName = Deck.objects.get(pk = request.POST.get('deck'))
+            fileToSend = ContentFile(exportFile)
+            response = HttpResponse(fileToSend, 'text/plain')
+            response['Content-Length'] = fileToSend.size
+            response['Content-Disposition'] = 'attachment; filename = Deck.yml'
+            return response
+            #else:
+                #return HttpResponseRedirect(reverse("import_export_page"))
 
 
     def get_context_data(self, **kwargs):
