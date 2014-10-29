@@ -12,6 +12,7 @@ import ntpath
 import os
 import yaml
 from django.core.files.base import ContentFile
+from next import getNextCard
 
 class LoginRedirect(TemplateView):
 
@@ -85,7 +86,7 @@ class SigninPage(TemplateView):
             context['invalid_signup'] = invalidSignup
         else:
             context['invalid_signup'] = ''
-        return context        
+        return context
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('signin'):
