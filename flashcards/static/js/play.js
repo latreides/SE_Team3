@@ -1,5 +1,5 @@
 var cardHasBeenFlipped = false;
-var buttonsDisabled = false;
+var buttonsDisabled = true;
 var showingFront    = true;
 
 var settingsOpen = false;
@@ -9,8 +9,8 @@ var showingHelpSection = [false, false, false, false];
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
 
-window.onload = function() {
-    toggleButtons();
+$(document).ready(function() {
+    // toggleButtons();
     $("#uiCard").click(flip);
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
@@ -27,7 +27,7 @@ window.onload = function() {
     $("#movingBetweenCardsT").click(showHelpSection);
     $("#shortcutsT").click(showHelpSection);
     $("#settingsT").click(showHelpSection);
-};
+});
 
 // disable space bar scrolling
 window.onkeydown = function(event) {
@@ -48,7 +48,8 @@ document.addEventListener( "keyup", function(event) {
     }
 );
 
-function loadXMLDoc() {
+// Need to redo in JQuery with correct URL
+function loadXMLDoc(deckId) {
     var xmlhttp;
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -59,14 +60,17 @@ function loadXMLDoc() {
     }
     xmlhttp.onreadystatechange=function() {
         if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-            document.getElementById("myDiv").innerHTML="<h2>" + xmlhttp.responseText + "</h2>";
+            document.getElementById("myDiv").innerHTML="<h4>" + xmlhttp.responseText + "</h4>";
         } else if (xmlhttp.readyState == 4 && xmlhttp.status == 404) {
-            document.getElementById("myDiv").innerHTML = "<em>404 - Not Found...?</em>";
+            document.getElementById("myDiv").innerHTML = "<h4><em>404 - Not Found. Did you forget the argument?</em></h4>";
+        } else if (xmlhttp.readyState == 4 && xmlhttp.status == 500) {
+            document.getElementById("myDiv").innerHTML = 
+                "<h4><em>500 - No deck with ID [" + String(deckId) + "] was found.</em></h4>";
         } else {
-            document.getElementById("myDiv").innerHTML = "Loading...";
+            document.getElementById("myDiv").innerHTML = "<h4>Loading...</h4>";
         }
     }
-    xmlhttp.open("GET","../static/info.txt",true);
+    xmlhttp.open("GET","/getNextCard/" + String(deckId),true);
     xmlhttp.send();
 }
 

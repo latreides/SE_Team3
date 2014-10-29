@@ -211,3 +211,8 @@ class EditDeckPage(LoginRedirect):
             return context
         else:
             pass
+
+class GetNextCard(View):
+    def drawCard(self, request, deckID):
+        card = getNextCard( int(deckID) )
+        return HttpResponse(card)

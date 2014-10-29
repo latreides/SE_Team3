@@ -14,6 +14,14 @@
 {% block content %}
     <h1>You are now in play mode!</h1>
     
+    <div id="myDiv">
+        <h4>This div is temporary and for exemplary purposes only. It will be removed later.<br>
+        In Chrome, open the dev console and type <code style="color: white;">loadXMLDoc(#)</code> 
+        where <code style="color: white;">#</code> is an integer deck ID. This text will be replaced 
+        by what the AJAX call returns.<br>
+        If the id doesn't exist, you'll get a 500. If you otherwise foul up, you might get a 404</h4>
+    </div>
+    
     <div id="playField">
         <div>
             <h5>Now Playing</h5>
@@ -46,31 +54,31 @@ Sample card
                 </div>
             </div>
             <ul id="buttonPanel">
-                <li class="uiButton uiButton-resize" id="ui5" data-id="5">
+                <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
                     <div id="uiBtnIcon5">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
                     </div>
                     Very Hard
                 </li>
-                <li class="uiButton uiButton-resize" id="ui4" data-id="4">
+                <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
                     <div id="uiBtnIcon4">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
                     </div>
                     Hard
                 </li>
-                <li class="uiButton uiButton-resize" id="ui3" data-id="3">
+                <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
                     <div id="uiBtnIcon3">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
                     </div>
                     OK
                 </li>
-                <li class="uiButton uiButton-resize" id="ui2" data-id="2">
+                <li class="uiButtonDisabled uiButton-resize" id="ui2" data-id="2">
                     <div id="uiBtnIcon2">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
                     </div>
                     Easy
                 </li>
-                <li class="uiButton uiButton-resize" id="ui1" data-id="1">
+                <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
                     <div id="uiBtnIcon1">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
                     </div>

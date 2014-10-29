@@ -18,5 +18,6 @@ urlpatterns = patterns('',
                         url(r'^signin(/?invalid_login=True)?$', SigninPage.as_view(), name='signin'),
                         url(r'^play/(?P<deck>\d+)$', PlayDeckPage.as_view(), name='play_deck'),
                         url(r'^welcome$', WelcomePage.as_view(), name='welcome'),
-                        url(r'files$', ImportPage.as_view(), name='import_export_page')
+                        url(r'files$', ImportPage.as_view(), name='import_export_page'),
+                        url(r'^getNextCard/(?P<deckID>\d+)$', GetNextCard().drawCard, name='get_next_card')
                        )
