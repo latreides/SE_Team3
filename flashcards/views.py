@@ -149,12 +149,11 @@ class ImportPage(LoginRedirect):
                 return HttpResponseRedirect(reverse("import_export_page"))
         else:
             exportFile = decks.exportDeck(request, request.POST.get('deck'))
-            exportFileName = str(exportFile) + ".yml"
-            deckName = Deck.objects.get(pk = request.POST.get('deck'))
+            deckName = Deck.objects.get(pk = request.POST.get('deck')).Name
             fileToSend = ContentFile(exportFile)
             response = HttpResponse(fileToSend, 'text/plain')
             response['Content-Length'] = fileToSend.size
-            response['Content-Disposition'] = 'attachment; filename = Deck.yml'
+            response['Content-Disposition'] = 'attachment; filename = ' + deckName + '.yml'
             return response
             #else:
                 #return HttpResponseRedirect(reverse("import_export_page"))
