@@ -1,6 +1,6 @@
 var cardHasBeenFlipped = false;
-var buttonsDisabled = true;
-var showingFront    = true;
+var buttonsDisabled    = true;
+var showingFront       = true;
 
 var settingsOpen = false;
 var helpOpen     = false;
@@ -9,24 +9,51 @@ var showingHelpSection = [false, false, false, false];
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
 
+/* ===== Color Fading Settings for flashcard content and buttons =====
+ * Elements to flash upon click:
+ *  - Difficulty buttons (data-ids 1 - 5, array indices 0 - 4, from Very Easy to Very Hard)
+ *  - Skip button (data-id 6, array index 5)
+ *  - Front and back side of flashcard (data-ids 7 and 8, array indices 6 and 7)
+ */
+var duration   = 500;
+var flashColor = [255, 255, 255, 1];
+//      the colors the buttons start with
+var originalColors = [];
+//      interpolation multiplier, 1 == 100%; affects color blending
+var im = 1;
+//      amount of fade left for each flash-able element
+var fadeDuration  = [im, im, im, im, im, im];
+//      container for JS interval objects for fading, per flash-able element
+var fadeInterval  = [null, null, null, null, null, null];
+//      how often to perform fade effect in milliseconds
+var fadeFrequency = 10;
+//      percentage to decrement from fade remaining
+var tick = 0.04; // fadeFrequency / duration;
+/* ===== End Color Fading Settings ===== */
+
 $(document).ready(function() {
-    // toggleButtons();
-    $("#uiCard").click(flip);
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
     
-    $("#ui1").hover(rollIconDown, rollIconUp);
-    $("#ui2").hover(rollIconDown, rollIconUp);
-    $("#ui3").hover(rollIconDown, rollIconUp);
-    $("#ui4").hover(rollIconDown, rollIconUp);
-    $("#ui5").hover(rollIconDown, rollIconUp);
+    populateOriginalColors();
     
-    $("#uiSkip").hover(rollIconDown, rollIconUp);
+    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#uiCard").click(flip);
+    
+    $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton);
     
     $("#whatDoIDoT").click(showHelpSection);
     $("#movingBetweenCardsT").click(showHelpSection);
     $("#shortcutsT").click(showHelpSection);
     $("#settingsT").click(showHelpSection);
+    
+    // this is somewhat of a bandaid for the card text not appearing right
+    //   away but maintaining the desired fade on click/keyup events.
+    $("#uiCardFront").fadeIn();
 });
 
 // disable space bar scrolling
@@ -42,7 +69,7 @@ document.addEventListener( "keyup", function(event) {
             // 1, 2, 3,
             // 4, 5 (number row)
             if (event.keyCode == 32) {
-                flip();
+                $("#uiCard").trigger("click");
             }
         }
     }
@@ -75,6 +102,7 @@ function loadXMLDoc(deckId) {
 }
 
 function toggleButtons() {
+    
     buttonsDisabled = !buttonsDisabled;
     $("#ui5").toggleClass("uiButton").toggleClass("uiButtonDisabled");
     $("#ui4").toggleClass("uiButton").toggleClass("uiButtonDisabled");
@@ -86,10 +114,17 @@ function toggleButtons() {
 function flip() {
     if (!cardHasBeenFlipped)
         toggleButtons();
+    
     cardHasBeenFlipped = true;
+    
+    $("#uiCardFront").css("display", "none");
+    $("#uiCardBack").css("display", "none");
+    if (showingFront)
+        $("#uiCardBack").fadeIn();
+    else
+        $("#uiCardFront").fadeIn();
+    
     showingFront = !showingFront;
-    $("#uiCardFront").toggleClass("hide")
-    $("#uiCardBack").toggleClass("hide")
 }
 
 function toggleSettingsDrawer() {
@@ -194,11 +229,90 @@ function showHelpSection() {
     }
 }
 
+function populateOriginalColors() {
+    toggleButtons();
+    var col0 = $("#ui1").css("background-color").replace(/[^\d,]/g,'').split(',');
+    var col1 = $("#ui2").css("background-color").replace(/[^\d,]/g,'').split(',');
+    var col2 = $("#ui3").css("background-color").replace(/[^\d,]/g,'').split(',');
+    var col3 = $("#ui4").css("background-color").replace(/[^\d,]/g,'').split(',');
+    var col4 = $("#ui5").css("background-color").replace(/[^\d,]/g,'').split(',');
+    var col5 = $("#uiSkip").css("background-color").replace(/[^\d,]/g,'').split(',');
+    toggleButtons();
+    
+    var text = $("#uiCardFront").css("color").replace(/[^\d,]/g,'').split(',');
+    
+    originalColors = [col0, col1, col2, col3, col4, col5];
+}
+
+function flashButton() {
+    id = $(this).attr("id");
+    var index = parseInt($("#" + id).attr("data-id")) - 1;
+    
+    if (cardHasBeenFlipped || id == "uiSkip") {
+        if( id != "uiCardFront" && id != "uiCardBack" )
+            initColorFadeButton( id, flashColor, "background-color" );
+        else
+            initColorFadeButton( id, textFade, "color" );
+    }
+}
+
+function initColorFadeButton(id, toColor, attr) {
+    /*
+        Fade element with ID id from it's current color to toColor
+    */
+    var index = parseInt($("#" + id).attr("data-id")) - 1;
+    
+	if( fadeDuration[index] != im )
+		return;
+		
+	fadeInterval[index] = setInterval( function(){
+			var fromColor = $("#" + id).css(attr).replace(/[^\d,]/g,'').split(',');
+            colorFadeButton(id, toColor, originalColors[index], attr);
+		}, fadeFrequency );
+}
+
+function colorFadeButton(id, from, to, attr) {
+	/*
+		Fades the color of CSS Attribute 'attr' in element with id 'id' from color 'from' to color 'to.'
+		Color arrays 'from' and 'to' must be in the form:
+            [R,G,B[,A]] where R,G,B == int[0 ~ 255] and A == float[0 ~ 1].
+            If no alpha is present, 1 is assumed.
+	*/
+    var index = parseInt($("#" + id).attr("data-id")) - 1;
+    
+    from[3] = from[3] == undefined ? 1 : from[3];
+    to[3]   =   to[3] == undefined ? 1 : to[3];
+	
+	if(fadeDuration[index] >= 0) {
+		var diffInCol1 = [];
+		diffInCol1[0] = from[0] - to[0];
+		diffInCol1[1] = from[1] - to[1];
+		diffInCol1[2] = from[2] - to[2];
+        diffInCol1[3] = from[3] - to[3];
+		
+		var nextCol1 = [];
+		nextCol1[0] = Math.floor(from[0] - (1-fadeDuration[index]) * diffInCol1[0]);
+		nextCol1[1] = Math.floor(from[1] - (1-fadeDuration[index]) * diffInCol1[1]);
+		nextCol1[2] = Math.floor(from[2] - (1-fadeDuration[index]) * diffInCol1[2]);
+        nextCol1[3] = from[3] - (1-fadeDuration[index]) * diffInCol1[3];
+		
+        $("#"+id).css(attr, 
+            "rgba(" + nextCol1[0] + "," + nextCol1[1] + "," + nextCol1[2] + "," + 
+            nextCol1[3] + ")");
+		fadeDuration[index] -= tick;
+	} else {
+		clearInterval(fadeInterval[index]);
+		fadeDuration[index] = im;
+        $("#" + id).css(attr, "");
+	}
+}
+
+
 function rate(rating) {
     
 }
 
 function exitStageLeft() {
-    // shove the current card out + left.
+    // shove the current card out and left.
     cardHasBeenFlipped = false;
 }
