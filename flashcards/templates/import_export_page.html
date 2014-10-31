@@ -1,8 +1,12 @@
 ﻿{% extends "base.html" %}
 {% load static from staticfiles %}
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/import_page.css' %}" />
 
+{% block css %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/import_page.css' %}" />
+{% endblock %}
+
+{% block content %}
     <h1>Import / Export Decks</h1>
 
     <div id="content">
@@ -18,7 +22,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" class="custom-file-input" name="deck" id="file"><br>
-            <input type="submit" name="submit" value="Import">
+            <input type="submit" class="submitBtn" name="submit" value="Import">
         </form>
         
 
@@ -41,13 +45,13 @@
                             <input type="radio" name="deck" id="deck{{deck.id}}"value="{{deck.id}}"  />
                         </td>
                         <td class="description">
-                            <label for="deck{{deck.id}}">{{deck.Name}}</label>
+                            <label for="deck{{ deck.id }}">{{ deck.Name }}</label>
                         </td>
                     </tr>
                     {% endfor %}
                 </table>
                 
-                <input type="submit" value="Export" />
+                <input type="submit" class="submitBtn" value="Export" />
             </form>
         </div>    
         

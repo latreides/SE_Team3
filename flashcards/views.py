@@ -28,9 +28,9 @@ class LandingPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
-        context['most_recent_deck'] = getMostRecentDeck(1)
+        context['most_recent_deck'] = getMostRecentDeck(self.request.user.id)
         context['cards_for_deck'] = getCardsForDeck(1)
-        context['last_time_logged_in'] = getLastTimeLoggedIn(1)
+        context['last_time_logged_in'] = getLastTimeLoggedIn(self.request.user.id)
 
         return context
 

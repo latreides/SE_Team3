@@ -158,6 +158,11 @@ input {
     width: 200px;
     padding: 0px;
     margin: 1px;
+    
+    -ms-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+    -webkit-box-sizing:content-box; 
 
 }
 
@@ -168,11 +173,11 @@ input[type="reset"] {
     font-weight: bold;
     height: 32px;
     margin-top: 4px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    left: -3px;
-    width: 204px;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*position: relative;*/
+    /*left: -3px;*/
+    /*width: 200px;*/
 }
 
 input:active {
@@ -223,6 +228,7 @@ input[type="reset"]:hover {
 #logo {
     height: auto;
     max-width: 100%;
+    border: none;
 }
 
 .ErrorMessage	{

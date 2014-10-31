@@ -160,7 +160,7 @@ div#dInfo {
     margin-bottom: 8px;
     text-align: center;
     padding: 10px 0;
-    display: inline-block;
+    float: left;
     width: 50%;
     cursor: pointer;
 }
