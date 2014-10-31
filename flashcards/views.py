@@ -60,7 +60,7 @@ class ViewDeckPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ViewDeckPage, self).get_context_data(**kwargs)
-        context['user_decks'] = getDecksForUser_test(self.request.user)
+        context['user_decks'] = getDecksForUser(self.request.user)
         return context
 
 
@@ -136,7 +136,7 @@ class PlayDeckPage(LoginRedirect):
     def post(self, request, *args, **kwards):
         #update card
         pass
-    
+
     def get_context_data(self, **kwargs):
         #deckId = self.request.GET.get('deck')
         deckId = kwargs.get('deck', None)
@@ -164,7 +164,7 @@ class ImportPage(LoginRedirect):
             if decks.importDeck(request, deck):
                 t = loader.get_template('import_export_page.html')
                 c = RequestContext(request)
-                c['user_decks'] = getDecksForUser_test(self.request.user)
+                c['user_decks'] = getDecksForUser(self.request.user)
                 return HttpResponse(t.render(c), status=200)
             else:
                 return HttpResponseRedirect(reverse("import_export_page"))
@@ -182,7 +182,7 @@ class ImportPage(LoginRedirect):
 
     def get_context_data(self, **kwargs):
         context = super(ImportPage, self).get_context_data(**kwargs)
-        context['user_decks'] = getDecksForUser_test(self.request.user)
+        context['user_decks'] = getDecksForUser(self.request.user)
         return context
 
 
@@ -201,11 +201,10 @@ class ResetDeckPage(View):
         deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
 
-class CreateDeckPage(View):
+class createDeckPage(View):
     def post(self, request, *args, **kwargs):
         newDeck = createDeck(self.request.user.id, 'Untitled Deck')
         newCard = createCard(newDeck.id, True, "Front Side", "Back Side", None, None)
-
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
 
 class EditDeckPage(LoginRedirect):
@@ -218,15 +217,6 @@ class EditDeckPage(LoginRedirect):
             context['deck'] = getDeck(deckId)
             if context['deck']:
                 context['cards'] = getCardsForDeck(deckId)
-                #themeImageList = sorted(glob.glob(settings.THEME_ROOT + '*.*'))
-                #themePairList = []
-                #for theme in themeImageList:
-                #    displayName = ntpath.basename(theme)
-                #    theme = theme.replace(settings.THEME_ROOT, settings.THEME_URL, 1);
-                #    displayName = os.path.splitext(displayName)[0]
-                #    displayName = displayName[displayName.find(':')+1:]
-                #    themePairList.append([displayName, theme])
-                #context['themes'] =  themePairList
                 context['themes'] = Deck.THEME_LIST
             return context
         else:
@@ -237,3 +227,37 @@ class GetNextCard(View):
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
         return HttpResponse(card)
+
+class deckChangesPage(View):
+
+    def post(self, request, *args, **kwargs):
+        cardIdList = self.request.POST.get('cardIdList').split(',')
+
+        deckId = self.request.POST.get('deckId')
+        deckName = self.request.POST.get('deckName')
+        deckTheme = self.request.POST.get('deckTheme')
+
+        deckObject = getDeck(deckId)
+        deckObject.Name = deckName
+        deckObject.Theme = deckTheme
+
+        for cardId in cardIdList:
+            frontText = self.request.POST.get('front-%s' % cardId)
+            backText = self.request.POST.get('back-%s' % cardId)
+
+            # A Numeric ID means the card exists already,
+            # a * before a ID means the card is to be deleted
+            # anything else is a new card
+            if cardId.isnumeric():
+                card = getCard(cardId)
+                card.Front_Text = frontText
+                card.Back_Text = backText
+                card.save()
+            elif cardId[0] == '*':
+                removeId = cardId[1:]
+                deleteCard(removeId)
+            else:
+                createCard(deckId, True, frontText, backText, None, None)
+
+        deckObject.save()
+        return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(deckId))

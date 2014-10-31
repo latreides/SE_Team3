@@ -17,14 +17,22 @@ Creates a new deck object given a name for the deck and the userID for the user 
 and returns the new deck as an object of type deck
 '''
 def createDeck(userID, deckName):
-	try:
-		userObj = User.objects.get(id = userID)
-	except (ValueError, ObjectDoesNotExist):
-		print "The given User ID does not exist in the database"
+    try:
+        userObj = User.objects.get(id = userID)
+    except (ValueError, ObjectDoesNotExist):
+        print "The given User ID does not exist in the database"
 
-	newDeck = Deck(Name = deckName, User_ID = userObj, Create_Date=timezone.now())
-	newDeck.save()
-	return newDeck
+    newDeck = Deck(Name = deckName, User_ID = userObj, Create_Date=timezone.now())
+    newDeck.save()
+    return newDeck
+
+def deleteDeck(deckId):
+    '''
+    Deletes an entire Deck
+    '''
+    foundDeck = Deck.objects.get(id=deckId)
+    if foundDeck:
+        foundDeck.delete()
 
 '''
 Creates a new card object given the deck the card belongs to, a boolean value indicating if either side of the
@@ -33,50 +41,58 @@ card can be considered the front, and optionally text or images that the card wo
 Returns the card object that was created
 '''
 def createCard(deckID, twoSided, frontText = None, backText = None, frontImageID = None, backImageID = None):
-	if backImageID != None:
-		try:
-			backImageObj = Image.objects.get(id = backImageID)
-		except (ValueError, ObjectDoesNotExist):
-			print "The ID provided for the back image id does not exist in the image table."
-	else:
-		backImageObj = None
+    if backImageID != None:
+        try:
+            backImageObj = Image.objects.get(id = backImageID)
+        except (ValueError, ObjectDoesNotExist):
+            print "The ID provided for the back image id does not exist in the image table."
+    else:
+        backImageObj = None
 
-	if frontImageID != None:
-		try:
-			frontImageObj = Image.objects.get(id = frontImageID)
-		except (ValueError, ObjectDoesNotExist):
-			print "The ID provided for the front image id does not exist in the image table."
-	else:
-		frontImageObj = None
+    if frontImageID != None:
+        try:
+            frontImageObj = Image.objects.get(id = frontImageID)
+        except (ValueError, ObjectDoesNotExist):
+            print "The ID provided for the front image id does not exist in the image table."
+    else:
+        frontImageObj = None
 
-	try:
-		DeckObj = Deck.objects.get(id = deckID)
-	except (ValueError, ObjectDoesNotExist):
-			print "The User ID provided does not exist in the database"
-	newCard = Card(Deck_ID = DeckObj, Front_Text = frontText, Back_Text = backText, Front_Img_ID = frontImageObj, Back_Img_ID = backImageObj, Two_Sided = twoSided)
-	newCard.save()
-	return newCard
+    try:
+        DeckObj = Deck.objects.get(id = deckID)
+    except (ValueError, ObjectDoesNotExist):
+            print "The User ID provided does not exist in the database"
+    newCard = Card(Deck_ID = DeckObj, Front_Text = frontText, Back_Text = backText, Front_Img_ID = frontImageObj, Back_Img_ID = backImageObj, Two_Sided = twoSided)
+    newCard.save()
+    return newCard
+
+def deleteCard(cardId):
+    '''
+    Deletes a card from the Deck
+    '''
+    foundCard = Card.objects.get(id=cardId)
+    if foundCard:
+        foundCard.delete()
 
 '''
 Creates a new image entry in the database given a path to the image on the server or web
 Returns the object of type image created by the database
 '''
 def createImage(pathToImage):
-	newImage = Image(Image_Path = pathToImage)
-	newImage.save()
-	return newImage
+    newImage = Image(Image_Path = pathToImage)
+    newImage.save()
+    return newImage
 
 '''
 Returns an object containing the most recent deck accessed by the user id passed into the function
 '''
 def getMostRecentDeck(userID):
-	return Deck.objects.order_by('-Accessed_Date')[0] if Deck.objects.filter(User_ID=userID).exclude(Accessed_Date__isnull=True).exists() else None
+    return Deck.objects.order_by('-Accessed_Date')[0] if Deck.objects.filter(User_ID=userID).exclude(Accessed_Date__isnull=True).exists() else None
 
 '''
 Returns a list containing all the decks that the current user has as Deck objects
 '''
 def getDecksForUser(userID):
-	return Deck.objects.filter(User_ID=userID)
+    return Deck.objects.filter(User_ID=userID)
 
 '''
 Returns a single specific Deck
@@ -84,36 +100,27 @@ Returns a single specific Deck
 def getDeck(deckID):
     return Deck.objects.get(id=deckID)
 
-# Abstract Test Data Function, to be removed for final product.
-def getDecksForUser_test(userID):
-    deckList = [\
-            Deck(id=0, Name = "How to Use MemorizeMe", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=1, Name = "My Deck", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow().replace(tzinfo=utc)), \
-            Deck(id=2, Name = "How To Swahili with Dr. Shade", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=3, Name = "What is Love? (Baby, Don't Hurt Me)", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=4, Name = "Identifying Wood", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=5, Name = "Meine Flashkarte", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=6, Name = "Mitt Flashcard", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            Deck(id=7, Name = "Mi Tarjeta de Memoria Flash", User_ID = userID, Create_Date = getNow(), Accessed_Date = getNow()), \
-            ]
-    deckList.extend(list(getDecksForUser(userID)))
-    return deckList
+def getCard(cardID):
+    '''
+    Returns a single specific Card
+    '''
+    return Card.objects.get(id=cardID)
 
 '''
 Returns a list containing all the cards as objects belonging to the deck ID that was passed in
 '''
 def getCardsForDeck(deckID):
-	return Card.objects.filter(Deck_ID=deckID)
+    return Card.objects.filter(Deck_ID=deckID)
 
 '''
 Return the last time the user logged in as a string
 '''
 def getLastTimeLoggedIn(userID):
-        try:
-		userObj = User.objects.get(id=userID)
-	except (ValueError, ObjectDoesNotExist):
-		print "The given User ID does not exist in the database"
-	return userObj.last_login.strftime('%b-%d-%Y %I:%M:%S %p')
+    try:
+        userObj = User.objects.get(id=userID)
+    except (ValueError, ObjectDoesNotExist):
+        print "The given User ID does not exist in the database"
+    return userObj.last_login.strftime('%b-%d-%Y %I:%M:%S %p')
 
 def getCountCardsWithDifficulty(deckID, difficulty):
     return Card.objects.filter(Deck_ID=deckID, Difficulty=difficulty).count()

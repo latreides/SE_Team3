@@ -46,7 +46,7 @@
 #detailsContainer
 {
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 35px;
 }
 
 #cardTextContent
@@ -83,6 +83,24 @@
     border-bottom-color: white;
     color: white;
     margin-bottom: 8px;
+}
+
+#removeCard
+{
+    text-align: center;
+    width: 16px;
+    padding: 2px;
+    background-color: red;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    border-bottom-style: solid;
+    border-bottom-width: medium;
+    border-bottom-color: white;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: bold;
 }
 
 #deckDetails
@@ -149,4 +167,13 @@
 #deckName
 {
     width: 175px;
+}
+
+#submitDeckChanges
+{
+    width: 200px;
+    float: right;
+    margin-top: 10px;
+    padding: 5px;
+    text-align: center;
 }

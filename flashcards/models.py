@@ -21,7 +21,7 @@ class Deck(models.Model):
     Create_Date = models.DateTimeField()
     Accessed_Date = models.DateTimeField(blank=True, null=True)
     Public = models.BooleanField(default=False)
-    Theme = models.CharField(default='Blank', max_length=32, choices=THEME_LIST)
+    Theme = models.CharField(default='BlankWhite.png', max_length=32, choices=THEME_LIST)
     Tags = models.TextField(blank=True, null=True)
 
     #Return the Decks name as the text for the object
