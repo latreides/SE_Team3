@@ -12,7 +12,8 @@ import ntpath
 import os
 import yaml
 from django.core.files.base import ContentFile
-from next import getNextCard
+from next import getNextCard  #To be removed
+from play import *
 
 class LoginRedirect(TemplateView):
 
@@ -132,6 +133,25 @@ class SigninPage(TemplateView):
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
+    def post(self, request, *args, **kwards):
+        #update card
+        pass
+    
+    def get_context_data(self, **kwargs):
+        #deckId = self.request.GET.get('deck')
+        deckId = kwargs.get('deck', None)
+        if deckId:
+            engineObj = engine()
+            #print engineObj.toJson()
+            context = super(PlayDeckPage, self).get_context_data(**kwargs)
+            context['deck'] = engineObj
+            return context
+            #self.request.session['playObj'].play(int(deckId))
+        else:
+            context = super(PlayDeckPage, self).get_context_data(**kwargs)
+            engineObj = context['deck']
+            context['card'] = engineObj.getNextCard()
+            return context
 
 
 class ImportPage(LoginRedirect):
@@ -212,6 +232,7 @@ class EditDeckPage(LoginRedirect):
         else:
             pass
 
+#To be removed
 class GetNextCard(View):
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
