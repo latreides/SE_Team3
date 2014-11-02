@@ -32,7 +32,7 @@ function drawChart() {
         
         chartArea : {
             'width': '95%',
-            'height': '81%'
+            'height': '81%',
         },
         
         colors: ['#00F2FF', '#45FF45', 'yellow', 'orange', 'red', '#000000'],
@@ -43,6 +43,20 @@ function drawChart() {
             textStyle : {
                 color: 'white',
                 fontSize: 14
+            }
+        },
+        
+        pieSliceTextStyle: {
+            color: 'black',
+            fontName: 'Microsoft Sans Serif',
+            fontSize: 14           
+        },
+        
+        slices: {
+            5: {
+                textStyle: {
+                    color: 'white'
+                }
             }
         }
     };
