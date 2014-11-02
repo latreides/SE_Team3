@@ -5,29 +5,20 @@
     {{block.super}}
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript" src="{% static 'js/scores.js' %}"></script>
-        <!--<script type="text/javascript" src="{% static 'js/deck_switch.js' %}"></script>-->
+        <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
 {% endblock %}
 
 {% block css %}
     {{block.super}}
         <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
-        <!--<link rel="stylesheet" type="text/css" href="/static/css/deck_switch.js" />--> 
+        <link rel="stylesheet" type="text/css" href="/static/css/switch.css" />
 {% endblock %}
-
 
 {% block content %}
     <h1>My Scores</h1>
     
     <div id="content">
-    <div class="switch">
-            <input type="text" name="decks" value="Switch Decks" class="button" readonly="readonly" />
-            <ul class="menu">
-                {% for deck in user_decks %}
-                    <li>{{ deck.Name }}</li>
-                {% endfor %}
-            </ul>
-    </div>
-    
+        {% include "switch_button.html" %}
         <h2>{{ mostRecentDeck }}</h2>
         <div class="section">
             <p>
