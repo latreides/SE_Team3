@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django.views.generic import TemplateView, ListView, CreateView, View
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
 from django.contrib import auth
@@ -134,6 +135,8 @@ class SigninPage(TemplateView):
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
+
+    @ensure_csrf_cookie
     def post(self, request, *args, **kwards):
         #update card
         pass

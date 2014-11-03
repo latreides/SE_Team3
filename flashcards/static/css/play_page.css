@@ -215,9 +215,25 @@ ul#buttonPanel li, #uiSkip {
     vertical-align: middle;
 }
 
-span.drawerTitle {
+.drawerTitle {
     font-weight: bold;
     font-style: italic;
+    margin-bottom: 8px;
+}
+
+.helpKey {
+    font-weight: bold;
+}
+
+#helpList {
+    margin-top: 8px;
+    list-style: none;
+}
+
+#helpList img {
+    height: 16px;
+    vertical-align: middle;
+    width: 16px;
 }
 
 #uiSettingsButton {

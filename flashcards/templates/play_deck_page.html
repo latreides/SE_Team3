@@ -14,7 +14,7 @@
 {% block content %}
     <h1>You are now in play mode!</h1>
     
-    <div id="myDiv">
+    <div id="myDiv" style="display: none;">
         <h4>This div is temporary and for exemplary purposes only. It will be removed later.<br>
         In Chrome, open the dev console and type <code style="color: white;">loadXMLDoc(#)</code> 
         where <code style="color: white;">#</code> is an integer deck ID. This text will be replaced 
@@ -96,7 +96,11 @@ Sample card
             <div id="uiHelpButton" title="Help"></div>
             <br><br>
             <div id="uiHelpDrawer">
-                <span class="drawerTitle">HELP</span>
+                <div class="drawerTitle">HELP</div>
+                Please click a topic below. 
+                Click the "?" Help button any time to close or reopen 
+                this drawer. You can also use the F1 or "?" keys on your keyboard 
+                as a short-cut.
                 <hr>
                 <div class="helpTitle" id="whatDoIDoT" data-helpID="0">
                     &rsaquo; What do I do Here?
@@ -125,25 +129,50 @@ Sample card
                 <div class="helpSection" id="shortcutsD">
                     Don't want to use the mouse? No problem! You can use the 
                     following keyboard short-cuts to do the same tasks:
-                    <ul>
-                        <li>Space bar - flip the card</li>
-                        <li>1 - rate the card as <em>very hard</em>.</li>
-                        <li>2 - rate the card as <em>hard</em>.</li>
-                        <li>3 - rate the card as <em>OK</em>.</li>
-                        <li>4 - rate the card as <em>easy</em>.</li>
-                        <li>5 - rate the card as <em>very easy</em>.</li>
-                        <li>Left/Right arrow key - skip the current card</li>
+                    <ul id="helpList">
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">Space bar</span> - flip the card
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">1</span> - rate the card as <em>very hard</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">2</span> - rate the card as <em>hard</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">3</span> - rate the card as <em>OK</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">4</span> - rate the card as <em>easy</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">5</span> - rate the card as <em>very easy</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">Left</span> or <span class="helpKey">Right arrow key</span> - skip the current card.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">F1</span> or <span class="helpKey">?</span> - open/close the help drawer.
+                        </li>
                     </ul>
                 </div>
                 <div class="helpTitle" id="settingsT" data-helpID="3">
                     &rsaquo; Settings
                 </div>
                 <div class="helpSection" id="settingsD">
-                    You can click the wrench in the upper right hand corner to 
-                    access the Settings.There, you can change which side of the 
-                    card is initially displayed to you.
+                    You can click the wrench situated just above and to the right 
+                    of the flashcard to access the Settings. There, you can 
+                    change which side of the card is initially displayed to 
+                    you, where applicable.
                 </div>
-                Click the "?" Help button again to close this drawer.
             </div>
         </div>
     </div>

@@ -56,21 +56,51 @@ $(document).ready(function() {
     $("#uiCardFront").fadeIn();
 });
 
-// disable space bar scrolling
+// disable space bar scrolling and F1 showing browser help
 window.onkeydown = function(event) {
-    return !(event.keyCode == 32);
+    return !(event.keyCode == 32 || event.keyCode == 112);
 };
 
-document.addEventListener( "keyup", function(event) {
-        if( event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 32 ||
-            event.keyCode == 49 || event.keyCode == 50 || event.keyCode == 51 ||
-            event.keyCode == 52 || event.keyCode == 53 ) {
-            // left, right, space,
-            // 1, 2, 3,
-            // 4, 5 (number row)
-            if (event.keyCode == 32) {
+document.addEventListener( "keyup", function(event) {        
+        switch (event.keyCode) {
+            case 37: // left arrow key
+            case 39: // right arrow key
+                $("#uiSkip").trigger("click");
+                break;
+                
+            case 32: // space bar
                 $("#uiCard").trigger("click");
-            }
+                break;
+                
+            case 49: // Number row: 1
+                $("#ui5").trigger("click");
+                break;
+                
+            case 50: // Number row: 2
+                $("#ui4").trigger("click");
+                break;
+                
+            case 51: // Number row: 3
+                $("#ui3").trigger("click");
+                break;
+                
+            case 52: // Number row: 4
+                $("#ui2").trigger("click");
+                break;
+                
+            case 53: // Number row: 5
+                $("#ui1").trigger("click");
+                break;
+                
+            case 112: // F1 key
+            case 191: // ?  key
+                $("#uiHelpButton").trigger("click");
+                break;
+                
+            /* default:
+                console.log(event.keyCode);
+                break;
+            */
         }
     }
 );
@@ -99,6 +129,13 @@ function loadXMLDoc(deckId) {
     }
     xmlhttp.open("GET","/getNextCard/" + String(deckId),true);
     xmlhttp.send();
+}
+
+function getNewCard() {
+    var jqxhr = $.post("/getNextCard/", {deckId:"1"});
+    // jqxhr.done(   function() { console.log("Success!"); } );
+    // jqxhr.fail(   function() { console.log("Failed!"); } );
+    // jqxhr.always( function() { console.log("Done."); } );
 }
 
 function toggleButtons() {
