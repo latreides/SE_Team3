@@ -41,20 +41,26 @@ class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ScoresPage, self).get_context_data(**kwargs)
-        context['user_decks'] = getDecksForUser(self.request.user)
-        context['cardsNotStudied'] = getCountCardsNotStudied(1)
-        context['mostRecentDeck'] = getMostRecentDeck(self.request.user.id)
-        context['cardsRankedOne'] = getCountCardsWithDifficulty(1, 1)
-        context['cardsRankedTwo'] = getCountCardsWithDifficulty(1, 2)
-        context['cardsRankedThree'] = getCountCardsWithDifficulty(1, 3)
-        context['cardsRankedFour'] = getCountCardsWithDifficulty(1, 4)
-        context['cardsRankedFive'] = getCountCardsWithDifficulty(1, 5)
-        context['cardCount'] = (getCountCardsWithDifficulty(1, 1) + getCountCardsWithDifficulty(1, 2)
-                                + getCountCardsWithDifficulty(1, 3) + getCountCardsWithDifficulty(1, 3)
-                                + getCountCardsWithDifficulty(1, 4) + getCountCardsWithDifficulty(1, 5)
-                                + getCountCardsNotStudied(1))
-        return context
+       context = super(ScoresPage, self).get_context_data(**kwargs)
+       deckId = context.get('deckId')
+       context['user_decks'] = getDecksForUser(self.request.user)
+       context['cards'] = getCardsForDeck(deckId)
+       if deckId:
+           context['deck'] = getDeck(deckId)
+           context['mostRecentDeck'] = getMostRecentDeck(deckId)
+       else:
+           context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
+           context['mostRecentDeck'] = getMostRecentDeck(deckId)
+           context['cardsRankedOne'] = getCountCardsWithDifficulty(deckId, 1)
+           context['cardsRankedTwo'] = getCountCardsWithDifficulty(deckId, 2)
+           context['cardsRankedThree'] = getCountCardsWithDifficulty(deckId, 3)
+           context['cardsRankedFour'] = getCountCardsWithDifficulty(deckId, 4)
+           context['cardsRankedFive'] = getCountCardsWithDifficulty(deckId, 5)
+           context['cardCount'] = (getCountCardsWithDifficulty(deckId, 1) + getCountCardsWithDifficulty(deckId, 2)
+                                   + getCountCardsWithDifficulty(deckId, 3) + getCountCardsWithDifficulty(deckId, 3)
+                                   + getCountCardsWithDifficulty(deckId, 4) + getCountCardsWithDifficulty(deckId, 5)
+                                   + getCountCardsNotStudied(deckId))
+       return context
 
 
 class ViewDeckPage(LoginRedirect):

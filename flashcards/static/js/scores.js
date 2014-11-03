@@ -4,19 +4,19 @@ google.setOnLoadCallback(drawChart);
 function drawChart() {
     var data = google.visualization.arrayToDataTable([
         ['Rank', 'Count'],
-        ['Rank 1', 5],
-        ['Rank 2', 8],
-        ['Rank 3', 7],
-        ['Rank 4', 6],
-        ['Rank 5', 15],
-        ['Unranked', 4]
+        ['Rank 1', 1],
+        ['Rank 2', 2],
+        ['Rank 3', 3],
+        ['Rank 4', 4],
+        ['Rank 5', 5],
+        ['Unranked', 6]
     ]);
 
     var options = {
         width: 400,
         height: 300,
 
-        title: 'Deck Rankings',
+        title: 'Card Rankings',
         titleTextStyle: {
             color: 'white',
             fontName: 'Microsoft Sans Serif',

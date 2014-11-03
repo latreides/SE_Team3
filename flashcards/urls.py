@@ -3,9 +3,8 @@ from flashcards.views import *
 
 urlpatterns = patterns('',
                         url(r'^$', LandingPage.as_view(), name='landing_page'),
-                        url(r'^scores/(?P<deck>\d+)$', ScoresPage.as_view(), name='scores'),
+                        url(r'^scores/(?P<deckId>\d+)$', ScoresPage.as_view(), name='scores'),
                         url(r'^view/(?P<deck>\d+)$', ViewDeckPage.as_view(), name='view_decks'),
-                        url(r'^scores/(?P<deck>\d+)$', ScoresPage.as_view(), name='scores'),
                         url(r'^delete_deck/(?P<deck>\d+)$', DeleteDeckPage.as_view(), name='delete_deck'),
                         url(r'^reset_deck/(?P<deck>\d+)$', ResetDeckPage.as_view(), name='reset_deck'),
                         url(r'^import_deck$', ImportPage.as_view(), name='import_deck'),

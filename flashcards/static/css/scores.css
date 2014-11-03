@@ -2,6 +2,12 @@ div#count {
   font-size:  24pt;
   text-align: left;
   font-weight: bold;
-  text-decoration: underline;
   padding-left: 75px;
+  display: inline;
+}
+
+div#deckName {
+  font-size: 18pt;
+  font-weight: bold;
+  text-decoration: underline;
 }
