@@ -15,6 +15,7 @@
 <h1>Welcome to MemorizeMe!</h1>
 
 <div id="content">
+
 <h2> News / About </h2>
 
 <div class="section">
@@ -31,6 +32,19 @@
             </tr>
         </table>
     </p>
+</div>
+
+<h2> Search for a Deck </h2>
+
+<div class="section" id="containerDiv">
+	<p>
+		Enter in keywords to search for a public deck to clone<br><br></p>
+	<form class="centerForm" method="post" onsubmit="return true;" action="">
+	{% csrf_token %}
+		<input id="search" name="search" type="text" placeholder="Type here">
+		<input id="submit" type="submit" value="Search">
+	</form>
+	<br><br>
 </div>
 
 <h2> How - To </h2>

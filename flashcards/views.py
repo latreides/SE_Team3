@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from flashcards.db_interactions import *
 from django.contrib import auth
 from flashcards.decks import *
+from urllib import quote, unquote
 from django.contrib.auth.models import User
 import glob
 import ntpath
@@ -35,6 +36,29 @@ class LandingPage(LoginRedirect):
         context['last_time_logged_in'] = getLastTimeLoggedIn(self.request.user.id)
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        #Open deck view page with keyword arguments passed through url
+        enteredSearchText = request.POST.get('search')
+        try:
+            queryString = self.formQueryString(enteredSearchText)
+        except Exception as e:
+            return HttpResponseRedirect(reverse('landing_page') + '?' + str(e))
+        return HttpResponseRedirect(reverse('deck_search_results') + queryString)
+
+    def formQueryString(self, stringOfKeywords):
+        keywords = stringOfKeywords.lower().split()
+        if len(keywords) > 0:
+            queryString = '?keywords='
+            for each in keywords:
+                queryString = queryString + self.encodeString(each) + '+'
+            queryString = queryString[:len(queryString ) - 1]
+            return queryString
+        else:
+            raise Exception("Invalid Search Parameters")
+
+    def encodeString(self, string):
+        return quote(string.encode('utf8'), '')
 
 
 class ScoresPage(LoginRedirect):
@@ -79,29 +103,37 @@ class SigninPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         invalidLogin = "The username and password combination entered does not match any active user"
-        invalidSignup = "The Signup credentials are invalid. Make sure your password entries match or select a new username"
+        invalidUsername = "The selected username is invalid. Try another username."
+        invalidPassword = "The passwords entered do not match."
         context = super(SigninPage, self).get_context_data(**kwargs)
         if self.request.GET.get('invalid_login', '') == "True":
             context['invalid_login'] = invalidLogin
         else:
             context['invalid_login'] = ''
-        if self.request.GET.get('invalid_signup') == "True":
-            context['invalid_signup'] = invalidSignup
+        if self.request.GET.get('invalid_username', '') == "True":
+            context['invalid_signup'] = invalidUsername
         else:
             context['invalid_signup'] = ''
+        if self.request.GET.get('invalid_password', '') == "True":
+            context['invalid_signup'] = invalidPassword
         return context
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('signin'):
-            if self.signIn(request):
-                return HttpResponseRedirect(reverse('landing_page'))
-            else:
-                return HttpResponseRedirect(reverse('signin') + '?invalid_login=True')
+            try:
+                self.signIn(request)
+            except Exception as e:
+                return HttpResponseRedirect(reverse('signin') + '?' + str(e) + '=True')
+            
+            return HttpResponseRedirect(reverse('landing_page'))
+        
         else:
-            if self.signUp(request):
-                return HttpResponseRedirect(reverse('landing_page'))
-            else:
-                return HttpResponseRedirect(reverse('signin') + '?invalid_signup=True')
+            try:
+                self.signUp(request)
+            except Exception as e:
+                return HttpResponseRedirect(reverse('signin') + '?' + str(e) + '=True')
+            
+            return HttpResponseRedirect(reverse('landing_page'))
 
     def signIn(self, request):
         username = request.POST.get('username', '')
@@ -110,9 +142,8 @@ class SigninPage(TemplateView):
 
         if user is not None:
             auth.login(request, user)
-            return True
         else:
-            return False
+            raise Exception('invalid_login')
 
     def signUp(self, request):
         username = request.POST.get('username', '')
@@ -120,7 +151,7 @@ class SigninPage(TemplateView):
         password2 = request.POST.get('password2', '')
 
         if User.objects.filter(username = username).count() > 0:
-            return False
+            raise Exception('invalid_username')
 
         if password1 == password2:
             newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
@@ -128,10 +159,9 @@ class SigninPage(TemplateView):
             newUser.save()
             user = auth.authenticate(username=username, password=password1)
             auth.login(request, user)
-            return True
 
         else:
-            return False
+            raise Exception('invalid_password')
 
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
@@ -265,3 +295,21 @@ class deckChangesPage(View):
 
         deckObject.save()
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(deckId))
+
+class deckSearchResults(LoginRedirect):
+    template_name = 'deck_search_results.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(deckSearchResults, self).get_context_data(**kwargs)
+        keywordArgs = self.request.GET.get('keywords', '')
+        listOfKeywords = keywordArgs.split()
+        keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
+        context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded)
+
+        return context
+
+class logout(View):
+    
+  def get(self, request, *args, **kwargs):
+      auth.logout(request)
+      return HttpResponseRedirect(reverse('welcome'))
