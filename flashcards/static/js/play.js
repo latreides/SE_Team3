@@ -131,8 +131,8 @@ function loadXMLDoc(deckId) {
     xmlhttp.send();
 }
 
-function getNewCard() {
-    var jqxhr = $.post("/getNextCard/", {deckId:"1"});
+function getNewCard(id) {
+    var jqxhr = $.post("/getNextCard/"+ String(id));
     // jqxhr.done(   function() { console.log("Success!"); } );
     // jqxhr.fail(   function() { console.log("Failed!"); } );
     // jqxhr.always( function() { console.log("Done."); } );

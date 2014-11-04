@@ -14,18 +14,10 @@
 {% block content %}
     <h1>You are now in play mode!</h1>
     
-    <div id="myDiv" style="display: none;">
-        <h4>This div is temporary and for exemplary purposes only. It will be removed later.<br>
-        In Chrome, open the dev console and type <code style="color: white;">loadXMLDoc(#)</code> 
-        where <code style="color: white;">#</code> is an integer deck ID. This text will be replaced 
-        by what the AJAX call returns.<br>
-        If the id doesn't exist, you'll get a 500. If you otherwise foul up, you might get a 404</h4>
-    </div>
-    
     <div id="playField">
         <div>
             <h5>Now Playing</h5>
-            <div id="deckTitle">DECK TITLE</div>
+            <div id="deckTitle">{{ deckName }}</div>
         </div>
         <div id="playFrame">
             <div id="uiSettingsDrawer">
@@ -34,14 +26,20 @@
                 <form action="">
                     {% csrf_token %}
                     <span id="cardOrder">Present cards to me: </span>
-                    <label><input type="radio" name="order" value="frontFirst" checked="checked">Front side first</label>
-                    <label><input type="radio" name="order" value="backFirst">Back side first</label>
-                    <label><input type="radio" name="order" value="random">Front or back at random</label>
+                    <label><input type="radio" name="order" value="frontFirst" checked="checked">
+                        <span></span>Front side first
+                    </label>
+                    <label><input type="radio" name="order" value="backFirst">
+                        <span></span>Back side first
+                    </label>
+                    <label><input type="radio" name="order" value="random">
+                        <span></span>Front or back at random
+                    </label>
                 </form>
             </div>
             <div id="uiSettingsButton" title="settings"></div>
             
-            <div id="uiCard" title="Click to flip">
+            <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
                 <div id="uiCardFront" data-id="7">
                     <div class="uiQuestion">FRONT

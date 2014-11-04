@@ -180,15 +180,19 @@ class PlayDeckPage(LoginRedirect):
     def get_context_data(self, **kwargs):
         #deckId = self.request.GET.get('deck')
         deckId = kwargs.get('deck', None)
+        context = super(PlayDeckPage, self).get_context_data(**kwargs)
+        userDeck = getDecksForUser(self.request.user)[int(deckId)-1]
+        
+        context['deckName']  = userDeck.Name
+        context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
+        
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()
-            context = super(PlayDeckPage, self).get_context_data(**kwargs)
             context['deck'] = engineObj
             return context
             #self.request.session['playObj'].play(int(deckId))
         else:
-            context = super(PlayDeckPage, self).get_context_data(**kwargs)
             engineObj = context['deck']
             context['card'] = engineObj.getNextCard()
             return context

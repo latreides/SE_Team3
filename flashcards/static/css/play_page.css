@@ -107,6 +107,25 @@ div #playFrame {
     margin-bottom: 8px;
 }
 
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"] + span {
+    background-image: url('../img/radio_card.png');
+    background-size: 24px 24px;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    vertical-align: middle;
+    width: 24px;
+}
+
+input[type="radio"]:checked + span {
+    background: url('../img/radio_card_s.png');
+    background-size: 24px 24px;
+}
+
 #buttonPanel {
     list-style: none;
     margin: auto;
@@ -271,6 +290,7 @@ ul#buttonPanel li, #uiSkip {
 }
 
 label {
+    cursor: pointer;
     margin-right: 1em;
 }
 
