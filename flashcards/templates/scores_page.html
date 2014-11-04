@@ -12,6 +12,14 @@
     {{block.super}}
         <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
         <link rel="stylesheet" type="text/css" href="/static/css/switch.css" />
+        
+        <script type="text/javascript">
+            var cardRanks = [
+                {% for card in cards %}
+                    {{card.id_Difficulty}},
+                {% endfor %}
+            ];
+        </script>
 {% endblock %}
 
 {% block content %}
@@ -19,17 +27,25 @@
     
     <div id="content">
         {% include "switch_button.html" %}
-        <h2>{{ mostRecentDeck }}</h2>
-        <div class="section">
-            <p>
-                <div id="piechart"></div>
-                <table>
-                    <tr>
-                        <td><div id="count">45</div></td>
-                        <td>Total Cards</td>
-                    </tr>
-                </table>
-            </p>
-        </div>
+        {% if deckId %}
+            <h2>Deck Name</h2>
+            <div class="section">
+                <p>
+                    <div id="piechart"></div>
+                    <div id="count">21</div> Total Cards
+                    
+                </p>
+            </div>
+        {% else %}
+            <h2>Your Decks at a Glance</h2>
+            <div class="section">
+                <p>
+                    {% for deck in user_decks %}
+                        <div id="deckName">{{deck.Name}}:</div>
+                        <br /> <br />
+                    {% endfor %}
+                </p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
