@@ -12,13 +12,15 @@ class parseConfig:
         self.deck = {}
 
     def importDeck(self, request, filename):
-        "Import deck to file"
+        "Import deck to database from file"
             
         if request.user.is_authenticated():
             self.deck = yaml.load(filename)
             decks = self.getListOfDecks()
             cards = self.getListOfCards(decks[0])
             deck = createDeck(1, decks[0])
+            if cards == []:
+                return True, deck
             
             importedDeck = self.getDeck()
             for cards in importedDeck.values():
@@ -26,9 +28,9 @@ class parseConfig:
                     front = qNa[0].values()[0]
                     back = qNa[1].values()[0]
                     createCard(deck.id, False, front, back)
-            return True
+            return True, deck
         else:
-            return False
+            return False, deck
 
     def getDeck(self):
         return self.deck

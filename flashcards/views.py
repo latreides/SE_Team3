@@ -205,13 +205,18 @@ class ImportPage(LoginRedirect):
         deck = request.FILES.get('deck')
         #deck is an open file handle now
         if deck != None:
-            if decks.importDeck(request, deck):
+            result, returnedDeck = decks.importDeck(request, deck)
+            if result:
                 t = loader.get_template('import_export_page.html')
                 c = RequestContext(request)
                 c['user_decks'] = getDecksForUser(self.request.user)
-                return HttpResponse(t.render(c), status=200)
+                if getCardsForDeck(returnedDeck).count() == 0:
+                    createCard(returnedDeck.id, False, "", "")
+                    return HttpResponseRedirect(reverse("import_notification_page"))
+                else:
+                    return HttpResponse(t.render(c), status=200)
             else:
-                return HttpResponseRedirect(reverse("import_export_page"))
+                return HttpResponseRedirect(reverse("import_export_page")+'?deckId='+str(deck.id))
         else:
             exportFile = decks.exportDeck(request, request.POST.get('deck'))
             deckName = Deck.objects.get(pk = request.POST.get('deck')).Name
@@ -228,6 +233,27 @@ class ImportPage(LoginRedirect):
         context = super(ImportPage, self).get_context_data(**kwargs)
         context['user_decks'] = getDecksForUser(self.request.user)
         return context
+    
+class importNotificationPage(TemplateView):
+    template_name = 'import_notification_page.html'
+
+    #def get_context_data(self, **kwargs):
+        #deckId = self.request.GET.get('deckId')
+        #context = super(importNotificationPage, self).get_context_data(**kwargs)
+        #context['deckId'] = self.request.GET.get('deckId') 
+        #return context
+        
+    def get_context_data(self, **kwargs):
+        deckId = self.request.GET.get('deckId')
+        if deckId:
+            context = super(importNotificationPage, self).get_context_data(**kwargs)
+            context['deck'] = getDeck(deckId)
+            if context['deck']:
+                context['cards'] = getCardsForDeck(deckId)
+                context['themes'] = Deck.THEME_LIST
+            return context
+        else:
+            pass
 
 
 class WelcomePage(TemplateView):
