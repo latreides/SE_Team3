@@ -9,6 +9,8 @@ var showingHelpSection = [false, false, false, false];
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
 
+var ratingToSend = 6;
+
 /* ===== Color Fading Settings for flashcard content and buttons =====
  * Elements to flash upon click:
  *  - Difficulty buttons (data-ids 1 - 5, array indices 0 - 4, from Very Easy to Very Hard)
@@ -37,14 +39,14 @@ $(document).ready(function() {
     
     populateOriginalColors();
     
-    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     $("#uiCard").click(flip);
     
-    $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton);
+    $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     
     $("#whatDoIDoT").click(showHelpSection);
     $("#movingBetweenCardsT").click(showHelpSection);
@@ -129,13 +131,6 @@ function loadXMLDoc(deckId) {
     }
     xmlhttp.open("GET","/getNextCard/" + String(deckId),true);
     xmlhttp.send();
-}
-
-function getNewCard(id) {
-    var jqxhr = $.post("/getNextCard/"+ String(id));
-    // jqxhr.done(   function() { console.log("Success!"); } );
-    // jqxhr.fail(   function() { console.log("Failed!"); } );
-    // jqxhr.always( function() { console.log("Done."); } );
 }
 
 function toggleButtons() {
@@ -344,12 +339,34 @@ function colorFadeButton(id, from, to, attr) {
 	}
 }
 
-
-function rate(rating) {
+function getNextCard() {
+    var passRating = true;
+    var card = {};
     
-}
-
-function exitStageLeft() {
-    // shove the current card out and left.
+    if( $(this).attr("data-id") != 6 && !cardHasBeenFlipped )
+        return;
+    
+    if ( $(this).attr("data-id") == 6 ) { 
+        passRating = false;
+    }
+    var data = {};
+    data["deckId"] = $("#formDeckId").val();
+    data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").val();
+    if(passRating)
+        data["rating"] = $(this).attr("data-id");
+    var dataType = "json";
+    var response = $.post("/getNextCard", data, dataType);
+    response.done( function(cardJson) {
+        card = $.parseJSON(cardJson);
+        $("#uiCFT").html( card.frontText );
+        $("#uiCBT").html( card.backText );
+        
+        // console.log( card );
+    });
+    
+    if( !buttonsDisabled )
+        toggleButtons();
+    if( !showingFront )
+        flip();
     cardHasBeenFlipped = false;
 }

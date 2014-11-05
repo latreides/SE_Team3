@@ -17,6 +17,7 @@ import yaml
 from django.core.files.base import ContentFile
 from next import getNextCard  #To be removed
 from play import *
+import json
 
 class LoginRedirect(TemplateView):
 
@@ -173,7 +174,6 @@ class SigninPage(TemplateView):
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
-    @ensure_csrf_cookie
     def post(self, request, *args, **kwards):
         #update card
         pass
@@ -184,6 +184,7 @@ class PlayDeckPage(LoginRedirect):
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
 
+        context['deckId'] = deckId
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
 
@@ -297,6 +298,23 @@ class EditDeckPage(LoginRedirect):
 
 #To be removed
 class GetNextCard(View):
+
+    def post(self, request, *args, **kwargs):
+        deckId = self.request.POST.get('deckId')
+        deckObject = getDeck(deckId)
+        
+        deckModel = engine()
+        deckModel.play(deckId)
+        card = deckModel.getNextCard()
+        
+        # print "Deck " + str(deckId)
+        # print "Card " + str(card)
+        # print card.Front_Text
+        # print card.Back_Text
+        
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text};
+        return HttpResponse( json.dumps(cardData), content_type="application/jason")
+        
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
         return HttpResponse(card)
