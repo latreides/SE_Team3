@@ -23,7 +23,30 @@ td.description {
     width: 90%;
 }
 
+{
+    border: solid red 1px;
+}
+
 td.radio {
     float: left;
     width:10%;
+    border: none;
+}
+
+input{
+    border: none;
+}
+
+input:hover {
+    background: none;
+}
+
+.custom-file-input{
+    border: solid white 2px;
+    padding: 2px;
+    width: 200px;
+}
+
+input.submitBtn{
+    left: 0px;
 }

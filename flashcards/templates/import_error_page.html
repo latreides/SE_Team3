@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block css %}
+    {{block.super}}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <h1>You have imported an empty file!</h1>
+
+{% endblock %}

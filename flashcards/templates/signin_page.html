@@ -7,15 +7,13 @@
  <h2>Been Here Before?</h2>
  <div class = "section">
   <p>
-   If you're a returning user, please login 
+   If you're a returning user, please login
    below to access all the features of your account.
   </p>
-  <form id="sign-in" method="post" onsubmit="return true;" action="">
+  <form class="centerForm" id="sign-in" method="post" onsubmit="return true;" action="">
   {% csrf_token %}
-   <input name="username" type="text" placeholder="Username">
-   <br>
-   <input name="password" type="password" placeholder="Password">
-   <br>
+   <input name="username" type="text" placeholder="Username"><br>
+   <input name="password" type="password" placeholder="Password"><br>
    <input type="submit" name="signin" value="Sign In">
    <div class='ErrorMessage'>{{invalid_login}}</div>
   </form>
@@ -23,18 +21,15 @@
  <h2>New to MemorizeMe?</h2>
  <div class = "section">
   <p>
-   If you're new to MemorizeMe, take a few seconds 
+   If you're new to MemorizeMe, take a few seconds
    to create a profile below and get access to a
    fun and innovative way of learning something new!
   </p>
-  <form id="sign-up" method="post" onsubmit="return true;" action="">
+  <form class="centerForm" id="sign-up" method="post" onsubmit="return true;" action="">
   {% csrf_token %}
-    <input name="username" type="text" placeholder="Pick a user name">
-   <br>
-    <input name="password1" type="password" placeholder="Pick a password">
-   <br>
-    <input name="password2" type="password" placeholder="Retype your password">
-   <br>
+    <input name="username" type="text" placeholder="Pick a user name"><br>
+    <input name="password1" type="password" placeholder="Pick a password"><br>
+    <input name="password2" type="password" placeholder="Retype your password"><br>
    <input type="submit" name="signup" value="Sign Up">
    <div class='ErrorMessage'>{{invalid_signup}}</div>
   </form>

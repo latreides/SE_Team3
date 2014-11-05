@@ -12,6 +12,7 @@
         {% block javascript %}
             <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
             <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+
         {% endblock %}
         <title>{% block title %}Flash Cards{% endblock %}</title>
         {% block extrahead %}{% endblock %}
@@ -29,7 +30,7 @@
                 <li><a class="show" href="{% url 'scores' %}">My Scores</a></li>
                 <li><a class="show" href="{% url 'account' %}">Account</a></li>
                 <li><a class="show" href="{% url 'contact' %}">Contact</a></li>
-                <li><a class="show" href="{% url 'signin' %}">Sign Up/Log In</a></li></ul>
+                <li><a class="show" href="{% url 'logout' %}">Logout</a></li></ul>
         </nav>
         {% endspaceless %}
 
@@ -43,7 +44,7 @@
         {% endblock %}
 
         {% block footer %}
-            <p>
+            <p id="footer">
                 <h4>Copyright © 2014 SE_Team3</h4>
             </p>
         {% endblock %}

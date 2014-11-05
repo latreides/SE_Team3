@@ -45,7 +45,7 @@ $(document).ready(function(){
             $("#createDeck").submit();
         });
 
-        $('#editDeckBtn').click(function(){
+        $('#editIcon').click(function(){
             window.location = $(this).data('url') + '?deckId=' + $('#deckManagement').attr('data-deckId');
         });
 });

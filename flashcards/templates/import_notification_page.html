@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block css %}
+    {{block.super}}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/import_notification.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <h1>You have imported an empty file!</h1>
+    
+    <!--<h1>Click <a data-deckId = "{{ deckId }}" href = "{% url 'edit' %}?deckId = {{ deckId }}">here</a> to manage your decks.</h1>-->
+    <h1><h1>Click <a href = "{% url 'view_decks' %}">here</a> to manage your decks and add cards.</h1>
+ </h1>
+    <br/>
+
+{% endblock %}

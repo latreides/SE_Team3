@@ -9,33 +9,52 @@
         <script src="{% static 'js/edit_deck_page.js' %}" ></script>
 {% endblock %}
 {% block content %}
-
-<div id="editContainer">
-    <div class="contentBox" id="detailsContainer">
-        <div id="deckDetails">
-            Deck Name: <input id="deckName" type="text" name="deckName" value="{{ deck.Name }}"><br>
+<form action="{% url 'deck_changes' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="deckId" value="{{ deck.id }}">
+    <div id="editContainer">
+        <div class="contentBox" id="detailsContainer">
+            <div id="deckDetails">
+                <div class="deckLabel">Deck Name:</div>
+                <input id="deckName" type="text" name="deckName" value="{{ deck.Name }}"><br>
+                <div class="deckLabel">Deck Tags:</div>
+                <input id="deckTags" type="text" name="deckTags" value="{{ deck.Tags }}"><br>
+            </div>
+            Card Theme:
+            <div id="themeContainer">
+                {% for theme in themes %}
+                  <img class="themePreview {% if deck.Theme = theme.1 %}themeSelected{% endif %}" src="{% static 'themes/' %}{{ theme.1 }}" data-theme="{{ theme.1 }}" >
+                {% endfor %}
+                <input id="themeField" type="hidden" name="deckTheme" value="{{ deck.Theme }}">
+            </div>
         </div>
-        Card Theme:
-        <div id="themeContainer">
-            {% for theme in themes %}
-              <img class="themePreview {% if deck.Theme = theme.0 %}themeSelected{% endif %}" src="{% static 'themes/' %}{{ theme.1 }}">
-            {% endfor %}
+        <div class="contentBox">
+            <div id="previewContainer">
+                <div id="previewScrollLeft"></div>
+                <div id="previewScrollRight"></div>
+                <div id="previewBlocker"></div>
+                <div id="cardsContainer">
+                    {% for card in cards %}
+                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
+                            <label>{{ card.Front_Text }}</label>
+                            <input  id="frontText-{{ card.id }}" type="hidden" name="front-{{ card.id }}" value="{{ card.Front_Text }}">
+                            <input  id="backText-{{ card.id }}" type="hidden" name="back-{{ card.id }}" value="{{ card.Back_Text }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="addCard">+</div>
+                <div id="removeCard">-</div>
+                <input id="cardIdList" type="hidden" name="cardIdList" value="">
+            </div>
+            <div id="cardPreview" data-cardId style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')">
+                <textarea id="cardTextContent" rows="4" cols="30"></textarea><br>
+            </div>
+            <div id="cardSideSelector">
+                <input class="cardSideRadio" id="cardFront" type="radio" name="cardEditSide" value="front" checked><label for="cardFront">Front</label>
+                <input class="cardSideRadio" id="cardBack" type="radio" name="cardEditSide" value="back"><label for="cardBack">Back</label>
+            </div>
         </div>
     </div>
-    <div class="contentBox">
-        <div id="previewContainer">
-            {% for card in cards %}
-                <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-text-front="{{ card.Front_Text }}" data-text-back="{{ card.Back_Text }}" data-cardId="{{ card.id }}">{{ card.Front_Text }}</div>
-            {% endfor %}
-            <div id="addCard">+</div>
-        </div>
-        <div id="cardPreview" data-cardId style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')">
-            <textarea id="cardTextContent" rows="4" cols="30"></textarea><br>
-        </div>
-        <div id="cardSideSelector">
-            <input class="cardSideRadio" id="cardFront" type="radio" name="cardEditSide" value="front" checked><label for="cardFront">Front</label>
-            <input class="cardSideRadio" id="cardBack" type="radio" name="cardEditSide" value="back"><label for="cardBack">Back</label>
-        </div>
-    </div>
-</div>
+    <input type="submit" id="submitDeckChanges" class="button" value="Save Changes">
+</form>
 {% endblock %}

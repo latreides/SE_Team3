@@ -17,7 +17,7 @@
     <div id="playField">
         <div>
             <h5>Now Playing</h5>
-            <div id="deckTitle">DECK TITLE</div>
+            <div id="deckTitle">{{ deckName }}</div>
         </div>
         <div id="playFrame">
             <div id="uiSettingsDrawer">
@@ -26,51 +26,54 @@
                 <form action="">
                     {% csrf_token %}
                     <span id="cardOrder">Present cards to me: </span>
-                    <label><input type="radio" name="order" value="frontFirst" checked="checked">Front side first</label>
-                    <label><input type="radio" name="order" value="backFirst">Back side first</label>
-                    <label><input type="radio" name="order" value="random">Front or back at random</label>
+                    <label><input type="radio" name="order" value="frontFirst" checked="checked">
+                        <span></span>Front side first
+                    </label>
+                    <label><input type="radio" name="order" value="backFirst">
+                        <span></span>Back side first
+                    </label>
+                    <label><input type="radio" name="order" value="random">
+                        <span></span>Front or back at random
+                    </label>
                 </form>
             </div>
             <div id="uiSettingsButton" title="settings"></div>
             
-            <div id="uiCard" title="Click to flip">
-                <div id="uiCardFront">
-                    <div id="uiQuestion">FRONT
-Sample card
-[Example here]</div>
+            <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
+                <!-- Element Data IDs are used by the JS for quick & easy indexing -->
+                <div id="uiCardFront" data-id="7">
+                    <div class="uiQuestion">{{ card.Front_Text }}</div>
                 </div>
-                <div id="uiCardBack" class="hide">
-                    <div id="uiQuestion">BACK
-Sample card
-[Something here]</div>
+                <div id="uiCardBack" class="hide" data-id="8">
+                    <div class="uiQuestion">{{ card.Back_Text }}</div>
                 </div>
             </div>
             <ul id="buttonPanel">
-                <li class="uiButton uiButton-resize" id="ui5" data-id="5">
+                <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
                     <div id="uiBtnIcon5">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
                     </div>
                     Very Hard
                 </li>
-                <li class="uiButton uiButton-resize" id="ui4" data-id="4">
+                <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
                     <div id="uiBtnIcon4">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
                     </div>
                     Hard
                 </li>
-                <li class="uiButton uiButton-resize" id="ui3" data-id="3">
+                <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
                     <div id="uiBtnIcon3">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
                     </div>
                     OK
                 </li>
-                <li class="uiButton uiButton-resize" id="ui2" data-id="2">
+                <li class="uiButtonDisabled uiButton-resize" id="ui2" data-id="2">
                     <div id="uiBtnIcon2">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
                     </div>
                     Easy
                 </li>
-                <li class="uiButton uiButton-resize" id="ui1" data-id="1">
+                <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
                     <div id="uiBtnIcon1">
                         <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
                     </div>
@@ -87,7 +90,11 @@ Sample card
             <div id="uiHelpButton" title="Help"></div>
             <br><br>
             <div id="uiHelpDrawer">
-                <span class="drawerTitle">HELP</span>
+                <div class="drawerTitle">HELP</div>
+                Please click a topic below. 
+                Click the "?" Help button any time to close or reopen 
+                this drawer. You can also use the F1 or "?" keys on your keyboard 
+                as a short-cut.
                 <hr>
                 <div class="helpTitle" id="whatDoIDoT" data-helpID="0">
                     &rsaquo; What do I do Here?
@@ -116,25 +123,50 @@ Sample card
                 <div class="helpSection" id="shortcutsD">
                     Don't want to use the mouse? No problem! You can use the 
                     following keyboard short-cuts to do the same tasks:
-                    <ul>
-                        <li>Space bar - flip the card</li>
-                        <li>1 - rate the card as <em>very hard</em>.</li>
-                        <li>2 - rate the card as <em>hard</em>.</li>
-                        <li>3 - rate the card as <em>OK</em>.</li>
-                        <li>4 - rate the card as <em>easy</em>.</li>
-                        <li>5 - rate the card as <em>very easy</em>.</li>
-                        <li>Left/Right arrow key - skip the current card</li>
+                    <ul id="helpList">
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">Space bar</span> - flip the card
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">1</span> - rate the card as <em>very hard</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">2</span> - rate the card as <em>hard</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">3</span> - rate the card as <em>OK</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">4</span> - rate the card as <em>easy</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">5</span> - rate the card as <em>very easy</em>.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">Left</span> or <span class="helpKey">Right arrow key</span> - skip the current card.
+                        </li>
+                        <li>
+                            <img src="{% static 'img/card_icon0.png' %}"/>
+                            <span class="helpKey">F1</span> or <span class="helpKey">?</span> - open/close the help drawer.
+                        </li>
                     </ul>
                 </div>
                 <div class="helpTitle" id="settingsT" data-helpID="3">
                     &rsaquo; Settings
                 </div>
                 <div class="helpSection" id="settingsD">
-                    You can click the wrench in the upper right hand corner to 
-                    access the Settings.There, you can change which side of the 
-                    card is initially displayed to you.
+                    You can click the wrench situated just above and to the right 
+                    of the flashcard to access the Settings. There, you can 
+                    change which side of the card is initially displayed to 
+                    you, where applicable.
                 </div>
-                Click the "?" Help button again to close this drawer.
             </div>
         </div>
     </div>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block content %}
+{% block css %}
+        {{ block.super }}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/deck_search_results.css' %}" />
+{% endblock %}
+    <h1>Deck Search Results</h1>
+	<div id="content">
+	<div id="deckPane">
+	<table>
+	{% for deck in matching_decks %}
+	
+	<!-- decks currently fetched in a dictionary -->
+		<tr class="deckItem">
+			<td>{{ deck.Name }}</td>
+			<td class="deckActions">
+				<a href="{% url 'scores' deck.id %}">
+					<div id="cloneIcon" class="icon" title="Clone Deck"></div>
+				</a>
+				<a href="{% url 'play_deck' deck.id %}">
+					<div id="viewIcon" class="icon" title="View Deck"></div>
+				</a>
+			</td>
+		</tr>
+	</table>
+	<ul>
+		<div> Times Cloned: {{ deck.Times_Cloned }} </div>
+		<div> Author: {{ deck.User_ID }} </div>
+		<div> Keywords: {{ deck.Tags }} </div>
+	</ul>
+	{% endfor %}
+	</div>
+	</div>
+{% endblock %}
