@@ -75,11 +75,11 @@ document.addEventListener( "keyup", function(event) {
                 break;
                 
             case 49: // Number row: 1
-                $("#ui5").trigger("click");
+                $("#ui1").trigger("click");
                 break;
                 
             case 50: // Number row: 2
-                $("#ui4").trigger("click");
+                $("#ui2").trigger("click");
                 break;
                 
             case 51: // Number row: 3
@@ -87,11 +87,11 @@ document.addEventListener( "keyup", function(event) {
                 break;
                 
             case 52: // Number row: 4
-                $("#ui2").trigger("click");
+                $("#ui4").trigger("click");
                 break;
                 
             case 53: // Number row: 5
-                $("#ui1").trigger("click");
+                $("#ui5").trigger("click");
                 break;
                 
             case 112: // F1 key

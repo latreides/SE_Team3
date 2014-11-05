@@ -84,7 +84,6 @@ a.btnRight{
     overflow: hidden; 
     padding-left: 8px;
     padding-right: 8px;
-    
 }
 
 #playField h5 {
@@ -136,7 +135,7 @@ input[type="radio"]:checked + span {
 }
 
 ul#buttonPanel li, #uiSkip {
-    max-height: 15px;
+    max-height: 27px;
     overflow: hidden;
 }
 
@@ -230,7 +229,8 @@ ul#buttonPanel li, #uiSkip {
 }
 
 .uiButtonIcon {
-    margin-bottom: 16px;
+    margin-top: 3px;
+    margin-bottom: 2px;
     vertical-align: middle;
 }
 
@@ -317,7 +317,7 @@ label {
 }
 
 #uiHelpButton:hover {
-    background-image: url('../img/help_inv.png');
+    background-image: url('../img/help_hover.png');
 }
 
 #uiHelpButton.helpOpen {

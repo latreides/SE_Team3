@@ -36,7 +36,7 @@
                 </label>
 
             </div>
-            <div id="uiSettingsButton" title="settings"></div>
+            <div id="uiSettingsButton" title="Settings"></div>
             
             <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
@@ -51,47 +51,53 @@
                 {% csrf_token %}
                 <input type="hidden" id="formDeckId" value="{{ deckId }}"/>
                 <ul id="buttonPanel">
-                    <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
-                        <div id="uiBtnIcon5">
-                            <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
+                        <div id="uiBtnIcon1">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
                         </div>
-                        Very Hard
-                    </li>
-                    <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
-                        <div id="uiBtnIcon4">
-                            <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
-                        </div>
-                        Hard
-                    </li>
-                    <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
-                        <div id="uiBtnIcon3">
-                            <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
-                        </div>
-                        OK
+                        Very Easy<br>
+                        [ 1 ]
                     </li>
                     <li class="uiButtonDisabled uiButton-resize" id="ui2" data-id="2">
                         <div id="uiBtnIcon2">
                             <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
                         </div>
-                        Easy
+                        Easy<br>
+                        [ 2 ]
                     </li>
-                    <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
-                        <div id="uiBtnIcon1">
-                            <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
+                        <div id="uiBtnIcon3">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
                         </div>
-                        Very Easy
+                        OK<br>
+                        [ 3 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
+                        <div id="uiBtnIcon4">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
+                        </div>
+                        Hard<br>
+                        [ 4 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
+                        <div id="uiBtnIcon5">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+                        </div>
+                        Very Hard<br>
+                        [ 5 ]
                     </li>
                     <br>
                     <div class="uiButton" id="uiSkip" data-id="6">
                         <div id="uiBtnIconSkip">
                             <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
                         </div>
-                        Skip
+                        Skip<br>
+                        [ space bar ]
                     </div>
                 </ul>
             </form>
                 
-            <div id="uiHelpButton" title="Help"></div>
+            <div id="uiHelpButton" title="Help [F1]"></div>
             <br><br>
             <div id="uiHelpDrawer">
                 <div class="drawerTitle">HELP</div>
@@ -126,7 +132,9 @@
                 </div>
                 <div class="helpSection" id="shortcutsD">
                     Don't want to use the mouse? No problem! You can use the 
-                    following keyboard short-cuts to do the same tasks:
+                    following keyboard short-cuts to do the same tasks:<br>
+                    <em>Hint: these hotkeys are also shown in 
+                    <strong>[</strong> brackets <strong>]</strong> inside each button!</em>
                     <ul id="helpList">
                         <li>
                             <img src="{% static 'img/card_icon0.png' %}"/>
