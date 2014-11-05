@@ -8,6 +8,7 @@ class engine:
 
     def __init__(self):
         self.boxes = {k:[] for k in range(1,6)}
+        self.deckId = None
     
     def sortCardsInBoxes(self, cardlist):
         for card in cardlist:
@@ -19,15 +20,13 @@ class engine:
     
     def play(self, deckId):
         #deck = getDeck(deckId)
-        if type(deckId) == int:
-            cardlist = getCardsForDeck(deckId)
-            self.sortCardsInBoxes(cardlist)
-        else:
-            return None
-    
+        self.deckId = int(deckId)
+        cardlist = getCardsForDeck(deckId)
+        self.sortCardsInBoxes(cardlist)
+        
     #Temp function
-    def getNextCard(self, deckId):
-        deckOfCards = getCardsForDeck(deckId)
+    def getNextCard(self):
+        deckOfCards = getCardsForDeck(self.deckId)
         card = deckOfCards.order_by('?')[0]
         return card
         

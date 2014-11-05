@@ -189,7 +189,9 @@ class PlayDeckPage(LoginRedirect):
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()
+            engineObj.play(deckId)
             context['deck'] = engineObj
+            context['card'] = engineObj.getNextCard()
             return context
             #self.request.session['playObj'].play(int(deckId))
         else:

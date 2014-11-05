@@ -42,14 +42,10 @@
             <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
                 <div id="uiCardFront" data-id="7">
-                    <div class="uiQuestion">FRONT
-Sample card
-[Example here]</div>
+                    <div class="uiQuestion">{{ card.Front_Text }}</div>
                 </div>
                 <div id="uiCardBack" class="hide" data-id="8">
-                    <div class="uiQuestion">BACK
-Sample card
-[Something here]</div>
+                    <div class="uiQuestion">{{ card.Back_Text }}</div>
                 </div>
             </div>
             <ul id="buttonPanel">
