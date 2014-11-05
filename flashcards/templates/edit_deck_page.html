@@ -32,6 +32,7 @@
             <div id="previewContainer">
                 <div id="previewScrollLeft"></div>
                 <div id="previewScrollRight"></div>
+                <div id="previewBlocker"></div>
                 <div id="cardsContainer">
                     {% for card in cards %}
                         <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
