@@ -130,15 +130,15 @@ class SigninPage(TemplateView):
                 self.signIn(request)
             except Exception as e:
                 return HttpResponseRedirect(reverse('signin') + '?' + str(e) + '=True')
-            
+
             return HttpResponseRedirect(reverse('landing_page'))
-        
+
         else:
             try:
                 self.signUp(request)
             except Exception as e:
                 return HttpResponseRedirect(reverse('signin') + '?' + str(e) + '=True')
-            
+
             return HttpResponseRedirect(reverse('landing_page'))
 
     def signIn(self, request):
@@ -181,11 +181,11 @@ class PlayDeckPage(LoginRedirect):
         #deckId = self.request.GET.get('deck')
         deckId = kwargs.get('deck', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
-        userDeck = getDecksForUser(self.request.user)[int(deckId)-1]
+        userDeck = getDecksForUser(self.request.user).get(id=deckId)
         
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
-        
+
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()
@@ -233,16 +233,16 @@ class ImportPage(LoginRedirect):
         context = super(ImportPage, self).get_context_data(**kwargs)
         context['user_decks'] = getDecksForUser(self.request.user)
         return context
-    
+
 class importNotificationPage(TemplateView):
     template_name = 'import_notification_page.html'
 
     #def get_context_data(self, **kwargs):
         #deckId = self.request.GET.get('deckId')
         #context = super(importNotificationPage, self).get_context_data(**kwargs)
-        #context['deckId'] = self.request.GET.get('deckId') 
+        #context['deckId'] = self.request.GET.get('deckId')
         #return context
-        
+
     def get_context_data(self, **kwargs):
         deckId = self.request.GET.get('deckId')
         if deckId:
@@ -345,7 +345,7 @@ class deckSearchResults(LoginRedirect):
         return context
 
 class logout(View):
-    
+
   def get(self, request, *args, **kwargs):
       auth.logout(request)
       return HttpResponseRedirect(reverse('welcome'))
