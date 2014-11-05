@@ -19,7 +19,7 @@
             </p>
         </div>
 
-        <form action="" method="post" enctype="multipart/form-data">
+        <form class="centerForm" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" class="custom-file-input" name="deck" id="file"><br>
             <input type="submit" class="submitBtn" name="submit" value="Import">
@@ -35,14 +35,14 @@
         </div>
 
         <div class="radioList">
-            <form action="" method="post">
+            <form class="centerForm" action="" method="post">
                 {% csrf_token %}
-                
+
                 <table>
                     {% for deck in user_decks %}
                     <tr>
                         <td class="radio">
-                            <input type="radio" name="deck" id="deck{{deck.id}}"value="{{deck.id}}"  />
+                            <input type="radio" name="deck" id="deck{{deck.id}}" value="{{deck.id}}" />
                         </td>
                         <td class="description">
                             <label for="deck{{ deck.id }}">{{ deck.Name }}</label>
@@ -50,7 +50,7 @@
                     </tr>
                     {% endfor %}
                 </table>
-                
+
                 <input type="submit" class="submitBtn" value="Export" />
             </form>
         </div>    

@@ -22,5 +22,7 @@ urlpatterns = patterns('',
                         url(r'^getNextCard/(?P<deckID>\d+)$', GetNextCard().drawCard, name='get_next_card'),
                         url(r'^logout$', logout.as_view(), name='logout'),
                         url(r'^deck_search_results$', deckSearchResults.as_view(), name='deck_search_results'),
-                        url(r'^import_notification$', importNotificationPage.as_view(), name = 'import_notification_page')
+                        url(r'^import_notification$', importNotificationPage.as_view(), name = 'import_notification_page'),
+                        url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'flashcards.views.reset_confirm', name='password_reset_confirm'),
+                        url(r'^reset/$', 'flashcards.views.reset', name='reset')
                        )

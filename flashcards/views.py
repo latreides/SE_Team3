@@ -9,6 +9,7 @@ from django.contrib import auth
 from flashcards.decks import *
 from urllib import quote, unquote
 from django.contrib.auth.models import User
+from django.contrib.auth.views import password_reset, password_reset_confirm
 import glob
 import ntpath
 import os
@@ -353,3 +354,13 @@ class logout(View):
   def get(self, request, *args, **kwargs):
       auth.logout(request)
       return HttpResponseRedirect(reverse('welcome'))
+
+def reset_confirm(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
+        uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))
+
+def reset(request):
+    return password_reset(request, template_name='registration/password_reset_form.html',
+        email_template_name='registration/password_reset_email.html',
+        subject_template_name='registration/password_reset_subject.text',
+        post_reset_redirect=reverse('signin'))
