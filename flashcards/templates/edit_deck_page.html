@@ -15,7 +15,10 @@
     <div id="editContainer">
         <div class="contentBox" id="detailsContainer">
             <div id="deckDetails">
-                Deck Name: <input id="deckName" type="text" name="deckName" value="{{ deck.Name }}"><br>
+                <div class="deckLabel">Deck Name:</div>
+                <input id="deckName" type="text" name="deckName" value="{{ deck.Name }}"><br>
+                <div class="deckLabel">Deck Tags:</div>
+                <input id="deckTags" type="text" name="deckTags" value="{{ deck.Tags }}"><br>
             </div>
             Card Theme:
             <div id="themeContainer">
@@ -27,17 +30,19 @@
         </div>
         <div class="contentBox">
             <div id="previewContainer">
-                {% for card in cards %}
-                    <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
-                        <label>{{ card.Front_Text }}</label>
-                        <input  id="frontText-{{ card.id }}" type="hidden" name="front-{{ card.id }}" value="{{ card.Front_Text }}">
-                        <input  id="backText-{{ card.id }}" type="hidden" name="back-{{ card.id }}" value="{{ card.Back_Text }}">
-                    </div>
-
-                {% endfor %}
+                <div id="previewScrollLeft"></div>
+                <div id="previewScrollRight"></div>
+                <div id="cardsContainer">
+                    {% for card in cards %}
+                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
+                            <label>{{ card.Front_Text }}</label>
+                            <input  id="frontText-{{ card.id }}" type="hidden" name="front-{{ card.id }}" value="{{ card.Front_Text }}">
+                            <input  id="backText-{{ card.id }}" type="hidden" name="back-{{ card.id }}" value="{{ card.Back_Text }}">
+                        </div>
+                    {% endfor %}
+                </div>
                 <div id="addCard">+</div>
                 <div id="removeCard">-</div>
-
                 <input id="cardIdList" type="hidden" name="cardIdList" value="">
             </div>
             <div id="cardPreview" data-cardId style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')">

@@ -182,7 +182,7 @@ class PlayDeckPage(LoginRedirect):
         deckId = kwargs.get('deck', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
-        
+
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
 
@@ -306,10 +306,12 @@ class deckChangesPage(View):
         deckId = self.request.POST.get('deckId')
         deckName = self.request.POST.get('deckName')
         deckTheme = self.request.POST.get('deckTheme')
+        deckTags = self.request.POST.get('deckTags')
 
         deckObject = getDeck(deckId)
         deckObject.Name = deckName
         deckObject.Theme = deckTheme
+        deckObject.Tags = deckTags
 
         for cardId in cardIdList:
             frontText = self.request.POST.get('front-%s' % cardId)

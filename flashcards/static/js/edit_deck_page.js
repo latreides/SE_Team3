@@ -33,6 +33,9 @@ function updateCardList(){
     $(cardIdList).val(newCardList.toString());
 
     var visibleCount = $('.cardMiniPreview:not(.cardRemoved)').length;
+
+    $('#cardsContainer').css('width', (68*visibleCount) + 'px')
+
     $('#removeCard').toggle(visibleCount > 1);
 }
 
@@ -66,11 +69,13 @@ $(document).ready(function(){
     $('#addCard').click(function(){
         var cardId = 'new_' + (newCardCounter++);
         var cardImage = $('.cardSelected').css('background-image');
-        var newPreviewDiv =  $('<div class="cardMiniPreview" data-cardId="' + cardId + '" style="background-image:' + cardImage + '" ></div>');
+        var newPreviewDiv =  $('<div class="cardMiniPreview cardMiniPreview-add" data-cardId="' + cardId + '" style="background-image:' + cardImage + '" ></div>');
         var newLabel = $('<label></label>');
         var newFrontField = $('<input  id="frontText-' + cardId  + '" type="hidden" name="front-' + cardId + '" value="">');
         var newBackField = $('<input  id="backText-' + cardId  + '" type="hidden" name="back-' + cardId + '" value="">');
-        $(newPreviewDiv).insertBefore($(this));
+
+        $('#cardsContainer').append($(newPreviewDiv))
+        //$(newPreviewDiv).insertBefore($(this));
         $(newPreviewDiv).append(newLabel);
         $(newPreviewDiv).append(newFrontField);
         $(newPreviewDiv).append(newBackField);
@@ -117,5 +122,24 @@ $(document).ready(function(){
 
     $('#cardTextContent').change(updateText);
     $('#cardTextContent').keyup(updateText);
+
+    $('#previewScrollLeft').click(function(){
+        var container = $('#cardsContainer');
+        var newLeft = (container.position().left + 64);
+        if (newLeft > 0) {
+            newLeft = 0;
+        }
+        container.css('left', newLeft + 'px');
+    })
+
+    $('#previewScrollRight').click(function(){
+        var container = $('#cardsContainer');
+        var newLeft = (container.position().left - 64);
+        var farRight = newLeft + container.width();
+        if (farRight >= $(this).position().left) {
+            container.css('left', newLeft + 'px');
+        }
+    })
+
     updateCardList();
 });
