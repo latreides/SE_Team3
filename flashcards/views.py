@@ -74,6 +74,7 @@ class ScoresPage(LoginRedirect):
        if deckId:
            context['deck'] = getDeck(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)
+           
        else:
            context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)

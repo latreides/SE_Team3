@@ -14,7 +14,6 @@
     font-size: 16px;
     color: white; 
     border: solid 1px black;
-    border-radius: 25px;
     transition: all .2s ease-in-out;
     
 }
@@ -38,8 +37,10 @@
 }
 .switch > ul.menu li {
     padding-top: 10px;
+    padding-left: 5px;
     padding-bottom: 10px;
     border-bottom: solid 1px grey;
+    
 }
 .switch > ul.menu li:hover {
     cursor: pointer;
@@ -48,4 +49,16 @@
 }
 .switch > ul.menu li:last-child { 
     border:none 
+}
+
+a:hover {
+  color: black;
+}
+
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: black;
 }
