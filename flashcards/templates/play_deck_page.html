@@ -47,6 +47,7 @@
                     <div id="uiCBT" class="uiQuestion">{{ card.Back_Text }}</div>
                 </div>
             </div>
+            <div id="flipHotkey"></div>
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" id="formDeckId" value="{{ deckId }}"/>
@@ -92,7 +93,7 @@
                             <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
                         </div>
                         Skip<br>
-                        [ space bar ]
+                        [ &larr; arrow keys &rarr; ]
                     </div>
                 </ul>
             </form>

@@ -45,6 +45,7 @@ $(document).ready(function() {
     $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     $("#uiCard").click(flip);
+    $("#flipHotkey").click(flip);
     
     $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     
