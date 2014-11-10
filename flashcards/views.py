@@ -70,11 +70,11 @@ class ScoresPage(LoginRedirect):
        context = super(ScoresPage, self).get_context_data(**kwargs)
        deckId = context.get('deckId')
        context['user_decks'] = getDecksForUser(self.request.user)
-       context['cards'] = getCardsForDeck(deckId)
        if deckId:
+           context['cards'] = getCardsForDeck(deckId)
            context['deck'] = getDeck(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)
-           
+
        else:
            context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)
@@ -303,20 +303,20 @@ class GetNextCard(View):
     def post(self, request, *args, **kwargs):
         deckId = self.request.POST.get('deckId')
         deckObject = getDeck(deckId)
-        
+
         deckModel = engine()
         deckModel.play(deckId)
         card = deckModel.getNextCard()
         print(card)
-        
+
         # print "Deck " + str(deckId)
         # print "Card " + str(card)
         # print card.Front_Text
         # print card.Back_Text
-        
+
         cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text};
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
-        
+
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
         return HttpResponse(card)
