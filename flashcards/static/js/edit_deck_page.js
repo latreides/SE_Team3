@@ -142,4 +142,27 @@ $(document).ready(function(){
     })
 
     updateCardList();
+    
+    $("#uploadImages").click( function() {
+        $("#overlay").show();
+        $("#imageDrawer").show();
+        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height();
+        $("#imageDrawer").css( "top", offset );
+        console.log( $(window).innerHeight() );
+    });
+    
+    $("#cancelUpload").click( function() {
+        $("#overlay").hide();
+        $("#imageDrawer").hide();
+    });
+    
+    $("#overlay").click( function() {
+        $("#overlay").hide();
+        $("#imageDrawer").hide();
+    });
+    
+    $(window).resize( function() {
+        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height();
+        $("#imageDrawer").css( "top", offset );
+    });
 });

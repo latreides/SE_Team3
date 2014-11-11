@@ -27,6 +27,10 @@
                 {% endfor %}
                 <input id="themeField" type="hidden" name="deckTheme" value="{{ deck.Theme }}">
             </div>
+
+            <!--action="{% url 'deck_changes' %}"-->
+            <div id="uploadImages" class="button">Upload an Image</div>
+            <div id="addImages" class="button">Insert Image on Card</div>
         </div>
         <div class="contentBox">
             <div id="previewContainer">
@@ -56,5 +60,17 @@
         </div>
     </div>
     <input type="submit" id="submitDeckChanges" class="button" value="Save Changes">
+</form>
+<div id="overlay"></div>
+<form id="imageForm" name="imageForm" method="POST" enctype="multipart/form-data"><!--action="{% url 'deck_changes' %}"-->
+    {% csrf_token %}
+    <div id="imageDrawer">
+        <img src="{% static 'img/upload_1.png' %}" alt="Upload">
+        <div>Upload an Image</div>
+        <input id="uploadImagesButton" for="imageForm" type="file" name="uploadImage" accept="image/*">
+        <div id="uploadedImage"></div>
+        <input id="cancelUpload" class="button" for="imageForm" type="reset" value="Cancel">
+        <input class="button" for="imageForm" type="submit" value="Upload">
+    </div>
 </form>
 {% endblock %}
