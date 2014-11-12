@@ -55,6 +55,31 @@ function selectCard(card){
         $(card).addClass('cardSelected');
 }
 
+function previewUploadedImage() {
+    var input = $("#uploadImagesButton")[0];
+    var img = $("#uploadImagesButton")[0].files[0];
+    
+    if( !(new FileReader()) ) {
+        console.log("FileReader unsupported! Preview will not function.");
+        return;
+    }
+    
+    if( input.files && input.files[0] ) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+            $("#uploadedImage").attr( "src", e.target.result );
+            $("#imgPreviewContainer").show();
+            $("#imgPreviewContainer").css("max-width", $("body").width());
+            
+            var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
+            $("#imageDrawer").css( "top", offset );
+        }
+        
+        reader.readAsDataURL( input.files[0] );
+    }
+}
+
 $(document).ready(function(){
     $('#previewContainer').on("click", ".cardMiniPreview", function(){
         selectCard($(this));
@@ -140,29 +165,32 @@ $(document).ready(function(){
             container.css('left', newLeft + 'px');
         }
     })
-
-    updateCardList();
     
     $("#uploadImages").click( function() {
         $("#overlay").show();
         $("#imageDrawer").show();
-        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height();
+        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
         $("#imageDrawer").css( "top", offset );
-        console.log( $(window).innerHeight() );
     });
     
     $("#cancelUpload").click( function() {
         $("#overlay").hide();
         $("#imageDrawer").hide();
+        $("#imgPreviewContainer").hide();
     });
     
     $("#overlay").click( function() {
         $("#overlay").hide();
         $("#imageDrawer").hide();
+        $("#imgPreviewContainer").hide();
     });
     
     $(window).resize( function() {
-        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height();
+        var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
         $("#imageDrawer").css( "top", offset );
     });
+    
+    $("#uploadImagesButton").change( previewUploadedImage );
+
+    updateCardList();
 });

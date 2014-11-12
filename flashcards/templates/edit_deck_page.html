@@ -65,12 +65,20 @@
 <form id="imageForm" name="imageForm" method="POST" enctype="multipart/form-data"><!--action="{% url 'deck_changes' %}"-->
     {% csrf_token %}
     <div id="imageDrawer">
-        <img src="{% static 'img/upload_1.png' %}" alt="Upload">
+        <img src="{% static 'img/upload_0.png' %}" alt="Upload">
         <div>Upload an Image</div>
-        <input id="uploadImagesButton" for="imageForm" type="file" name="uploadImage" accept="image/*">
-        <div id="uploadedImage"></div>
-        <input id="cancelUpload" class="button" for="imageForm" type="reset" value="Cancel">
-        <input class="button" for="imageForm" type="submit" value="Upload">
+        <input id="uploadImagesButton" type="file" name="uploadImage" accept=".png,.jpg,.jpeg,.bmp,.gif">
+        <br>
+        <div id="imgPreviewContainer">
+            <img id="uploadedImage" alt="User Image">
+        </div>
+        <input id="cancelUpload" class="button" type="reset" value="Cancel">
+        <input class="button" type="submit" value="Upload">
     </div>
 </form>
+<div id="selectImageDrawer">
+    <table id="imageTable">
+        <!-- available images here -->
+    </table>
+</div>
 {% endblock %}
