@@ -19,6 +19,24 @@ class engine:
         self.boxes = {k:[] for k in range(1,NUMBOXES+1)}
         self.deckId = None
     
+    def addWeights(self, cardList):
+        """
+            Decrease all weights in a given card list
+        """
+        for card in cardList:
+            if card.Weight < 9:
+                card.Weight += 1
+                card.save()
+    
+    def decWeights(self, cardList):
+        """
+            Increase all weights in a given card list
+        """
+        for card in cardList:
+            if card.Weight > 0:
+                card.Weight -= 1
+                card.save()
+    
     def sortCardsInBoxes(self, cardlist):
         """
             Puts cards in appropriate boxes, if card has no 
@@ -64,12 +82,27 @@ class engine:
         shuffle(lotteryList)
         cardChoice = choice(lotteryList)
         return (cardChoice)
-        
+    
+    def pickCard(self, cardList):
+        """
+            Picks a card based on weight
+              weight is based on frequency and time since seen
+        """
+        lotteryList = []
+        for i in range(len(cardList)):
+            lotteryList += [i] * cardList[i].Weight
+        shuffle(lotteryList)
+        return cardList[choice(lotteryList)]
     
     def getNextCard(self):
         boxNum = self.pickBox()
         cards = self.boxes[boxNum]
-        return choice(cards)
+        card = self.pickCard(cards)
+        #Higher weight increases the possibility of the card being picked
+        self.addWeights(filter(lambda x: x != card, cards))
+        #Lower weight decreases the possibility of the card being picked
+        self.decWeights([card])
+        return card
     
     def getRandomCard(self):
         deckOfCards = getCardsForDeck(self.deckId)

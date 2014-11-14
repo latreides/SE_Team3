@@ -302,6 +302,13 @@ class GetNextCard(View):
 
     def post(self, request, *args, **kwargs):
         deckId = self.request.POST.get('deckId')
+        cardId = self.request.POST.get('cardId')
+        if cardId != None:
+            newDifficulty = self.request.POST.get('difficulty')
+            card = getCard(cardId)
+            card.Difficulty = newDifficulty
+            card.save()
+        
         deckObject = getDeck(deckId)
 
         deckModel = engine()
