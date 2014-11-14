@@ -27,7 +27,13 @@ class parseConfig:
                 for qNa in cards.values():
                     front = qNa[0].values()[0]
                     back = qNa[1].values()[0]
-                    createCard(deck.id, False, front, back)
+                    frontImgPath = qNa[2].values()[0]
+                    backImgPath = qNa[3].values()[0]
+                    frontImg = createImage(frontImgPath)
+                    backImg = createImage(backImgPath)
+
+                    createCard(deck.id, False, front, back, frontImg.id, backImg.id)
+                        
             return True, deck
         else:
             return False, deck
@@ -41,9 +47,16 @@ class parseConfig:
         dictOfCards = {}
         cards = getCardsForDeck(exportDeck)
         for card in cards:
-            front = {'q': str(card.Front_Text)}
+            #Prepping cards for export
+            front = {'q': str(card.Front_Text)}                 
             back = {'a': str(card.Back_Text)}
-            exportList = [front, back]
+            frontImgId = card.Front_Img_ID_id
+            backImgId = card.Back_Img_ID_id
+            frontImgPath = Image.objects.get(pk = frontImgId)
+            backImgPath = Image.objects.get(pk = backImgId)
+            frontImg = {'frontImg': str(frontImgPath)}
+            backImg = {'backImg': str(backImgPath)}
+            exportList = [front, back, frontImg, backImg]
             exportCard = {("card" + str(card.id)): exportList}
             
             dictOfCards.update(exportCard)

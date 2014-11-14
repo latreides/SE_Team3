@@ -4,7 +4,11 @@ DECKNAME:
     CARDNAME:
 	    q: QUESTION
 		a: ANSWER
+		frontImg:
+		backImg:
 	CARDNAME2:
 	    q: QUESTION
 		a: ANSWER
+		frontImg:
+		backImg:
 	..etc..
