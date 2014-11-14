@@ -28,6 +28,7 @@ function drawChart() {
     var options = {
         width: 400,
         height: 300,
+        sliceVisibilityThreshold: 0,
 
         title: 'Card Rankings',
         titleTextStyle: {
@@ -35,7 +36,7 @@ function drawChart() {
             fontName: 'Microsoft Sans Serif',
             fontSize: 24
         },
-
+                
         tooltip: {
             textStyle: {
                 fontName: 'Microsoft Sans Serif',

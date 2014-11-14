@@ -74,7 +74,8 @@ class ScoresPage(LoginRedirect):
            context['cards'] = getCardsForDeck(deckId)
            context['deck'] = getDeck(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)
-
+           userDeck = context['user_decks'].get(id=deckId)
+           context['deckName']  = userDeck.Name
        else:
            context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
            context['mostRecentDeck'] = getMostRecentDeck(deckId)
