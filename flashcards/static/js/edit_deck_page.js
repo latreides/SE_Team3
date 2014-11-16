@@ -56,14 +56,13 @@ function selectCard(card){
 }
 
 function previewUploadedImage() {
-    var input = $("#uploadImagesButton")[0];
-    var img = $("#uploadImagesButton")[0].files[0];
-    
     if( !(new FileReader()) ) {
         console.log("FileReader unsupported! Preview will not function.");
         return;
     }
     
+    var input = $("#uploadImagesButton")[0];
+        
     if( input.files && input.files[0] ) {
         var reader = new FileReader();
         
@@ -78,6 +77,55 @@ function previewUploadedImage() {
         
         reader.readAsDataURL( input.files[0] );
     }
+}
+
+function checkImgSize() {
+    /* -> if the img selected is < 5MB */
+    var img = $("#uploadImagesButton")[0].files[0];
+    var mbytes = (img.size / (1024 * 1024)).toFixed(2);
+    
+    if( mbytes > 5 ) {
+        alert("The image you are trying to upload is larger than our 5MB limit. " + 
+              "Your image is " + mbytes + "MB.\n\n" +
+              "Try shrinking the image, then re-uploading it.");
+        
+        return false;
+    }
+    
+    return true;
+}
+
+function checkImgType() {
+    /* -> if the img selected is an acceptable type */
+    var img = $("#uploadImagesButton")[0].files[0];
+    var type = img.type;
+    // console.log(type);
+    if( type != "image/jpeg" && type != "image/png" &&
+        type != "image/gif"  && type != "image/bmp") {
+        alert("The type of file you are trying to upload is not supported or allowed. " +
+              "Please only upload one of the following types of images:\n" +
+              "- JPEG (.jpg or .jpeg)\n" +
+              "- Portable Network Graphics (.png)\n" +
+              "- Animated GIF (.gif)\n" +
+              "- Bitmap (.bmp)");
+        return false;
+    }
+    return true;
+}
+
+function validateImage() {
+    var img = $("#uploadImagesButton")[0].files[0];
+    if( img == undefined )
+        return false;
+    
+    var imgOK  = checkImgSize();
+    var typeOK = checkImgType();
+    if( !(imgOK && typeOK) ) {
+        $("#imageForm").find("input[type=file]").val("");
+        return false;
+    }
+    previewUploadedImage();
+    return true;
 }
 
 $(document).ready(function(){
@@ -190,7 +238,9 @@ $(document).ready(function(){
         $("#imageDrawer").css( "top", offset );
     });
     
-    $("#uploadImagesButton").change( previewUploadedImage );
+    $("#uploadImagesButton").change( validateImage );
+    $("#imageForm").attr("onsubmit", "validateImage()");
+    $("#imageForm").submit( validateImage );
 
     updateCardList();
 });

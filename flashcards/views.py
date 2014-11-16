@@ -392,3 +392,8 @@ def reset(request):
         email_template_name='registration/password_reset_email.html',
         subject_template_name='registration/password_reset_subject.text',
         post_reset_redirect=reverse('signin'))
+
+
+class UploadImagePage(View):
+    def post(self, request, *args, **kwargs):
+        return HttpResponse("Success!")
