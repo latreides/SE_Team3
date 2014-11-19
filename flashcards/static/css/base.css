@@ -231,7 +231,7 @@ input[type="reset"]:hover {
     border: none;
 }
 
-.ErrorMessage	{
+.ErrorMessage    {
     color: red;
     margin-top: 4px;
 }
@@ -271,4 +271,10 @@ input[type="reset"]:hover {
 #footer
 {
     clear: both;
+}
+
+.message
+{
+    text-align: center;
+    padding: 10px;
 }

@@ -6,35 +6,35 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/deck_search_results.css' %}" />
 {% endblock %}
     <h1>Search Results</h1>
-	<br/>
-	
-	<div id="content">
-		<h2>Decks Found:</h2>
-	<div class="section">
-	<br/>
-	{% for deck in matching_decks %}
-	
-	<!-- decks currently fetched in a dictionary -->
-	<table>
-		<tr class="deckItem">
-			<td>{{ deck.Name }}</td>
-			<td class="deckActions">
-				<a href="{% url 'scores' deck.id %}">
-					<div id="cloneIcon" class="icon" title="Clone Deck"></div>
-				</a>
-				<a href="{% url 'play_deck' deck.id %}">
-					<div id="viewIcon" class="icon" title="View Deck"></div>
-				</a>
-			</td>
-		</tr>
-	</table>
-	<br/>
-	<ul>
-		<div> Times Cloned: {{ deck.Times_Cloned }} </div>
-		<div> Author: {{ deck.User_ID }} </div>
-		<div> Keywords: {{ deck.Tags }} </div>
-	</ul>
-	{% endfor %}
-	</div>
-	</div>
+    <br/>
+    
+    <div id="content">
+        <h2>Decks Found:</h2>
+    <div class="section">
+    <br/>
+    {% for deck in matching_decks %}
+    
+    <!-- decks currently fetched in a dictionary -->
+    <table>
+        <tr class="deckItem">
+            <td>{{ deck.Name }}</td>
+            <td class="deckActions">
+                <a href="{% url 'scores' deck.id %}">
+                    <div id="cloneIcon" class="icon" title="Clone Deck"></div>
+                </a>
+                <a href="{% url 'play_deck' deck.id %}">
+                    <div id="viewIcon" class="icon" title="View Deck"></div>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <ul>
+        <div> Times Cloned: {{ deck.Times_Cloned }} </div>
+        <div> Author: {{ deck.User_ID }} </div>
+        <div> Keywords: {{ deck.Tags }} </div>
+    </ul>
+    {% endfor %}
+    </div>
+    </div>
 {% endblock %}

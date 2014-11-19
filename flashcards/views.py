@@ -19,6 +19,20 @@ from next import getNextCard  #To be removed
 from play import *
 import json
 
+def verify_owner(obj, cls, *args, **kwargs):
+    deckId = None
+    if 'deckId' in kwargs:
+        deckId = kwargs['deckId']
+    elif obj.request.GET.get('deckId'):
+        deckId = obj.request.GET.get('deckId')
+
+    if deckId:
+        deck = getDeck(deckId)
+        if not deck or obj.request.user != deck.User_ID:
+            return HttpResponseRedirect(reverse('invalid_deck'))
+
+    return super(cls, obj).get(obj.request, *args, **kwargs)
+
 class LoginRedirect(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
@@ -65,6 +79,9 @@ class LandingPage(LoginRedirect):
 
 class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
+
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, ScoresPage, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
        context = super(ScoresPage, self).get_context_data(**kwargs)
@@ -176,13 +193,16 @@ class SigninPage(TemplateView):
 class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, PlayDeckPage, *args, **kwargs)
+
     def post(self, request, *args, **kwards):
         #update card
         pass
 
     def get_context_data(self, **kwargs):
         #deckId = self.request.GET.get('deck')
-        deckId = kwargs.get('deck', None)
+        deckId = kwargs.get('deckId', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
 
@@ -273,6 +293,7 @@ class DeleteDeckPage(View):
 
 
 class ResetDeckPage(View):
+
     def post(self, request, *args, **kwargs):
         deck_id = request.POST.get('deckId')
         return HttpResponseRedirect(reverse("manage_decks"))
@@ -285,6 +306,9 @@ class createDeckPage(View):
 
 class EditDeckPage(LoginRedirect):
     template_name = 'edit_deck_page.html'
+
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, EditDeckPage, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         deckId = self.request.GET.get('deckId')
@@ -309,7 +333,7 @@ class GetNextCard(View):
             card = getCard(cardId)
             card.Difficulty = newDifficulty
             card.save()
-        
+
         deckObject = getDeck(deckId)
 
         deckModel = engine()
@@ -397,3 +421,6 @@ def reset(request):
 class UploadImagePage(View):
     def post(self, request, *args, **kwargs):
         return HttpResponse("Success!")
+
+class invalidDeckPage(LoginRedirect):
+    template_name = 'invalid_deck_page.html'

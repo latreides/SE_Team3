@@ -295,49 +295,49 @@ function initColorFadeButton(id, toColor, attr) {
     */
     var index = parseInt($("#" + id).attr("data-id")) - 1;
     
-	if( fadeDuration[index] != im )
-		return;
-		
-	fadeInterval[index] = setInterval( function(){
-			var fromColor = $("#" + id).css(attr).replace(/[^\d,]/g,'').split(',');
+    if( fadeDuration[index] != im )
+        return;
+        
+    fadeInterval[index] = setInterval( function(){
+            var fromColor = $("#" + id).css(attr).replace(/[^\d,]/g,'').split(',');
             colorFadeButton(id, toColor, originalColors[index], attr);
-		}, fadeFrequency );
+        }, fadeFrequency );
 }
 
 function colorFadeButton(id, from, to, attr) {
-	/*
-		Fades the color of CSS Attribute 'attr' in element with id 'id' from color 'from' to color 'to.'
-		Color arrays 'from' and 'to' must be in the form:
+    /*
+        Fades the color of CSS Attribute 'attr' in element with id 'id' from color 'from' to color 'to.'
+        Color arrays 'from' and 'to' must be in the form:
             [R,G,B[,A]] where R,G,B == int[0 ~ 255] and A == float[0 ~ 1].
             If no alpha is present, 1 is assumed.
-	*/
+    */
     var index = parseInt($("#" + id).attr("data-id")) - 1;
     
     from[3] = from[3] == undefined ? 1 : from[3];
     to[3]   =   to[3] == undefined ? 1 : to[3];
-	
-	if(fadeDuration[index] >= 0) {
-		var diffInCol1 = [];
-		diffInCol1[0] = from[0] - to[0];
-		diffInCol1[1] = from[1] - to[1];
-		diffInCol1[2] = from[2] - to[2];
+    
+    if(fadeDuration[index] >= 0) {
+        var diffInCol1 = [];
+        diffInCol1[0] = from[0] - to[0];
+        diffInCol1[1] = from[1] - to[1];
+        diffInCol1[2] = from[2] - to[2];
         diffInCol1[3] = from[3] - to[3];
-		
-		var nextCol1 = [];
-		nextCol1[0] = Math.floor(from[0] - (1-fadeDuration[index]) * diffInCol1[0]);
-		nextCol1[1] = Math.floor(from[1] - (1-fadeDuration[index]) * diffInCol1[1]);
-		nextCol1[2] = Math.floor(from[2] - (1-fadeDuration[index]) * diffInCol1[2]);
+        
+        var nextCol1 = [];
+        nextCol1[0] = Math.floor(from[0] - (1-fadeDuration[index]) * diffInCol1[0]);
+        nextCol1[1] = Math.floor(from[1] - (1-fadeDuration[index]) * diffInCol1[1]);
+        nextCol1[2] = Math.floor(from[2] - (1-fadeDuration[index]) * diffInCol1[2]);
         nextCol1[3] = from[3] - (1-fadeDuration[index]) * diffInCol1[3];
-		
+        
         $("#"+id).css(attr, 
             "rgba(" + nextCol1[0] + "," + nextCol1[1] + "," + nextCol1[2] + "," + 
             nextCol1[3] + ")");
-		fadeDuration[index] -= tick;
-	} else {
-		clearInterval(fadeInterval[index]);
-		fadeDuration[index] = im;
+        fadeDuration[index] -= tick;
+    } else {
+        clearInterval(fadeInterval[index]);
+        fadeDuration[index] = im;
         $("#" + id).css(attr, "");
-	}
+    }
 }
 
 function getNextCard() {

@@ -104,7 +104,7 @@ def getDeck(deckID):
     '''
     Returns a single specific Deck
     '''
-    return Deck.objects.get(id=deckID)
+    return Deck.objects.filter(id=deckID).first()
 
 def getCard(cardID):
     '''

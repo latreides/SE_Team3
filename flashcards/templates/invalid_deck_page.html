@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block css %}
+    {{block.super}}
+{% endblock %}
+
+{% block content %}
+    <h1>Deck missing or insufficient permissions!</h1>
+    <p class="ErrorMessage message">
+        The deck you are trying to access either does not exist, or you do not have access to view it.
+    </p>
+{% endblock %}
