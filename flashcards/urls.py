@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 from flashcards.views import *
 
 urlpatterns = patterns('',
@@ -28,3 +29,4 @@ urlpatterns = patterns('',
                         url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'flashcards.views.reset_confirm', name='password_reset_confirm'),
                         url(r'^reset/$', 'flashcards.views.reset', name='reset')
                        )
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

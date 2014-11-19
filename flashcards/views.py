@@ -4,6 +4,8 @@ from django.template import RequestContext, loader
 from django.views.generic import TemplateView, ListView, CreateView, View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.urlresolvers import reverse
+from django.core.files.storage import default_storage
+from django.utils.text import slugify
 from flashcards.db_interactions import *
 from django.contrib import auth
 from flashcards.decks import *
@@ -13,6 +15,7 @@ from django.contrib.auth.views import password_reset, password_reset_confirm
 import glob
 import ntpath
 import os
+import uuid
 import yaml
 from django.core.files.base import ContentFile
 from next import getNextCard  #To be removed
@@ -371,6 +374,8 @@ class deckChangesPage(View):
         for cardId in cardIdList:
             frontText = self.request.POST.get('front-%s' % cardId)
             backText = self.request.POST.get('back-%s' % cardId)
+            frontImg = self.request.POST.get('front-img-%s' % cardId)
+            backImg = self.request.POST.get('back-img-%s' % cardId)
 
             # A Numeric ID means the card exists already,
             # a * before a ID means the card is to be deleted
@@ -379,6 +384,17 @@ class deckChangesPage(View):
                 card = getCard(cardId)
                 card.Front_Text = frontText
                 card.Back_Text = backText
+                print frontImg
+                if frontImg != '':
+                    card.Front_Img_ID = Image.objects.get(Image_Path=frontImg[len(settings.MEDIA_URL):])
+                else:
+                    card.Front_Img_ID = None
+
+                if backImg != '':
+                    card.Back_Img_ID = Image.objects.get(Image_Path=backImg[len(settings.MEDIA_URL):])
+                else:
+                    card.Back_Img_ID = None
+
                 card.save()
             elif cardId[0] == '*':
                 removeId = cardId[1:]
@@ -420,7 +436,18 @@ def reset(request):
 
 class UploadImagePage(View):
     def post(self, request, *args, **kwargs):
-        return HttpResponse("Success!")
+        try:
+            for pic in request.FILES: # really only need one...
+                fileData = request.FILES[pic]
+                fileExt = request.FILES[pic].name.split('.')[-1]
+                fileName = str(uuid.uuid4()) + '.' + fileExt
+                default_storage.save(fileName, fileData)
+                Image.objects.create(Image_Path=fileName)
+                return HttpResponse(fileName)
+
+        except Exception as e:
+            print str(e)
+        return HttpResponse('failure')
 
 class invalidDeckPage(LoginRedirect):
     template_name = 'invalid_deck_page.html'

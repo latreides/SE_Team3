@@ -16,6 +16,14 @@
     border: 1px dotted transparent;
 }
 
+.cardMiniPreview img
+{
+    width: auto;
+    height: 36px;
+    display: block;
+    margin: auto;
+}
+
 /*Fixes a rendering issue on the newly added cards*/
 .cardMiniPreview-add
 {
@@ -156,8 +164,6 @@
 
 #themeContainer
 {
-    box-shadow: 0px -4px 8px -1px #444 inset;
-    height: 164px;
     overflow: auto;
     width: 284px;
     z-index: 10;
@@ -201,7 +207,7 @@
     text-align: center;
 }
 
-#addImages:hover 
+#addImages:hover
 {
     margin-bottom: 2px;
 }
@@ -315,17 +321,17 @@
     background: initial;
 }
 
-#cancelUpload, input[type="submit"] 
+#cancelUpload, input[type="submit"]
 {
     border: 2px #AAA solid;
 }
 
-#cancelUpload 
+#cancelUpload
 {
     background: #A22;
 }
 
-#cancelUpload:hover 
+#cancelUpload:hover
 {
     border-color: white;
     background: #D44;
@@ -346,3 +352,19 @@
 {
     display: none;
 }
+
+.disabled
+{
+    cursor: default !important;
+    background: #383838 !important;
+}
+
+#cardImageContent
+{
+    display: block;
+    margin: auto;
+    width: auto;
+    height: 230px;
+    padding-top: 46px;
+}
+

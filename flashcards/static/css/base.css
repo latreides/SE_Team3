@@ -139,7 +139,7 @@ nav ul li a:visited {
 
 .hidden
 {
-    display: none;
+    display: none !important;
 }
 
 .centerForm{

@@ -1,8 +1,24 @@
 var newCardCounter = 0;
 var editingSide = 0; // 0 Front 1 Back
 
-function updateText(){
+function img_upload_completed()
+{
+    var url = $('#upload-target').contents().find('body').text();
+    if (url != 'failure')
+    {
+        $('#cardImageContent').attr('src', '/media/' + url);
+        $('#cardImageContent').toggleClass('hidden');
+        $('#cardTextContent').toggleClass('hidden');
+        updateCard();
+        updateMiniPreviews();
+        $('#imageForm')[0].reset();
+    }
+}
+
+function updateCard(){
     var txt = $('#cardTextContent').val();
+    var img = $('#cardImageContent').attr('src')
+
     var cardId = $('#cardPreview').attr('data-cardId');
 
     var miniPreview = $('.cardMiniPreview[data-cardId="' + cardId + '"]');
@@ -10,9 +26,11 @@ function updateText(){
 
     if (editingSide == 0){
         $('#frontText-' + cardId).val(txt);
+        $('#frontImg-' + cardId).val(img);
     }
     else{
         $('#backText-' + cardId).val(txt);
+        $('#backImg-' + cardId).val(img);
     }
 }
 
@@ -45,10 +63,24 @@ function selectCard(card){
         if (editingSide == 0)
         {
             $('#cardTextContent').val($('#frontText-' + cardId).val());
+            $('#cardImageContent').attr('src', $('#frontImg-' + cardId).val())
         }
         else{
             $('#cardTextContent').val($('#backText-' + cardId).val());
+            $('#cardImageContent').attr('src', $('#backImg-' + cardId).val())
         }
+
+        if ($('#cardImageContent').attr('src') != '')
+        {
+            $('#cardTextContent').addClass('hidden');
+            $('#cardImageContent').removeClass('hidden');
+        }
+        else
+        {
+            $('#cardImageContent').addClass('hidden');
+            $('#cardTextContent').removeClass('hidden');
+        }
+
 
         $('#cardPreview').attr('data-cardId', cardId);
         $('.cardMiniPreview').removeClass('cardSelected');
@@ -60,21 +92,21 @@ function previewUploadedImage() {
         console.log("FileReader unsupported! Preview will not function.");
         return;
     }
-    
+
     var input = $("#uploadImagesButton")[0];
-        
+
     if( input.files && input.files[0] ) {
         var reader = new FileReader();
-        
+
         reader.onload = function(e) {
             $("#uploadedImage").attr( "src", e.target.result );
             $("#imgPreviewContainer").show();
             $("#imgPreviewContainer").css("max-width", $("body").width());
-            
+
             var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
             $("#imageDrawer").css( "top", offset );
         }
-        
+
         reader.readAsDataURL( input.files[0] );
     }
 }
@@ -83,15 +115,15 @@ function checkImgSize() {
     /* -> if the img selected is < 5MB */
     var img = $("#uploadImagesButton")[0].files[0];
     var mbytes = (img.size / (1024 * 1024)).toFixed(2);
-    
+
     if( mbytes > 5 ) {
-        alert("The image you are trying to upload is larger than our 5MB limit. " + 
+        alert("The image you are trying to upload is larger than our 5MB limit. " +
               "Your image is " + mbytes + "MB.\n\n" +
               "Try shrinking the image, then re-uploading it.");
-        
+
         return false;
     }
-    
+
     return true;
 }
 
@@ -117,7 +149,7 @@ function validateImage() {
     var img = $("#uploadImagesButton")[0].files[0];
     if( img == undefined )
         return false;
-    
+
     var imgOK  = checkImgSize();
     var typeOK = checkImgType();
     if( !(imgOK && typeOK) ) {
@@ -126,6 +158,60 @@ function validateImage() {
     }
     previewUploadedImage();
     return true;
+}
+
+function updateMiniPreviews()
+{
+    if (editingSide == 0)
+    {
+        $('.cardMiniPreview').each(function() {
+            var cardId = $(this).attr('data-cardId');
+            var thisTxt = $('#frontText-' + cardId).val();
+            var thisImg = $('#frontImg-' + cardId).val();
+
+            var lbl = $(this).find('label');
+            var img = $(this).find('img');
+            lbl.text(thisTxt);
+            img.attr('src', thisImg);
+
+            if (thisImg != '')
+            {
+                lbl.addClass('hidden');
+                img.removeClass('hidden');
+            }
+            else
+            {
+                img.addClass('hidden');
+                lbl.removeClass('hidden');
+            }
+
+        });
+    }
+    else{
+        $('.cardMiniPreview').each(function() {
+            var cardId = $(this).attr('data-cardId');
+            var thisTxt = $('#backText-' + cardId).val();
+            var thisImg = $('#backImg-' + cardId).val();
+
+            var lbl = $(this).find('label');
+            var img = $(this).find('img');
+            lbl.text(thisTxt);
+            img.attr('src', thisImg);
+
+            if (thisImg != '')
+            {
+                lbl.addClass('hidden');
+                img.removeClass('hidden');
+            }
+            else
+            {
+                img.addClass('hidden');
+                lbl.removeClass('hidden');
+            }
+
+        });
+    }
+
 }
 
 $(document).ready(function(){
@@ -145,13 +231,17 @@ $(document).ready(function(){
         var newPreviewDiv =  $('<div class="cardMiniPreview cardMiniPreview-add" data-cardId="' + cardId + '" style="background-image:' + cardImage + '" ></div>');
         var newLabel = $('<label></label>');
         var newFrontField = $('<input  id="frontText-' + cardId  + '" type="hidden" name="front-' + cardId + '" value="">');
+        var newFrontImgField = $('<input  id="frontImg-' + cardId  + '" type="hidden" name="front-img-' + cardId + '" value="">');
         var newBackField = $('<input  id="backText-' + cardId  + '" type="hidden" name="back-' + cardId + '" value="">');
+        var newBackImgField = $('<input  id="backImg-' + cardId  + '" type="hidden" name="back-img-' + cardId + '" value="">');
 
         $('#cardsContainer').append($(newPreviewDiv))
         //$(newPreviewDiv).insertBefore($(this));
         $(newPreviewDiv).append(newLabel);
         $(newPreviewDiv).append(newFrontField);
+        $(newPreviewDiv).append(newFrontImgField);
         $(newPreviewDiv).append(newBackField);
+        $(newPreviewDiv).append(newBackImgField);
         updateCardList();
     });
 
@@ -178,23 +268,16 @@ $(document).ready(function(){
 
     $('.cardSideRadio').click(function(){
         editingSide = ($(this).attr('id') == 'cardFront') ? 0 : 1;
-        var cardId  = $('.cardSelected').attr('data-cardId');
-
-        if (editingSide == 0)
-        {
-            $('#cardTextContent').val($('#frontText-' + cardId).val());
-        }
-        else{
-            $('#cardTextContent').val($('#backText-' + cardId).val());
-        }
+        updateMiniPreviews();
+        selectCard($('.cardSelected'));
     })
 
     $('#submitDeckChanges').click(function(){
 
     })
 
-    $('#cardTextContent').change(updateText);
-    $('#cardTextContent').keyup(updateText);
+    $('#cardTextContent').change(updateCard);
+    $('#cardTextContent').keyup(updateCard);
 
     $('#previewScrollLeft').click(function(){
         var container = $('#cardsContainer');
@@ -213,34 +296,58 @@ $(document).ready(function(){
             container.css('left', newLeft + 'px');
         }
     })
-    
+
     $("#uploadImages").click( function() {
         $("#overlay").show();
         $("#imageDrawer").show();
+        $('#uploadedImage').attr('src', '');
+        $("#imgPreviewContainer").hide();
         var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
         $("#imageDrawer").css( "top", offset );
     });
-    
+
     $("#cancelUpload").click( function() {
         $("#overlay").hide();
         $("#imageDrawer").hide();
         $("#imgPreviewContainer").hide();
     });
-    
+
     $("#overlay").click( function() {
         $("#overlay").hide();
         $("#imageDrawer").hide();
         $("#imgPreviewContainer").hide();
     });
-    
+
     $(window).resize( function() {
         var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
         $("#imageDrawer").css( "top", offset );
     });
-    
+
     $("#uploadImagesButton").change( validateImage );
     $("#imageForm").attr("onsubmit", "validateImage()");
     $("#imageForm").submit( validateImage );
 
+    $('#upload-target').on('load', img_upload_completed);
+
+    $('#imageForm input:file').change(function(){
+        $('#imageForm input:submit').removeClass('disabled');
+    });
+
+    $('#imageForm input:submit').click(function(){
+        if (!$(this).hasClass('disabled'))
+        {
+            $("#overlay").hide();
+            $("#imageDrawer").hide();
+            $("#imgPreviewContainer").hide();
+
+            $(this).addClass('disabled');
+            $('#uploadedImage').attr('src', '');
+            $('#submitUpload').addClass('disabled');
+        }
+    });
+
+    selectCard($('.cardSelected'))
+
     updateCardList();
+    updateMiniPreviews();
 });
