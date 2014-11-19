@@ -2,9 +2,13 @@ Initial deck structure for now:
 
 DECKNAME:
     CARDNAME:
-	    q: QUESTION
-		a: ANSWER
-	CARDNAME2:
-	    q: QUESTION
-		a: ANSWER
-	..etc..
+        q: QUESTION
+        a: ANSWER
+        frontImg:
+        backImg:
+    CARDNAME2:
+        q: QUESTION
+        a: ANSWER
+        frontImg:
+        backImg:
+    ..etc..

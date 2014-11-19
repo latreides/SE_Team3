@@ -7,7 +7,24 @@ div#count {
 }
 
 div#deckName {
-  font-size: 18pt;
-  font-weight: bold;
+  font-size: 16pt;
   text-decoration: underline;
+}
+
+div#stats {
+    text-align: center;
+    
+ }
+
+h5 {
+    font-size: 24pt;
+    font-weight: bold;
+    color: white;
+    display: inline;
+    
+}
+
+pre {
+    display: inline;
+    font-family: Microsoft Sans Serif, sans serif;
 }

@@ -66,31 +66,33 @@ table td+td{
 
 #search, 
 #submit {
-    float: left;
+    float: center;
 }
 
 #search {
     padding: 5px 9px;
     height: 23px;
-    width: 75%;
+    width: 33%;
     border: 1px solid #a4c3ca;
+    text-align: center;
     font: normal 13px 'trebuchet MS', arial, helvetica;
     background: #f1f1f1;
-    border-radius: 50px 3px 3px 50px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 0 rgba(255, 255, 255, 1);            
+    /border-radius: 50px 3px 3px 50px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) inset, 0 1px 0 rgba(255, 255, 255, 1);
+    color: 
 }
 
-#containerDiv	{
-	min-width:400px;
-	max-width:800px;
+#containerDiv    {
+    min-width:200px;
+    max-width:800px;
 }
 /* ----------------------- */
 
 #submit
 {       
-    background-color: #6cbb6b;
-    background-image: linear-gradient(#95d788, #6cbb6b);
-    border-radius: 3px 50px 50px 3px;    
+    background-color: #1E90FF;
+    background-image: linear-gradient(#F0F0F0, #1E90FF);
+    /border-radius: 3px 50px 50px 3px;    
     border-width: 1px;
     border-style: solid;
     border-color: #7eba7c #578e57 #447d43;
@@ -107,12 +109,12 @@ table td+td{
 }
 
 #submit:hover {       
-    background-color: #95d788;
-    background-image: linear-gradient(#6cbb6b, #95d788);
+    background-color: #1E90FF;
+    background-image: linear-gradient(#1E90FF, #F0F0F0);
 }   
 
 #submit:active {       
-    background: #95d788;
+    background: #1E90FF;;
     outline: none;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;        
 }

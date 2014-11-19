@@ -74,6 +74,7 @@ class Card(models.Model):
     Front_Img_ID = models.ForeignKey('Image', related_name = 'Front_Image', blank=True, null=True)
     Back_Img_ID = models.ForeignKey('Image', related_name = 'Back_Image', blank=True, null=True)
     Difficulty = models.IntegerField(blank=True, null=True)
+    Weight = models.IntegerField(default=1)
     Last_Attempted = models.DateTimeField(blank=True, null=True)
     Two_Sided = models.BooleanField(default=False)
 

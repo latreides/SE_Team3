@@ -10,7 +10,9 @@
 
         {% endblock %}
         {% block javascript %}
-            <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+            {% comment %}<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>{% endcomment %}
+                        <script type="text/javascript" src="{% static 'js/jquery-latest.min.js' %}"></script>
+
             <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
 
         {% endblock %}

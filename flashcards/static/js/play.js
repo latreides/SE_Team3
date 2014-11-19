@@ -9,6 +9,8 @@ var showingHelpSection = [false, false, false, false];
 var orderOptions = ["frontFirst", "backFirst", "random"];
 var order = orderOptions[0];
 
+var ratingToSend = 6;
+
 /* ===== Color Fading Settings for flashcard content and buttons =====
  * Elements to flash upon click:
  *  - Difficulty buttons (data-ids 1 - 5, array indices 0 - 4, from Very Easy to Very Hard)
@@ -34,23 +36,24 @@ var tick = 0.04; // fadeFrequency / duration;
 $(document).ready(function() {
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
-    
+
     populateOriginalColors();
-    
-    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton);
-    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton);
+
+    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     $("#uiCard").click(flip);
-    
-    $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton);
-    
+    $("#flipHotkey").click(flip);
+
+    $("#uiSkip").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+
     $("#whatDoIDoT").click(showHelpSection);
     $("#movingBetweenCardsT").click(showHelpSection);
     $("#shortcutsT").click(showHelpSection);
     $("#settingsT").click(showHelpSection);
-    
+
     // this is somewhat of a bandaid for the card text not appearing right
     //   away but maintaining the desired fade on click/keyup events.
     $("#uiCardFront").fadeIn();
@@ -61,42 +64,42 @@ window.onkeydown = function(event) {
     return !(event.keyCode == 32 || event.keyCode == 112);
 };
 
-document.addEventListener( "keyup", function(event) {        
+document.addEventListener( "keyup", function(event) {
         switch (event.keyCode) {
             case 37: // left arrow key
             case 39: // right arrow key
                 $("#uiSkip").trigger("click");
                 break;
-                
+
             case 32: // space bar
                 $("#uiCard").trigger("click");
                 break;
-                
+
             case 49: // Number row: 1
-                $("#ui5").trigger("click");
+                $("#ui1").trigger("click");
                 break;
-                
+
             case 50: // Number row: 2
-                $("#ui4").trigger("click");
+                $("#ui2").trigger("click");
                 break;
-                
+
             case 51: // Number row: 3
                 $("#ui3").trigger("click");
                 break;
-                
+
             case 52: // Number row: 4
-                $("#ui2").trigger("click");
+                $("#ui4").trigger("click");
                 break;
-                
+
             case 53: // Number row: 5
-                $("#ui1").trigger("click");
+                $("#ui5").trigger("click");
                 break;
-                
+
             case 112: // F1 key
             case 191: // ?  key
                 $("#uiHelpButton").trigger("click");
                 break;
-                
+
             /* default:
                 console.log(event.keyCode);
                 break;
@@ -121,7 +124,7 @@ function loadXMLDoc(deckId) {
         } else if (xmlhttp.readyState == 4 && xmlhttp.status == 404) {
             document.getElementById("myDiv").innerHTML = "<h4><em>404 - Not Found. Did you forget the argument?</em></h4>";
         } else if (xmlhttp.readyState == 4 && xmlhttp.status == 500) {
-            document.getElementById("myDiv").innerHTML = 
+            document.getElementById("myDiv").innerHTML =
                 "<h4><em>500 - No deck with ID [" + String(deckId) + "] was found.</em></h4>";
         } else {
             document.getElementById("myDiv").innerHTML = "<h4>Loading...</h4>";
@@ -131,15 +134,8 @@ function loadXMLDoc(deckId) {
     xmlhttp.send();
 }
 
-function getNewCard(id) {
-    var jqxhr = $.post("/getNextCard/"+ String(id));
-    // jqxhr.done(   function() { console.log("Success!"); } );
-    // jqxhr.fail(   function() { console.log("Failed!"); } );
-    // jqxhr.always( function() { console.log("Done."); } );
-}
-
 function toggleButtons() {
-    
+
     buttonsDisabled = !buttonsDisabled;
     $("#ui5").toggleClass("uiButton").toggleClass("uiButtonDisabled");
     $("#ui4").toggleClass("uiButton").toggleClass("uiButtonDisabled");
@@ -151,16 +147,16 @@ function toggleButtons() {
 function flip() {
     if (!cardHasBeenFlipped)
         toggleButtons();
-    
+
     cardHasBeenFlipped = true;
-    
+
     $("#uiCardFront").css("display", "none");
     $("#uiCardBack").css("display", "none");
     if (showingFront)
         $("#uiCardBack").fadeIn();
     else
         $("#uiCardFront").fadeIn();
-    
+
     showingFront = !showingFront;
 }
 
@@ -190,7 +186,7 @@ function rollIconDown() {
     var index = parseInt( $(this).attr("data-id") );
     if (!cardHasBeenFlipped && index != 6)
         return;
-    
+
     switch (index) {
         case 1: $("#uiBtnIcon1").slideDown("fast"); break;
         case 2: $("#uiBtnIcon2").slideDown("fast"); break;
@@ -214,7 +210,7 @@ function rollIconUp() {
 
 function showHelpSection() {
     var index = parseInt( $(this).attr("data-helpID") );
-    
+
     if ( showingHelpSection[index] ) {
         showingHelpSection[index] = false;
         switch (index) {
@@ -232,12 +228,12 @@ function showHelpSection() {
                 return;
         }
     }
-    
+
     for( var i = 0; i < showingHelpSection.length; i += 1 ) {
         showingHelpSection[i] = false;
     }
     showingHelpSection[index] = true;
-    
+
     switch (index) {
         case 0:
             $("#whatDoIDoD").slideDown("fast");
@@ -275,16 +271,16 @@ function populateOriginalColors() {
     var col4 = $("#ui5").css("background-color").replace(/[^\d,]/g,'').split(',');
     var col5 = $("#uiSkip").css("background-color").replace(/[^\d,]/g,'').split(',');
     toggleButtons();
-    
+
     var text = $("#uiCardFront").css("color").replace(/[^\d,]/g,'').split(',');
-    
+
     originalColors = [col0, col1, col2, col3, col4, col5];
 }
 
 function flashButton() {
     id = $(this).attr("id");
     var index = parseInt($("#" + id).attr("data-id")) - 1;
-    
+
     if (cardHasBeenFlipped || id == "uiSkip") {
         if( id != "uiCardFront" && id != "uiCardBack" )
             initColorFadeButton( id, flashColor, "background-color" );
@@ -298,58 +294,97 @@ function initColorFadeButton(id, toColor, attr) {
         Fade element with ID id from it's current color to toColor
     */
     var index = parseInt($("#" + id).attr("data-id")) - 1;
-    
-	if( fadeDuration[index] != im )
-		return;
-		
-	fadeInterval[index] = setInterval( function(){
-			var fromColor = $("#" + id).css(attr).replace(/[^\d,]/g,'').split(',');
+
+    if( fadeDuration[index] != im )
+        return;
+
+    fadeInterval[index] = setInterval( function(){
+            var fromColor = $("#" + id).css(attr).replace(/[^\d,]/g,'').split(',');
             colorFadeButton(id, toColor, originalColors[index], attr);
-		}, fadeFrequency );
+        }, fadeFrequency );
 }
 
 function colorFadeButton(id, from, to, attr) {
-	/*
-		Fades the color of CSS Attribute 'attr' in element with id 'id' from color 'from' to color 'to.'
-		Color arrays 'from' and 'to' must be in the form:
+    /*
+        Fades the color of CSS Attribute 'attr' in element with id 'id' from color 'from' to color 'to.'
+        Color arrays 'from' and 'to' must be in the form:
             [R,G,B[,A]] where R,G,B == int[0 ~ 255] and A == float[0 ~ 1].
             If no alpha is present, 1 is assumed.
-	*/
+    */
     var index = parseInt($("#" + id).attr("data-id")) - 1;
-    
+
     from[3] = from[3] == undefined ? 1 : from[3];
     to[3]   =   to[3] == undefined ? 1 : to[3];
-	
-	if(fadeDuration[index] >= 0) {
-		var diffInCol1 = [];
-		diffInCol1[0] = from[0] - to[0];
-		diffInCol1[1] = from[1] - to[1];
-		diffInCol1[2] = from[2] - to[2];
+
+    if(fadeDuration[index] >= 0) {
+        var diffInCol1 = [];
+        diffInCol1[0] = from[0] - to[0];
+        diffInCol1[1] = from[1] - to[1];
+        diffInCol1[2] = from[2] - to[2];
         diffInCol1[3] = from[3] - to[3];
-		
-		var nextCol1 = [];
-		nextCol1[0] = Math.floor(from[0] - (1-fadeDuration[index]) * diffInCol1[0]);
-		nextCol1[1] = Math.floor(from[1] - (1-fadeDuration[index]) * diffInCol1[1]);
-		nextCol1[2] = Math.floor(from[2] - (1-fadeDuration[index]) * diffInCol1[2]);
+
+        var nextCol1 = [];
+        nextCol1[0] = Math.floor(from[0] - (1-fadeDuration[index]) * diffInCol1[0]);
+        nextCol1[1] = Math.floor(from[1] - (1-fadeDuration[index]) * diffInCol1[1]);
+        nextCol1[2] = Math.floor(from[2] - (1-fadeDuration[index]) * diffInCol1[2]);
         nextCol1[3] = from[3] - (1-fadeDuration[index]) * diffInCol1[3];
-		
-        $("#"+id).css(attr, 
-            "rgba(" + nextCol1[0] + "," + nextCol1[1] + "," + nextCol1[2] + "," + 
+
+        $("#"+id).css(attr,
+            "rgba(" + nextCol1[0] + "," + nextCol1[1] + "," + nextCol1[2] + "," +
             nextCol1[3] + ")");
-		fadeDuration[index] -= tick;
-	} else {
-		clearInterval(fadeInterval[index]);
-		fadeDuration[index] = im;
+        fadeDuration[index] -= tick;
+    } else {
+        clearInterval(fadeInterval[index]);
+        fadeDuration[index] = im;
         $("#" + id).css(attr, "");
-	}
+    }
 }
 
+function getNextCard() {
+    var passRating = true;
+    var card = {};
 
-function rate(rating) {
-    
-}
+    if( $(this).attr("data-id") != 6 && !cardHasBeenFlipped )
+        return;
 
-function exitStageLeft() {
-    // shove the current card out and left.
+    if ( $(this).attr("data-id") == 6 ) {
+        passRating = false;
+    }
+    var data = {};
+    data["deckId"] = $("#formDeckId").val();
+    data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").val();
+    if(passRating)
+        data["rating"] = $(this).attr("data-id");
+    var dataType = "json";
+    var response = $.post("/getNextCard", data, dataType);
+    response.done( function(cardJson) {
+        card = $.parseJSON(cardJson);
+
+        $('#uiCFI').attr('src', (card.frontImage != "None") ? '/media/' + card.frontImage : '');
+        $('#uiCBI').attr('src', (card.backImage != "None") ? '/media/' + card.backImage : '');
+
+        $("#uiCFT").html( card.frontText );
+        $("#uiCBT").html( card.backText );
+
+
+        /*if (card.frontImage != 'None')
+        {
+            $('#uiCFT').addClass('hidden');
+            $('#uiCFI').removeClass('hidden');
+        }
+        else
+        {
+            $('#uiCFI').addClass('hidden');
+            $('#uiCFT').removeClass('hidden');
+        }*/
+
+
+        // console.log( card );
+    });
+
+    if( !buttonsDisabled )
+        toggleButtons();
+    if( !showingFront )
+        flip();
     cardHasBeenFlipped = false;
 }

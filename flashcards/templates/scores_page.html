@@ -3,6 +3,14 @@
 
 {% block javascript %}
     {{block.super}}
+        <script type="text/javascript">
+            var cardRanks = [
+                {% for card in cards %}
+                    {% if card.Difficulty %} {{card.Difficulty}} {% else %} 6 {% endif %},
+                {% endfor %}
+            ];
+        </script>
+
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript" src="{% static 'js/scores.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
@@ -12,28 +20,20 @@
     {{block.super}}
         <link rel="stylesheet" type="text/css" href="/static/css/scores.css" />
         <link rel="stylesheet" type="text/css" href="/static/css/switch.css" />
-        
-        <script type="text/javascript">
-            var cardRanks = [
-                {% for card in cards %}
-                    {{card.id_Difficulty}},
-                {% endfor %}
-            ];
-        </script>
 {% endblock %}
 
 {% block content %}
     <h1>My Scores</h1>
-    
+
     <div id="content">
         {% include "switch_button.html" %}
         {% if deckId %}
-            <h2>Deck Name</h2>
+            <h2>{{ deckName }}</h2>
             <div class="section">
                 <p>
                     <div id="piechart"></div>
-                    <div id="count">21</div> Total Cards
-                    
+                    <div id="count"> {{ cards.count }} </div> Total Cards
+
                 </p>
             </div>
         {% else %}
@@ -41,7 +41,15 @@
             <div class="section">
                 <p>
                     {% for deck in user_decks %}
-                        <div id="deckName">{{deck.Name}}:</div>
+                        <div id="deckName">
+                            {{deck.Name}}:
+                        </div>
+
+                        <div id="stats">
+                            <h5>10</h4> Ranked 1 <pre>     </pre>
+                            <h5>5</h5> Not studied <pre>     </pre>
+                            <h5>25</h5> Total cards
+                        </div>
                         <br /> <br />
                     {% endfor %}
                 </p>

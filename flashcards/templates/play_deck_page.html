@@ -13,7 +13,7 @@
 
 {% block content %}
     <h1>You are now in play mode!</h1>
-    
+
     <div id="playField">
         <div>
             <h5>Now Playing</h5>
@@ -23,77 +23,90 @@
             <div id="uiSettingsDrawer">
                 <span class="drawerTitle">SETTINGS</span>
                 <hr>
-                <form action="">
-                    {% csrf_token %}
-                    <span id="cardOrder">Present cards to me: </span>
-                    <label><input type="radio" name="order" value="frontFirst" checked="checked">
-                        <span></span>Front side first
-                    </label>
-                    <label><input type="radio" name="order" value="backFirst">
-                        <span></span>Back side first
-                    </label>
-                    <label><input type="radio" name="order" value="random">
-                        <span></span>Front or back at random
-                    </label>
-                </form>
+
+                <span id="cardOrder">Present cards to me: </span>
+                <label><input type="radio" name="order" value="frontFirst" checked="checked">
+                    <span></span>Front side first
+                </label>
+                <label><input type="radio" name="order" value="backFirst">
+                    <span></span>Back side first
+                </label>
+                <label><input type="radio" name="order" value="random">
+                    <span></span>Front or back at random
+                </label>
+
             </div>
-            <div id="uiSettingsButton" title="settings"></div>
-            
+            <div id="uiSettingsButton" title="Settings"></div>
+
             <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
                 <div id="uiCardFront" data-id="7">
-                    <div class="uiQuestion">{{ card.Front_Text }}</div>
+                    <div id="uiCFT" class="uiQuestion">{{ card.Front_Text }}</div>
+                    <img id="uiCFI" class="uiQuestion hidden" src=''>
                 </div>
                 <div id="uiCardBack" class="hide" data-id="8">
-                    <div class="uiQuestion">{{ card.Back_Text }}</div>
+                    <div id="uiCBT" class="uiQuestion">{{ card.Back_Text }}</div>
+                    <img id="uiCBI" class="uiQuestion hidden" src=''>
                 </div>
             </div>
-            <ul id="buttonPanel">
-                <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
-                    <div id="uiBtnIcon5">
-                        <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+            <div id="flipHotkey"></div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="formDeckId" value="{{ deckId }}"/>
+                <ul id="buttonPanel">
+                    <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
+                        <div id="uiBtnIcon1">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
+                        </div>
+                        Very Easy<br>
+                        [ 1 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui2" data-id="2">
+                        <div id="uiBtnIcon2">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
+                        </div>
+                        Easy<br>
+                        [ 2 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
+                        <div id="uiBtnIcon3">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
+                        </div>
+                        OK<br>
+                        [ 3 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
+                        <div id="uiBtnIcon4">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
+                        </div>
+                        Hard<br>
+                        [ 4 ]
+                    </li>
+                    <li class="uiButtonDisabled uiButton-resize" id="ui5" data-id="5">
+                        <div id="uiBtnIcon5">
+                            <img class="uiButtonIcon" src="{% static 'img/difficulty_5.png' %}" alt="Very Hard"/>
+                        </div>
+                        Very Hard<br>
+                        [ 5 ]
+                    </li>
+                    <br>
+                    <div class="uiButton" id="uiSkip" data-id="6">
+                        <div id="uiBtnIconSkip">
+                            <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
+                        </div>
+                        Skip<br>
+                        [ &larr; arrow keys &rarr; ]
                     </div>
-                    Very Hard
-                </li>
-                <li class="uiButtonDisabled uiButton-resize" id="ui4" data-id="4">
-                    <div id="uiBtnIcon4">
-                        <img class="uiButtonIcon" src="{% static 'img/difficulty_4.png' %}" alt="Hard"/>
-                    </div>
-                    Hard
-                </li>
-                <li class="uiButtonDisabled uiButton-resize" id="ui3" data-id="3">
-                    <div id="uiBtnIcon3">
-                        <img class="uiButtonIcon" src="{% static 'img/difficulty_3.png' %}" alt="OK"/>
-                    </div>
-                    OK
-                </li>
-                <li class="uiButtonDisabled uiButton-resize" id="ui2" data-id="2">
-                    <div id="uiBtnIcon2">
-                        <img class="uiButtonIcon" src="{% static 'img/difficulty_2.png' %}" alt="Easy"/>
-                    </div>
-                    Easy
-                </li>
-                <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
-                    <div id="uiBtnIcon1">
-                        <img class="uiButtonIcon" src="{% static 'img/difficulty_1.png' %}" alt="Very Easy"/>
-                    </div>
-                    Very Easy
-                </li>
-                <br>
-                <div class="uiButton" id="uiSkip" data-id="6">
-                    <div id="uiBtnIconSkip">
-                        <img class="uiButtonIcon" src="{% static 'img/skip.png' %}" alt="Skip"/>
-                    </div>
-                    Skip
-                </div>
-            </ul>
-            <div id="uiHelpButton" title="Help"></div>
+                </ul>
+            </form>
+
+            <div id="uiHelpButton" title="Help [F1]"></div>
             <br><br>
             <div id="uiHelpDrawer">
                 <div class="drawerTitle">HELP</div>
-                Please click a topic below. 
-                Click the "?" Help button any time to close or reopen 
-                this drawer. You can also use the F1 or "?" keys on your keyboard 
+                Please click a topic below.
+                Click the "?" Help button any time to close or reopen
+                this drawer. You can also use the F1 or "?" keys on your keyboard
                 as a short-cut.
                 <hr>
                 <div class="helpTitle" id="whatDoIDoT" data-helpID="0">
@@ -101,28 +114,30 @@
                 </div>
                 <div class="helpSection" id="whatDoIDoD">
                     This is where you play your deck!<br>
-                    Read the side of the card displayed to you and think about what 
-                    the answer could be. Then, click the card to flip it and find out 
-                    if you were right. Click one of the difficulty buttons to rate how 
-                    hard of a card it was. You can rate cards as very hard, very 
+                    Read the side of the card displayed to you and think about what
+                    the answer could be. Then, click the card to flip it and find out
+                    if you were right. Click one of the difficulty buttons to rate how
+                    hard of a card it was. You can rate cards as very hard, very
                     easy or something in between.
                 </div>
                 <div class="helpTitle" id="movingBetweenCardsT" data-helpID="1">
                     &rsaquo; Moving Between Cards
                 </div>
                 <div class="helpSection" id="movingBetweenCardsD">
-                    Once the card has been flipped, rating it using one of the 
-                    difficulty buttons will automatically draw another card for 
-                    you. If for any reason you don't want to rate it or don't 
-                    want the card you've been presented, you can skip it at any 
+                    Once the card has been flipped, rating it using one of the
+                    difficulty buttons will automatically draw another card for
+                    you. If for any reason you don't want to rate it or don't
+                    want the card you've been presented, you can skip it at any
                     time using the aptly named Skip button.
                 </div>
                 <div class="helpTitle" id="shortcutsT" data-helpID="2">
                     &rsaquo; Short-Cuts
                 </div>
                 <div class="helpSection" id="shortcutsD">
-                    Don't want to use the mouse? No problem! You can use the 
-                    following keyboard short-cuts to do the same tasks:
+                    Don't want to use the mouse? No problem! You can use the
+                    following keyboard short-cuts to do the same tasks:<br>
+                    <em>Hint: these hotkeys are also shown in
+                    <strong>[</strong> brackets <strong>]</strong> inside each button!</em>
                     <ul id="helpList">
                         <li>
                             <img src="{% static 'img/card_icon0.png' %}"/>
@@ -162,52 +177,52 @@
                     &rsaquo; Settings
                 </div>
                 <div class="helpSection" id="settingsD">
-                    You can click the wrench situated just above and to the right 
-                    of the flashcard to access the Settings. There, you can 
-                    change which side of the card is initially displayed to 
+                    You can click the wrench situated just above and to the right
+                    of the flashcard to access the Settings. There, you can
+                    change which side of the card is initially displayed to
                     you, where applicable.
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Removed for presentation purposes -->
     <!--div class="card">
         <h1 class="title">
             Deck Name (Text only example)!
         </h1>
-        
+
         <p class="question">
             This is a test question that is really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?
         </p>
-        
+
         <img src="{% static 'img/card.png' %}" alt="" />
     </div>
-    
+
     <div class="card">
         <h1 class="title">
             Deck Name (Text and Image)!
         </h1>
-        
+
         <p class="question">
             What is the number that you see?
         </p>
-        
+
         <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
-        
+
         <img src="{% static 'img/card.png' %}" alt="" />
     </div>
-    
+
     <div class="card">
         <h1 class="title">
             Deck Name (Image example)!
         </h1>
-        
+
         <img class="cardImage" src="{% static 'img/cardImage.png' %}" alt="" />
-        
+
         <img src="{% static 'img/card.png' %}" alt="" />
     </div>
-    
+
     <nav>
         <ul id="nav-header">
             <li><a href="#" class="btnLeft">Previous</a></li>
