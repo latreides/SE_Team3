@@ -349,7 +349,7 @@ class GetNextCard(View):
         # print card.Front_Text
         # print card.Back_Text
 
-        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text};
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID) };
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
 
     def drawCard(self, request, deckID):
@@ -384,7 +384,6 @@ class deckChangesPage(View):
                 card = getCard(cardId)
                 card.Front_Text = frontText
                 card.Back_Text = backText
-                print frontImg
                 if frontImg != '':
                     card.Front_Img_ID = Image.objects.get(Image_Path=frontImg[len(settings.MEDIA_URL):])
                 else:
@@ -400,7 +399,17 @@ class deckChangesPage(View):
                 removeId = cardId[1:]
                 deleteCard(removeId)
             else:
-                createCard(deckId, True, frontText, backText, None, None)
+                if frontImg != '':
+                    newFront_Img_ID = Image.objects.get(Image_Path=frontImg[len(settings.MEDIA_URL):])
+                else:
+                    newFront_Img_ID = None
+
+                if backImg != '':
+                    newBack_Img_ID = Image.objects.get(Image_Path=backImg[len(settings.MEDIA_URL):])
+                else:
+                    newBack_Img_ID = None
+                createCard(deckId, True, frontText, backText, newFront_Img_ID.id if newFront_Img_ID else None, newBack_Img_ID.id if newBack_Img_ID else None)
+
 
         deckObject.save()
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(deckId))

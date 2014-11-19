@@ -7,8 +7,8 @@ function img_upload_completed()
     if (url != 'failure')
     {
         $('#cardImageContent').attr('src', '/media/' + url);
-        $('#cardImageContent').toggleClass('hidden');
-        $('#cardTextContent').toggleClass('hidden');
+        $('#cardTextContent').addClass('hidden');
+        $('#cardImageContent').removeClass('hidden');
         updateCard();
         updateMiniPreviews();
         $('#imageForm')[0].reset();
@@ -52,7 +52,7 @@ function updateCardList(){
 
     var visibleCount = $('.cardMiniPreview:not(.cardRemoved)').length;
 
-    $('#cardsContainer').css('width', (68*visibleCount) + 'px')
+    $('#cardsContainer').css('width', (80*visibleCount) + 'px')
 
     $('#removeCard').toggle(visibleCount > 1);
 }
@@ -228,8 +228,10 @@ $(document).ready(function(){
     $('#addCard').click(function(){
         var cardId = 'new_' + (newCardCounter++);
         var cardImage = $('.cardSelected').css('background-image');
+        cardImage = cardImage.replace(new RegExp('"', 'g'), "'");
         var newPreviewDiv =  $('<div class="cardMiniPreview cardMiniPreview-add" data-cardId="' + cardId + '" style="background-image:' + cardImage + '" ></div>');
         var newLabel = $('<label></label>');
+        var newImage = $('<img src="" class="hidden">');
         var newFrontField = $('<input  id="frontText-' + cardId  + '" type="hidden" name="front-' + cardId + '" value="">');
         var newFrontImgField = $('<input  id="frontImg-' + cardId  + '" type="hidden" name="front-img-' + cardId + '" value="">');
         var newBackField = $('<input  id="backText-' + cardId  + '" type="hidden" name="back-' + cardId + '" value="">');
@@ -238,6 +240,7 @@ $(document).ready(function(){
         $('#cardsContainer').append($(newPreviewDiv))
         //$(newPreviewDiv).insertBefore($(this));
         $(newPreviewDiv).append(newLabel);
+        $(newPreviewDiv).append(newImage);
         $(newPreviewDiv).append(newFrontField);
         $(newPreviewDiv).append(newFrontImgField);
         $(newPreviewDiv).append(newBackField);
