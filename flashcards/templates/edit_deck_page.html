@@ -23,7 +23,7 @@
             Card Theme:
             <div id="themeContainer">
                 {% for theme in themes %}
-                  <img class="themePreview {% if deck.Theme = theme.1 %}themeSelected{% endif %}" src="{% static 'themes/' %}{{ theme.1 }}" data-theme="{{ theme.1 }}" >
+                  <img class="themePreview {% if deck.Theme = theme.1 %}themeSelected{% endif %}" src="{% static 'themes/' %}Small{{ theme.1 }}" data-theme="{{ theme.1 }}" >
                 {% endfor %}
                 <input id="themeField" type="hidden" name="deckTheme" value="{{ deck.Theme }}">
             </div>
@@ -38,7 +38,7 @@
                 <div id="previewBlocker"></div>
                 <div id="cardsContainer">
                     {% for card in cards %}
-                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
+                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}Mini{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
                             <label>{{ card.Front_Text }}</label>
                             <img class="hidden" src="">
                             <input  id="frontText-{{ card.id }}" type="hidden" name="front-{{ card.id }}" value="{{ card.Front_Text }}">
