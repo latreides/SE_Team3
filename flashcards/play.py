@@ -33,7 +33,7 @@ class engine:
             Increase all weights in a given card list
         """
         for card in cardList:
-            if card.Weight > 0:
+            if card.Weight > 1:
                 card.Weight -= 1
                 card.save()
     
