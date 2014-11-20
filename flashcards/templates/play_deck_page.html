@@ -53,6 +53,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" id="formDeckId" value="{{ deckId }}"/>
+                <input type="hidden" id="formCardId" value="{{ card.id }}"/>
                 <ul id="buttonPanel">
                     <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
                         <div id="uiBtnIcon1">

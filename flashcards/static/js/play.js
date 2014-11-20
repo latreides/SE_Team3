@@ -32,18 +32,19 @@ var fadeFrequency = 10;
 //      percentage to decrement from fade remaining
 var tick = 0.04; // fadeFrequency / duration;
 /* ===== End Color Fading Settings ===== */
-
+var cardId = 0;
 $(document).ready(function() {
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
 
     populateOriginalColors();
+    
+    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 1},getNextCardDiff);
+    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 2},getNextCardDiff);
+    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 3},getNextCardDiff);
+    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 4},getNextCardDiff);
+    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 5},getNextCardDiff);
 
-    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
     $("#uiCard").click(flip);
     $("#flipHotkey").click(flip);
 
@@ -57,6 +58,7 @@ $(document).ready(function() {
     // this is somewhat of a bandaid for the card text not appearing right
     //   away but maintaining the desired fade on click/keyup events.
     $("#uiCardFront").fadeIn();
+    cardId = $("#formCardId").val();
 });
 
 // disable space bar scrolling and F1 showing browser help
@@ -366,7 +368,6 @@ function getNextCard() {
         $("#uiCFT").html( card.frontText );
         $("#uiCBT").html( card.backText );
 
-
         /*if (card.frontImage != 'None')
         {
             $('#uiCFT').addClass('hidden');
@@ -378,7 +379,45 @@ function getNextCard() {
             $('#uiCFT').removeClass('hidden');
         }*/
 
+        //$("#formCardId").val(card.cardId);
+        cardId = card.cardId;
 
+        // console.log( card );
+    });
+    
+    if( !buttonsDisabled )
+        toggleButtons();
+    if( !showingFront )
+        flip();
+    cardHasBeenFlipped = false;
+}
+function getNextCardDiff(event) {
+    var passRating = true;
+    var card = {};
+    
+    if( $(this).attr("data-id") != 6 && !cardHasBeenFlipped )
+        return;
+    
+    if ( $(this).attr("data-id") == 6 ) { 
+        passRating = false;
+    }
+    var data = {};
+    data["deckId"] = $("#formDeckId").val();
+    //data["cardId"] = $("#formCardId").val();
+    data["cardId"] = cardId;
+    data["diff"] = event.diff;
+    data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").val();
+    if(passRating)
+        data["rating"] = $(this).attr("data-id");
+    var dataType = "json";
+    var response = $.post("/getNextCard", data, dataType);
+    response.done( function(cardJson) {
+        card = $.parseJSON(cardJson);
+        $("#uiCFT").html( card.frontText );
+        $("#uiCBT").html( card.backText );
+        //$("#formCardId").val(card.cardId);
+        cardId = card.cardId;
+        
         // console.log( card );
     });
 

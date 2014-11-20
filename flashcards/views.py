@@ -218,7 +218,9 @@ class PlayDeckPage(LoginRedirect):
             #print engineObj.toJson()
             engineObj.play(deckId)
             context['deck'] = engineObj
-            context['card'] = engineObj.getNextCard()
+            card = engineObj.getNextCard()
+            context['card'] = card
+            #context['cardId'] = card.id
             return context
             #self.request.session['playObj'].play(int(deckId))
         else:
@@ -331,9 +333,10 @@ class GetNextCard(View):
     def post(self, request, *args, **kwargs):
         deckId = self.request.POST.get('deckId')
         cardId = self.request.POST.get('cardId')
+        print(cardId)
         if cardId != None:
-            newDifficulty = self.request.POST.get('difficulty')
-            card = getCard(cardId)
+            newDifficulty = self.request.POST.get('diff')
+            card = getCard(int(cardId))
             card.Difficulty = newDifficulty
             card.save()
 
@@ -342,15 +345,17 @@ class GetNextCard(View):
         deckModel = engine()
         deckModel.play(deckId)
         card = deckModel.getNextCard()
-        print(card)
+        print(card.id)
 
         # print "Deck " + str(deckId)
         # print "Card " + str(card)
         # print card.Front_Text
         # print card.Back_Text
 
-        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID) };
+
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id) };
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
+
 
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
