@@ -147,10 +147,9 @@
     cursor: pointer;
     display: inline-block;
     margin:-2px;
-    background-color: #383838;
+    background-color: #1E90FF;
     border-color: red;
     width: 238px;
-    font-weight: bold;
     padding: 5px;
     text-align: center;
     border: 1px solid white;
@@ -159,7 +158,8 @@
 
 .cardSideRadio:checked + label
 {
-    background-color: #1E90FF;
+    background-color: #383838;
+    font-weight: bold;
 }
 
 #themeContainer
@@ -367,4 +367,3 @@
     height: 230px;
     padding-top: 46px;
 }
-
