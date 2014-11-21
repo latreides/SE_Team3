@@ -33,12 +33,46 @@ var fadeFrequency = 10;
 var tick = 0.04; // fadeFrequency / duration;
 /* ===== End Color Fading Settings ===== */
 var cardId = 0;
+
+function setCardDetails(card)
+{
+    if (card.frontImage != 'None')
+    {
+        $('#uiCFT').addClass('hidden');
+        $("#uiCFT").html( '' );
+        $('#uiCFI').attr('src',  '/media/' + card.frontImage);
+        $('#uiCFI').removeClass('hidden');
+    }
+    else
+    {
+        $('#uiCFI').addClass('hidden');
+        $('#uiCFI').attr('src',  '');
+        $("#uiCFT").html( card.frontText );
+        $('#uiCFT').removeClass('hidden');
+    }
+
+    if (card.backImage != 'None')
+    {
+        $('#uiCBT').addClass('hidden');
+        $("#uiCBT").html('');
+        $('#uiCBI').attr('src',  '/media/' + card.backImage);
+        $('#uiCBI').removeClass('hidden');
+    }
+    else
+    {
+        $('#uiCBI').addClass('hidden');
+        $('#uiCBI').attr('src',  '');
+        $("#uiCBT").html( card.backText );
+        $('#uiCBT').removeClass('hidden');
+    }
+}
+
 $(document).ready(function() {
     $("#uiSettingsButton").click(toggleSettingsDrawer);
     $("#uiHelpButton").click(toggleHelpDrawer);
 
     populateOriginalColors();
-    
+
     $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 1},getNextCardDiff);
     $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 2},getNextCardDiff);
     $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 3},getNextCardDiff);
@@ -361,30 +395,14 @@ function getNextCard() {
     var response = $.post("/getNextCard", data, dataType);
     response.done( function(cardJson) {
         card = $.parseJSON(cardJson);
-
-        $('#uiCFI').attr('src', (card.frontImage != "None") ? '/media/' + card.frontImage : '');
-        $('#uiCBI').attr('src', (card.backImage != "None") ? '/media/' + card.backImage : '');
-
-        $("#uiCFT").html( card.frontText );
-        $("#uiCBT").html( card.backText );
-
-        /*if (card.frontImage != 'None')
-        {
-            $('#uiCFT').addClass('hidden');
-            $('#uiCFI').removeClass('hidden');
-        }
-        else
-        {
-            $('#uiCFI').addClass('hidden');
-            $('#uiCFT').removeClass('hidden');
-        }*/
+        setCardDetails(card);
 
         //$("#formCardId").val(card.cardId);
         cardId = card.cardId;
 
         // console.log( card );
     });
-    
+
     if( !buttonsDisabled )
         toggleButtons();
     if( !showingFront )
@@ -394,11 +412,11 @@ function getNextCard() {
 function getNextCardDiff(event) {
     var passRating = true;
     var card = {};
-    
+
     if( $(this).attr("data-id") != 6 && !cardHasBeenFlipped )
         return;
-    
-    if ( $(this).attr("data-id") == 6 ) { 
+
+    if ( $(this).attr("data-id") == 6 ) {
         passRating = false;
     }
     var data = {};
@@ -413,11 +431,10 @@ function getNextCardDiff(event) {
     var response = $.post("/getNextCard", data, dataType);
     response.done( function(cardJson) {
         card = $.parseJSON(cardJson);
-        $("#uiCFT").html( card.frontText );
-        $("#uiCBT").html( card.backText );
+        setCardDetails(card);
         //$("#formCardId").val(card.cardId);
         cardId = card.cardId;
-        
+
         // console.log( card );
     });
 

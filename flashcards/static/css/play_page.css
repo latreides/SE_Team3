@@ -1,5 +1,5 @@
 .card {
-    position: relative; 
+    position: relative;
     color: #666;
     text-align: center;
     margin-left: auto;
@@ -10,8 +10,8 @@
 
 h1.title{
     top: -5px;
-    position: absolute; 
-    left: 0; 
+    position: absolute;
+    left: 0;
     width: auto;
     font-size: 30px;
     text-align: center;
@@ -19,7 +19,7 @@ h1.title{
 
 p.question {
     top: 35px;
-    position: absolute; 
+    position: absolute;
     left: 0;
     line-height: 140%;
 }
@@ -105,7 +105,7 @@ a.btnRight{
 
 #playField {
     min-width: 540px;
-    overflow: hidden; 
+    overflow: hidden;
     padding-left: 8px;
     padding-right: 8px;
 }
@@ -212,7 +212,7 @@ ul#buttonPanel li, #uiSkip {
     background: red;
     color: black;
 }
-#ui5.uiButton:hover { 
+#ui5.uiButton:hover {
     background: #FC9B9B;
 }
 
@@ -383,3 +383,13 @@ label {
 .hide {
     display: none;
 }
+
+#uiCFI, #uiCBI
+{
+    display: block;
+    margin: auto;
+    width: auto;
+    height: 230px;
+    padding-top: 46px;
+}
+
