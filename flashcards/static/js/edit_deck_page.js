@@ -326,6 +326,14 @@ $(document).ready(function(){
         $("#imageDrawer").css( "top", offset );
     });
 
+    $('#clearImages').click(function(){
+        $('#cardImageContent').attr('src', '')
+        updateCard();
+        selectCard($('.cardSelected'))
+        updateMiniPreviews();
+
+    });
+
     $("#uploadImagesButton").change( validateImage );
     $("#imageForm").attr("onsubmit", "validateImage()");
     $("#imageForm").submit( validateImage );

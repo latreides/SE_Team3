@@ -261,7 +261,7 @@
     z-index: 100;
 }
 
-#uploadImages, #addImages
+#uploadImages, #addImages, #clearImages
 {
     border: white solid 1px;
     margin-top: 10px;
@@ -269,9 +269,27 @@
     text-align: center;
 }
 
-#uploadImages:hover, #addImages:hover
+#uploadImages:hover, #addImages:hover, #clearImages:hover
 {
     background: #1EB5FF;
+}
+
+#uploadImages
+{
+    width: 347px;
+    display: inline-block;
+}
+
+#clearImages
+{
+    background-color: red;
+    width: 125px;
+    display: inline-block;
+}
+
+#imageControl
+{
+    width: 100%;
 }
 
 #imageDrawer
@@ -320,6 +338,7 @@
 {
     background: initial;
 }
+
 
 #cancelUpload, input[type="submit"]
 {
