@@ -4,16 +4,19 @@
 {% block css %}
     {{block.super}}
     <link rel="stylesheet" type="text/css" href="{% static 'css/play_page.css' %}" />
+    <link rel="stylesheet" type="text/css" href="/static/css/switch.css" />
 {% endblock %}
 
 {% block javascript %}
     {{block.super}}
     <script type="text/javascript" src="{% static 'js/play.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <h1>You are now in play mode!</h1>
-
+    {% include "play_switch_button.html" %}
+    <h6>You are now in play mode!</h6>
+    
     <div id="playField">
         <div>
             <h5>Now Playing</h5>

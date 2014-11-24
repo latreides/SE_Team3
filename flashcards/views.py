@@ -87,28 +87,41 @@ class ScoresPage(LoginRedirect):
         return verify_owner(self, ScoresPage, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-       context = super(ScoresPage, self).get_context_data(**kwargs)
-       deckId = context.get('deckId')
-       context['user_decks'] = getDecksForUser(self.request.user)
-       if deckId:
-           context['cards'] = getCardsForDeck(deckId)
-           context['deck'] = getDeck(deckId)
-           context['mostRecentDeck'] = getMostRecentDeck(deckId)
-           userDeck = context['user_decks'].get(id=deckId)
-           context['deckName']  = userDeck.Name
-       else:
-           context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
-           context['mostRecentDeck'] = getMostRecentDeck(deckId)
-           context['cardsRankedOne'] = getCountCardsWithDifficulty(deckId, 1)
-           context['cardsRankedTwo'] = getCountCardsWithDifficulty(deckId, 2)
-           context['cardsRankedThree'] = getCountCardsWithDifficulty(deckId, 3)
-           context['cardsRankedFour'] = getCountCardsWithDifficulty(deckId, 4)
-           context['cardsRankedFive'] = getCountCardsWithDifficulty(deckId, 5)
-           context['cardCount'] = (getCountCardsWithDifficulty(deckId, 1) + getCountCardsWithDifficulty(deckId, 2)
+        context = super(ScoresPage, self).get_context_data(**kwargs)
+        deckId = context.get('deckId')
+       
+        listOfDecks = getDecksForUser(self.request.user)
+        context['user_decks'] = listOfDecks
+        dictOfDecks = {}
+        for decks in listOfDecks:
+            listId = [0, 0, 0]
+            listId[0] = getCountCardsWithDifficulty(decks.id, 1)
+            listId[1] = getCountCardsNotStudied(decks.id)
+            listId[2] = (getCountCardsWithDifficulty(decks.id, 1) + getCountCardsWithDifficulty(decks.id, 2)
+                                   + getCountCardsWithDifficulty(decks.id, 3) + getCountCardsWithDifficulty(decks.id, 3)
+                                   + getCountCardsWithDifficulty(decks.id, 4) + getCountCardsWithDifficulty(decks.id, 5)
+                                   + getCountCardsNotStudied(decks.id)) 
+            dictOfDecks[decks.id] = listId
+        context['deckData'] = dictOfDecks
+        if deckId:
+            context['cards'] = getCardsForDeck(deckId)
+            context['deck'] = getDeck(deckId)
+            context['mostRecentDeck'] = getMostRecentDeck(deckId)
+            userDeck = context['user_decks'].get(id=deckId)
+            context['deckName']  = userDeck.Name
+        else:
+            context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
+            context['mostRecentDeck'] = getMostRecentDeck(deckId)
+            context['cardsRankedOne'] = getCountCardsWithDifficulty(deckId, 1)
+            context['cardsRankedTwo'] = getCountCardsWithDifficulty(deckId, 2)
+            context['cardsRankedThree'] = getCountCardsWithDifficulty(deckId, 3)
+            context['cardsRankedFour'] = getCountCardsWithDifficulty(deckId, 4)
+            context['cardsRankedFive'] = getCountCardsWithDifficulty(deckId, 5)
+            context['cardCount'] = (getCountCardsWithDifficulty(deckId, 1) + getCountCardsWithDifficulty(deckId, 2)
                                    + getCountCardsWithDifficulty(deckId, 3) + getCountCardsWithDifficulty(deckId, 3)
                                    + getCountCardsWithDifficulty(deckId, 4) + getCountCardsWithDifficulty(deckId, 5)
                                    + getCountCardsNotStudied(deckId))
-       return context
+        return context
 
 
 class ViewDeckPage(LoginRedirect):
@@ -212,7 +225,8 @@ class PlayDeckPage(LoginRedirect):
         context['deckId'] = deckId
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
-
+        
+        context['user_decks'] = getDecksForUser(self.request.user)
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()

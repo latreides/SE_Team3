@@ -8,6 +8,17 @@
     width: 500px;
 }
 
+h6 {
+  color: #62CBFF;
+  font-family: Microsoft-Sans-Serif, sans-serif;
+  font-size: 22pt;
+  margin: 0;
+  text-align: center;
+  margin-left: 30%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
 h1.title{
     top: -5px;
     position: absolute;
