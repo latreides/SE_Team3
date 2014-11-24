@@ -92,17 +92,18 @@ class ScoresPage(LoginRedirect):
        
         listOfDecks = getDecksForUser(self.request.user)
         context['user_decks'] = listOfDecks
-        dictOfDecks = {}
+        arrayOfDecks = []
         for decks in listOfDecks:
-            listId = [0, 0, 0]
-            listId[0] = getCountCardsWithDifficulty(decks.id, 1)
-            listId[1] = getCountCardsNotStudied(decks.id)
-            listId[2] = (getCountCardsWithDifficulty(decks.id, 1) + getCountCardsWithDifficulty(decks.id, 2)
+            listId = [0, 0, 0, 0]
+            listId[0] = decks.Name
+            listId[1] = getCountCardsWithDifficulty(decks.id, 1)
+            listId[2] = getCountCardsNotStudied(decks.id)
+            listId[3] = (getCountCardsWithDifficulty(decks.id, 1) + getCountCardsWithDifficulty(decks.id, 2)
                                    + getCountCardsWithDifficulty(decks.id, 3) + getCountCardsWithDifficulty(decks.id, 3)
                                    + getCountCardsWithDifficulty(decks.id, 4) + getCountCardsWithDifficulty(decks.id, 5)
                                    + getCountCardsNotStudied(decks.id)) 
-            dictOfDecks[decks.id] = listId
-        context['deckData'] = dictOfDecks
+            arrayOfDecks.append(listId)
+        context['deckData'] = arrayOfDecks
         if deckId:
             context['cards'] = getCardsForDeck(deckId)
             context['deck'] = getDeck(deckId)
