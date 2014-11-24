@@ -372,6 +372,25 @@
     display: none;
 }
 
+#noPreview {
+    color: #333;
+    display: none;
+}
+
+#noPreview  div{
+    color: #D33;
+    margin-top: 12px;
+    font-size: 16pt;
+}
+
+#noPreview a#Chrome {
+    color: #0DF;
+}
+
+#noPreview a#FF {
+    color: #FA4;
+}
+
 .disabled
 {
     cursor: default !important;
@@ -385,4 +404,11 @@
     width: auto;
     height: 230px;
     padding-top: 46px;
+}
+
+#uploadedImage {
+    box-shadow: 0px 2px 3px 1px #222;
+    margin: 1em;
+    width: auto;
+    height: 230px;
 }

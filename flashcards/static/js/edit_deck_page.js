@@ -88,10 +88,42 @@ function selectCard(card){
 }
 
 function previewUploadedImage() {
-    if( !(new FileReader()) ) {
-        console.log("FileReader unsupported! Preview will not function.");
+    if( navigator.sayswho= (function(){
+            var ua= navigator.userAgent, tem, 
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\bOPR\/(\d+)/)
+                if(tem!= null) return 'Opera '+tem[1];
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+    })().indexOf("IE") >= 0) {
+        $("#noPreview").slideDown();
         return;
-    }
+    } /*else {
+        console.log(
+            navigator.sayswho= (function(){
+            var ua= navigator.userAgent, tem, 
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\bOPR\/(\d+)/)
+                if(tem!= null) return 'Opera '+tem[1];
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+            })()
+        );
+    }*/
 
     var input = $("#uploadImagesButton")[0];
 
@@ -146,9 +178,17 @@ function checkImgType() {
 }
 
 function validateImage() {
-    var img = $("#uploadImagesButton")[0].files[0];
+    try {
+        var img = $("#uploadImagesButton")[0].files[0];
+    } catch(err) {
+        previewUploadedImage();
+        var img = document.getElementById("uploadImagesButton").item(0);
+        console.log("Img = ", img);
+    }
+    
     if( img == undefined )
         return false;
+            
 
     var imgOK  = checkImgSize();
     var typeOK = checkImgType();

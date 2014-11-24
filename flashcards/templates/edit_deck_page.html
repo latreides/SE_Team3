@@ -74,8 +74,14 @@
     <div id="imageDrawer">
         <img src="{% static 'img/upload_0.png' %}" alt="Upload">
         <div>Upload an Image</div>
-        <input id="uploadImagesButton" type="file" name="uploadImage" accept=".png,.jpg,.jpeg,.bmp,.gif">
+        <input id="uploadImagesButton" type="file" name="uploadImage" accept="image/.png,image/.jpg,image/.jpeg,image/.bmp,image/.gif">
         <br>
+        <div id="noPreview">
+            <div>Image preview is not available on Internet Explorer.</div>
+            To use this feature, try one of our <br>preferred browsers, like 
+            <a id="Chrome" href="https://www.google.com/chrome/browser/">Chrome</a> or 
+            <a id="FF" href="https://www.mozilla.org/en-US/firefox/new/">FireFox</a>.
+        </div>
         <div id="imgPreviewContainer">
             <img id="uploadedImage" alt="User Image">
         </div>
