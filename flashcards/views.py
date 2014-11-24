@@ -435,13 +435,19 @@ class deckChangesPage(View):
 
 class deckSearchResults(LoginRedirect):
     template_name = 'deck_search_results.html'
+    
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, deckSearchResults, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(deckSearchResults, self).get_context_data(**kwargs)
+        deckId = self.request.GET.get('deckId')
         keywordArgs = self.request.GET.get('keywords', '')
         listOfKeywords = keywordArgs.split()
         keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
         context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded)
+        for deck in context['matching_decks']:
+            context['numOfCards'] = getCountCardsInDeck(deck.id)
 
         return context
 

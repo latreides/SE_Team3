@@ -11,17 +11,20 @@
     <div id="content">
         <h2>Decks Found:</h2>
     <div class="section">
-    <br/>
+
     {% for deck in matching_decks %}
     
     <!-- decks currently fetched in a dictionary -->
     <table>
         <tr class="deckItem">
-            <td>{{ deck.Name }}</td>
+            <td id = "title">{{ deck.Name }}</td>
             <td class="deckActions">
+                <p>Clone Deck</p>
                 <a href="{% url 'scores' deck.id %}">
                     <div id="cloneIcon" class="icon" title="Clone Deck"></div>
                 </a>
+                <br/>
+                <p>View Deck</p>
                 <a href="{% url 'play_deck' deck.id %}">
                     <div id="viewIcon" class="icon" title="View Deck"></div>
                 </a>
@@ -30,10 +33,13 @@
     </table>
     <br/>
     <ul>
-        <div> Times Cloned: {{ deck.Times_Cloned }} </div>
-        <div> Author: {{ deck.User_ID }} </div>
-        <div> Keywords: {{ deck.Tags }} </div>
+        <div id = "stats"> Times Cloned: {{ deck.Times_Cloned }} </div>
+        <div id = "stats"> Author: {{ deck.User_ID }} </div>
+        <div id = "stats"> Keywords: {{ deck.Tags }} </div>
+        <div id = "stats"> No. of Cards: {{ numOfCards }} </div>
     </ul>
+    <br/>
+    <hr/>
     {% endfor %}
     </div>
     </div>
