@@ -45,7 +45,15 @@ $(document).ready(function(){
             $("#createDeck").submit();
         });
 
-        $('#editIcon').click(function(){
+        $('#editIcon, #deleteIcon, #resetIcon').click(function(){
+            if ($(this).attr('id') == "deleteIcon"){
+                if (!confirm('Delete Selected Deck?'))
+                { return; }
+            }
+            else if ($(this).attr('id') == "resetIcon"){
+                if (!confirm('Reset Selected Deck?'))
+                { return; }
+            }
             window.location = $(this).data('url') + '?deckId=' + $('#deckManagement').attr('data-deckId');
         });
 });
