@@ -371,7 +371,8 @@ class GetNextCard(View):
         deckModel = engine()
         deckModel.play(deckId)
         card = deckModel.getNextCard()
-        print(card.id)
+        #print(card.id)
+        #print(card.Difficulty)
 
         # print "Deck " + str(deckId)
         # print "Card " + str(card)
