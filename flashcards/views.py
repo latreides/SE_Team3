@@ -22,7 +22,7 @@ from next import getNextCard  #To be removed
 from play import *
 import json
 
-def verify_owner(obj, cls, *args, **kwargs):
+def verify_owner(obj, cls, redirectOnSuccess, *args, **kwargs):
     deckId = None
     if 'deckId' in kwargs:
         deckId = kwargs['deckId']
@@ -33,8 +33,10 @@ def verify_owner(obj, cls, *args, **kwargs):
         deck = getDeck(deckId)
         if not deck or obj.request.user != deck.User_ID:
             return HttpResponseRedirect(reverse('invalid_deck'))
-
-    return super(cls, obj).get(obj.request, *args, **kwargs)
+    if redirectOnSuccess:
+        return super(cls, obj).get(obj.request, *args, **kwargs)
+    else:
+        return None
 
 class LoginRedirect(TemplateView):
 
@@ -84,12 +86,12 @@ class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, ScoresPage, *args, **kwargs)
+        return verify_owner(self, ScoresPage, True, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ScoresPage, self).get_context_data(**kwargs)
         deckId = context.get('deckId')
-       
+
         listOfDecks = getDecksForUser(self.request.user)
         context['user_decks'] = listOfDecks
         arrayOfDecks = []
@@ -101,7 +103,7 @@ class ScoresPage(LoginRedirect):
             listId[3] = (getCountCardsWithDifficulty(decks.id, 1) + getCountCardsWithDifficulty(decks.id, 2)
                                    + getCountCardsWithDifficulty(decks.id, 3) + getCountCardsWithDifficulty(decks.id, 3)
                                    + getCountCardsWithDifficulty(decks.id, 4) + getCountCardsWithDifficulty(decks.id, 5)
-                                   + getCountCardsNotStudied(decks.id)) 
+                                   + getCountCardsNotStudied(decks.id))
             arrayOfDecks.append(listId)
         context['deckData'] = arrayOfDecks
         if deckId:
@@ -211,7 +213,7 @@ class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, PlayDeckPage, *args, **kwargs)
+        return verify_owner(self, PlayDeckPage, True, *args, **kwargs)
 
     def post(self, request, *args, **kwards):
         #update card
@@ -226,7 +228,7 @@ class PlayDeckPage(LoginRedirect):
         context['deckId'] = deckId
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
-        
+
         context['user_decks'] = getDecksForUser(self.request.user)
         if deckId:
             engineObj = engine()
@@ -307,16 +309,25 @@ class WelcomePage(TemplateView):
 
 
 class DeleteDeckPage(View):
-    def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deckId')
-        return HttpResponseRedirect(reverse("manage_decks"))
-
+    def get(self, request, *args, **kwargs):
+        invalid = verify_owner(self, ScoresPage, False, *args, **kwargs)
+        if not invalid:
+            deckId = self.request.GET.get('deckId')
+            deleteDeck(deckId)
+            return HttpResponseRedirect(reverse("view_decks"))
+        else:
+            return invalid
 
 class ResetDeckPage(View):
 
-    def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deckId')
-        return HttpResponseRedirect(reverse("manage_decks"))
+    def get(self, request, *args, **kwargs):
+        invalid = verify_owner(self, ScoresPage, False, *args, **kwargs)
+        if not invalid:
+            deckId = self.request.GET.get('deckId')
+            resetDeck(deckId)
+            return HttpResponseRedirect(reverse("view_decks"))
+        else:
+            return invalid
 
 class createDeckPage(View):
     def post(self, request, *args, **kwargs):
@@ -328,7 +339,7 @@ class EditDeckPage(LoginRedirect):
     template_name = 'edit_deck_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, EditDeckPage, *args, **kwargs)
+        return verify_owner(self, EditDeckPage, True, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         deckId = self.request.GET.get('deckId')
@@ -360,7 +371,8 @@ class GetNextCard(View):
         deckModel = engine()
         deckModel.play(deckId)
         card = deckModel.getNextCard()
-        print(card.id)
+        #print(card.id)
+        #print(card.Difficulty)
 
         # print "Deck " + str(deckId)
         # print "Card " + str(card)
@@ -437,12 +449,18 @@ class deckChangesPage(View):
 class deckSearchResults(LoginRedirect):
     template_name = 'deck_search_results.html'
 
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, deckSearchResults, True, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(deckSearchResults, self).get_context_data(**kwargs)
+        deckId = self.request.GET.get('deckId')
         keywordArgs = self.request.GET.get('keywords', '')
         listOfKeywords = keywordArgs.split()
         keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
         context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded, self.request.user.id)
+        for deck in context['matching_decks']:
+            context['numOfCards'] = getCountCardsInDeck(deck.id)
 
         return context
 

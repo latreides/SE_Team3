@@ -35,6 +35,16 @@ def deleteDeck(deckId):
     if foundDeck:
         foundDeck.delete()
 
+def resetDeck(deckId):
+    '''
+    Resets scores in an entire Deck
+    '''
+    foundDeck = Deck.objects.get(id=deckId)
+    if foundDeck:
+        cards = getCardsForDeck(deckId)
+        for card in cards:
+            card.Difficulty = None
+            card.save()
 
 def createCard(deckID, twoSided, frontText = None, backText = None, frontImageID = None, backImageID = None):
     '''
@@ -105,6 +115,7 @@ def getDeck(deckID):
     Returns a single specific Deck
     '''
     return Deck.objects.filter(id=deckID).first()
+
 
 def getCard(cardID):
     '''

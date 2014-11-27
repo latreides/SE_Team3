@@ -51,8 +51,8 @@
                 Created by: <span id="author">No one</span><br>
             </div>
             <div id="deckManagement" class="deckActions" data-deckId="1">
-                <div id="deleteIcon" class="icon" title="Permanently delete!"/></div>
-                <div id="resetIcon"  class="icon" title="Reset your progress"/></div>
+                <div id="deleteIcon" class="icon" title="Permanently delete!" data-url="{% url 'delete_deck' %}"></div>
+                <div id="resetIcon"  class="icon" title="Reset your progress"data-url="{% url 'reset_deck' %}"></div>
                 <div id="editIcon"   class="icon" title="Edit" data-url="{% url 'edit' %}"></div>
             </div>
         </div>

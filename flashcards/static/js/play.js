@@ -423,7 +423,8 @@ function getNextCardDiff(event) {
     data["deckId"] = $("#formDeckId").val();
     //data["cardId"] = $("#formCardId").val();
     data["cardId"] = cardId;
-    data["diff"] = event.diff;
+    data["diff"] = event.data.diff;
+    //console.log(event.data.diff);
     data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").val();
     if(passRating)
         data["rating"] = $(this).attr("data-id");

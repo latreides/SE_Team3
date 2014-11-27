@@ -42,13 +42,13 @@
                 <p>
                     {% for deck in deckData %}
                         <div id="deckName">
-                            {{deck.0}}:
+                            {{ deck.0 }}:
                         </div>
 
                         <div id="stats">
                             <h5>{{ deck.1 }}</h4> Ranked 1 <pre>     </pre>
                             <h5>{{ deck.2 }}</h5> Not studied <pre>     </pre>
-                            <h5>{{ deck.3 }}</h5> Total cards
+                            <h5>{{ deck.3 }}</h5> Total card(s)
                         </div>
                         <br /> <br />
                     {% endfor %}

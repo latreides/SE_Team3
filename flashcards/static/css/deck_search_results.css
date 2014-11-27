@@ -10,9 +10,19 @@ div#deckPane,div#deckDrawer {
 
 table
 {
-    width: 45%;
+    width: 65%;
     margin-left: auto;
     margin-right: auto;
+}
+
+#stats
+{
+	font-size: 16pt;
+}
+
+#title
+{
+	font-size: 24pt;
 }
 
 div#deckDrawer {
@@ -54,6 +64,8 @@ div#dInfo {
     cursor: pointer;
     height: 20px;
     width: 20px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #cloneIcon:hover {
@@ -66,6 +78,8 @@ div#dInfo {
     cursor: pointer;
     height: 20px;
     width: 20px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #viewIcon:hover {
@@ -74,10 +88,10 @@ div#dInfo {
 
 .icon {
     height: 20px;
-    float:right;
-    margin-right: 10px;
     vertical-align: middle;
     width: 20px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 img.cards {
@@ -113,4 +127,10 @@ ul {
 .section
 {
     //background-color: #888;
+}
+
+p
+{
+	font-size: 12pt;
+	text-align: center;
 }
