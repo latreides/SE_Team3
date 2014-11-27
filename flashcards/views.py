@@ -442,7 +442,7 @@ class deckSearchResults(LoginRedirect):
         keywordArgs = self.request.GET.get('keywords', '')
         listOfKeywords = keywordArgs.split()
         keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
-        context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded)
+        context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded, self.request.user.id)
 
         return context
 
@@ -452,6 +452,64 @@ class logout(View):
       auth.logout(request)
       return HttpResponseRedirect(reverse('welcome'))
 
+class cloneDeck(View):
+
+    def get(self, request, *args, **kwargs):
+        deckId = kwargs.get('deckId', None)
+        newDeck = self.cloneDeck(deckId)
+        self.cloneCards(deckId, newDeck.id) 
+        return HttpResponseRedirect(reverse('view_decks'))
+
+    def cloneDeck(self, oldDeckId):
+        deck = getDeck(oldDeckId)
+        newDeck = createDeck(self.request.user.id, deck.Name)
+        newDeck.Theme = deck.Theme
+        newDeck.Tags = deck.Tags
+        newDeck.save()
+        return newDeck
+
+    def cloneCards(self, oldDeckId, newDeckId):
+        cards = getCardsForDeck(oldDeckId)
+        deck = getDeck(oldDeckId)
+        for card in cards:
+            if card.Front_Img_ID != None:
+                frontImg = card.Front_Img_ID.id
+            else:
+                frontImg = None
+            if card.Back_Img_ID != None:
+                backImg = card.Back_Img_ID.id
+            else:
+                backImg = None
+            createCard(newDeckId, card.Two_Sided, card.Front_Text, card.Back_Text, frontImg, backImg)
+            
+class viewDeck(LoginRedirect):
+    template_name = 'view_deck.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(viewDeck, self).get_context_data(**kwargs)
+        deckId = context.get('deckId')
+        if self.request.GET.get('mydropdown', '') == 'Back':
+            current = 'Back'
+            nextValue = 'Front'
+            context['front'] = False;
+        else:
+            current = 'Front'
+            nextValue = 'Back'
+            context['front'] = True;
+        context['deckName'] = getDeck(deckId)
+        context['cards'] = getCardsForDeck(deckId)
+        context['current'] = current
+        context['next'] = nextValue
+        return context
+
+    def post(self, request, *args, **kwargs):
+        deckId = kwargs.get('deckId', None)
+        if self.request.POST.get('mydropdown', '') == 'Back':
+            return HttpResponseRedirect(reverse('view_deck', kwargs={'deckId': deckId}) + '?mydropdown=Back')
+        else:
+            return HttpResponseRedirect(reverse('view_deck', kwargs={'deckId': deckId}) + '?mydropdown=Front')
+
+        
 def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
         uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))

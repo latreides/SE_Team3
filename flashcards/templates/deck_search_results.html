@@ -19,10 +19,10 @@
         <tr class="deckItem">
             <td>{{ deck.Name }}</td>
             <td class="deckActions">
-                <a href="{% url 'scores' deck.id %}">
+                <a href="{% url 'clone' deck.id %}">
                     <div id="cloneIcon" class="icon" title="Clone Deck"></div>
                 </a>
-                <a href="{% url 'play_deck' deck.id %}">
+                <a href="{% url 'view_deck' deck.id %}">
                     <div id="viewIcon" class="icon" title="View Deck"></div>
                 </a>
             </td>
