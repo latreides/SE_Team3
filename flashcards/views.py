@@ -506,6 +506,7 @@ class viewDeck(LoginRedirect):
     def get_context_data(self, **kwargs):
         context = super(viewDeck, self).get_context_data(**kwargs)
         deckId = context.get('deckId')
+        context['deck_id'] = deckId
         if self.request.GET.get('mydropdown', '') == 'Back':
             current = 'Back'
             nextValue = 'Front'
@@ -516,16 +517,7 @@ class viewDeck(LoginRedirect):
             context['front'] = True;
         context['deckName'] = getDeck(deckId)
         context['cards'] = getCardsForDeck(deckId)
-        context['current'] = current
-        context['next'] = nextValue
         return context
-
-    def post(self, request, *args, **kwargs):
-        deckId = kwargs.get('deckId', None)
-        if self.request.POST.get('mydropdown', '') == 'Back':
-            return HttpResponseRedirect(reverse('view_deck', kwargs={'deckId': deckId}) + '?mydropdown=Back')
-        else:
-            return HttpResponseRedirect(reverse('view_deck', kwargs={'deckId': deckId}) + '?mydropdown=Front')
 
         
 def reset_confirm(request, uidb64=None, token=None):
