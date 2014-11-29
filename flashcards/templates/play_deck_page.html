@@ -52,6 +52,13 @@
                     <img id="uiCBI" class="uiQuestion hidden" src=''>
                 </div>
             </div>
+            <div id="debug" style="display:none; position:absolute;left:-20px">
+                <ul>
+                {% for val in vals %}
+                    <li>{{val.Front_Text}} - {{val.Back_Text}} - {{val.Difficulty}}</li>
+                {% endfor %}
+                </ul>
+            </div>
             <div id="flipHotkey"></div>
             <form method="POST">
                 {% csrf_token %}
