@@ -35,10 +35,13 @@ function updateCard(){
 }
 
 function updateTheme(theme, shortName){
+    var bigName = theme.replace('Small', '');
+    var tinyName = theme.replace('Small', 'Mini');
+
     $('#themeField').val(shortName);
     theme = theme.replace(' ', '%20');
-    $('#cardPreview').css('background-image', 'url(' + theme +')');
-    $('.cardMiniPreview').css('background-image', 'url(' + theme +')');
+    $('#cardPreview').css('background-image', 'url(' + bigName +')');
+    $('.cardMiniPreview').css('background-image', 'url(' + tinyName +')');
 }
 
 function updateCardList(){
@@ -89,7 +92,7 @@ function selectCard(card){
 
 function previewUploadedImage() {
     if( navigator.sayswho= (function(){
-            var ua= navigator.userAgent, tem, 
+            var ua= navigator.userAgent, tem,
             M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
             if(/trident/i.test(M[1])){
                 tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
@@ -108,7 +111,7 @@ function previewUploadedImage() {
     } /*else {
         console.log(
             navigator.sayswho= (function(){
-            var ua= navigator.userAgent, tem, 
+            var ua= navigator.userAgent, tem,
             M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
             if(/trident/i.test(M[1])){
                 tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
@@ -185,10 +188,10 @@ function validateImage() {
         var img = document.getElementById("uploadImagesButton").item(0);
         console.log("Img = ", img);
     }
-    
+
     if( img == undefined )
         return false;
-            
+
 
     var imgOK  = checkImgSize();
     var typeOK = checkImgType();
