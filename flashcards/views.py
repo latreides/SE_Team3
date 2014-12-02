@@ -384,7 +384,7 @@ class GetNextCard(View):
         # print card.Back_Text
 
 
-        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id) };
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id), 'diff': str(card.Difficulty)};
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
 
 

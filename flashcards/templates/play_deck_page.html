@@ -23,10 +23,13 @@
             <div id="deckTitle">{{ deckName }}</div>
         </div>
         <div id="playFrame">
+            <div class="container" >
+                <div style="display: inline-block" class="diff" > Difficulty Of Card: </div>
+                <div style="display: inline-block" id = "difficulty" class="diff" > {{ card.Difficulty }} </div>
+            </div>
             <div id="uiSettingsDrawer">
                 <span class="drawerTitle">SETTINGS</span>
                 <hr>
-
                 <span id="cardOrder">Present cards to me: </span>
                 <label><input type="radio" name="order" value="frontFirst" checked="checked">
                     <span></span>Front side first

@@ -49,6 +49,7 @@ function setCardDetails(card)
         $('#uiCFI').attr('src',  '');
         $("#uiCFT").html( card.frontText );
         $('#uiCFT').removeClass('hidden');
+        $("#difficulty").html( card.diff );
     }
 
     if (card.backImage != 'None')
