@@ -288,10 +288,12 @@ class PlayDeckPage(LoginRedirect):
         deckId = kwargs.get('deckId', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
-        userDeck.Accessed_Date = datetime.now();
-        userDeck.save();
+        if not userDeck.Accessed_Date or datetime.today().date() != userDeck.Accessed_Date.date():
+            userDeck.Accessed_Date = datetime.now()
+        userDeck.save()
         context['deckId'] = deckId
         context['deckName']  = userDeck.Name
+        context['lastAccessed'] = userDeck.Accessed_Date.isoformat()
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
 
         context['user_decks'] = getDecksForUser(self.request.user)

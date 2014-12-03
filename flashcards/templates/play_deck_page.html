@@ -11,6 +11,9 @@
     {{block.super}}
     <script type="text/javascript" src="{% static 'js/play.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
+    <script>
+        var lastAccessed = new Date("{{ lastAccessed }}");
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -23,7 +26,11 @@
             <div id="deckTitle">{{ deckName }}</div>
         </div>
         <div id="playFrame">
+            <div id="timedCover">
+                <div>Your session has ended!</div>
+            </div>
             <div class="container" >
+                <div id="timer" >as</div>
                 <div style="display: inline-block" class="diff" > Difficulty Of Card: </div>
                 <div style="display: inline-block" id = "difficulty" class="diff" > {{ card.Difficulty }} </div>
             </div>

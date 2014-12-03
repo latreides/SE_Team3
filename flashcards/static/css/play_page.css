@@ -409,7 +409,6 @@ label {
     display: inline-block;
     color: yellow;
     text-align: center;
-    padding-top: 30px;
     padding-bottom: 0px;
 }
 
@@ -418,4 +417,31 @@ label {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+#timer
+{
+    padding-top: 20px;
+}
+
+#timedCover
+{
+    background-color:#000;
+    display: none;
+    opacity:0.8;
+    position:absolute;
+    width: 500px;
+    height: 400px;
+    z-index:10000;
+}
+
+#timedCover div
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: yellow;
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 250px;
 }

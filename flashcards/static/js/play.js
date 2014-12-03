@@ -34,6 +34,41 @@ var tick = 0.04; // fadeFrequency / duration;
 /* ===== End Color Fading Settings ===== */
 var cardId = 0;
 
+var sessionTime = 5; // Minutes
+var sessionEnd;
+var sessionTImer;
+
+function updateTimer()
+{
+    var now = new Date();
+    if (sessionEnd <= now)
+    {
+        clearInterval(timer);
+        $('#timer').text("Session has Ended");
+        $('#timedCover').show();
+    }
+    else
+    {
+        var current = new Date(sessionEnd-now);
+        $('#timer').text("Session will end in: " + current.getMinutes() + " min(s) and " + current.getSeconds() + " second(s)");
+    }
+}
+
+function calcCoverSize()
+{
+
+    $('#timedCover').width($('#playFrame').width());
+    $('#timedCover').height($('#playFrame').height());
+
+}
+
+function playTimer()
+{
+    sessionEnd = new Date(lastAccessed.getFullYear(), lastAccessed.getMonth(), lastAccessed.getDate(), lastAccessed.getHours(), lastAccessed.getMinutes() + sessionTime, lastAccessed.getSeconds());
+    sessionTimer = setInterval(updateTimer, 1000);
+    updateTimer();
+}
+
 function setCardDetails(card)
 {
     if ((card.reversible) && (Math.random() >= 0.75))
@@ -106,6 +141,10 @@ $(document).ready(function() {
     $("#uiCardFront").fadeIn();
     cardId = $("#formCardId").val();
     $("#uiSkip").trigger('click');
+    calcCoverSize();
+    playTimer();
+
+    $(window).on('resize', calcCoverSize);
 });
 
 
