@@ -21,16 +21,16 @@ function updateDeckDrawer(child) {
     question.
     */
     titleBar = $("#dTitle");
-    desc = $("#desc");
+    //desc = $("#desc");
     count = $("#cardCount");
     acc = $("#access");
     auth = $("#author");
 
     titleBar.html($(this).attr("data-deckName") );
-    desc.html($(this).attr("data-deckDesc") );
+    //desc.html($(this).attr("data-deckDesc") );
     count.html($(this).attr("data-cardCount") );
     acc.html( $(this).attr("data-lastAccess") );
-
+    auth.html( $(this).attr("data-author")  );
     var selectedDeckId = $(this).attr('data-deckId');
     $('#deckManagement').attr('data-deckId', selectedDeckId)
 

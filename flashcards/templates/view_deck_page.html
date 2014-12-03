@@ -45,7 +45,7 @@
             <hr/>
             <img id="dImg" class="cards" src="{% static 'img/cardstack0.png' %}" alt="Cards"/>
             <div id="dInfo">
-                Description: <em><span id="desc">Missing deck description...</span></em><br>
+                {% comment %}Description: <em><span id="desc">Missing deck description...</span></em><br>{% endcomment %}
                 Card count: <span id="cardCount">-1</span><br>
                 Last access: <span id="access">Never -1</span><br>
                 Created by: <span id="author">No one</span><br>
@@ -74,7 +74,7 @@
                 <tr class="deckItem">
                     <td>{{ deck.Name }}</td>
                     <td class="deckActions">
-                        <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="-1" data-lastAccess="{{ deck.Accessed_Date }}"data-author="Me" >
+                        <a class="manage" data-deckId="{{ deck.id }}" data-deckName="{{ deck.Name }}" data-deckDesc="Deck description..." data-cardCount="{{ deck.Card_Count }}" data-lastAccess="{{ deck.Accessed_Date }}" data-author="{{ deck.User_ID }}" >
                             <div id="manageIcon" class="icon" title="Manage Deck"/></div>
                         </a>
                         <a href="{% url 'scores' deck.id %}">

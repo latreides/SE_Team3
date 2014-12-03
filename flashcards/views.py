@@ -133,6 +133,9 @@ class ViewDeckPage(LoginRedirect):
     def get_context_data(self, **kwargs):
         context = super(ViewDeckPage, self).get_context_data(**kwargs)
         context['user_decks'] = getDecksForUser(self.request.user)
+        for deck in context['user_decks']:
+            deck.Card_Count = getCountCardsInDeck(deck.id)
+
         return context
 
 
