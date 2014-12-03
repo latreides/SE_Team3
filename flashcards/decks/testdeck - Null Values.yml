@@ -1,0 +1,11 @@
+MyDeck1:
+    card1:
+        - q: 'What is the square root of 25?'
+        - a: '5'
+        - frontImg: 
+        - backImg: 
+    card2:
+        - q: 'What would you do for a klondike bar?'
+        - a: 'Nothing'
+        - frontImg: 
+        - backImg: 

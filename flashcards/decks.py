@@ -32,11 +32,24 @@ class parseConfig:
                     front = qNa[0].values()[0]
                     back = qNa[1].values()[0]
                     frontImgPath = qNa[2].values()[0]
+                    if frontImgPath == None:
+                        frontImgPath == ''
                     backImgPath = qNa[3].values()[0]
-                    frontImg = createImage(frontImgPath)
-                    backImg = createImage(backImgPath)
+                    if backImgPath == None:
+                        backImgPath == ''
+                    if frontImgPath != '':
+                        frontImg = createImage(frontImgPath)
+                    if backImgPath != '':
+                        backImg = createImage(backImgPath)
 
-                    createCard(deck.id, False, front, back, frontImg.id, backImg.id)
+                    if frontImgPath != '' and backImgPath != '':
+                        createCard(deck.id, False, front, back, frontImg.id, backImg.id)
+                    elif frontImgPath != '' and backImgPath == '':
+                        createCard(deck.id, False, front, back, frontImg.id, None)
+                    elif frontImgPath == '' and backImgPath != '':
+                        createCard(deck.id, False, front, back, None, backImg.id)
+                    else:
+                        createCard(deck.id, False, front, back, None, None)
                         
             return True, deck
         else:

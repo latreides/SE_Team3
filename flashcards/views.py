@@ -138,6 +138,67 @@ class ViewDeckPage(LoginRedirect):
 
 class AccountPage(LoginRedirect):
     template_name = 'account_page.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(AccountPage, self).get_context_data(**kwargs)
+        user = self.request.user
+        context['userName'] = user.username
+        context['name'] = user.first_name + " " + user.last_name
+        context['email'] = user.email
+        context['joined'] = user.date_joined
+        context['lastLogin'] = user.last_login
+        
+        if self.request.GET.get('pwReset', ''):
+            context['pwReset'] = True
+        else:
+            context['pwReset'] = False
+        return context
+    
+class PasswordReset(TemplateView):
+    template_name = 'registration/password_reset_form.html'
+    
+    def get_context_data(self, **kwargs):
+        invalidOldPassword = "Your old password does not match our password in the database."
+        invalidSamePassword = "Your new password cannot be the same as the old one."
+        invalidNewPassword = "Your new and retyped passwords entered do not match."
+        context = super(PasswordReset, self).get_context_data(**kwargs)
+        if self.request.GET.get('invalidOldPassword', '') == "True":
+            context['invalidPassword'] = invalidOldPassword
+        elif self.request.GET.get('invalidSamePassword', '') == "True":
+            context['invalidPassword'] = invalidSamePassword
+        elif self.request.GET.get('invalidNewPassword', '') == "True":
+            context['invalidPassword'] = invalidNewPassword
+        else:
+            context['invalidPassword'] = ''
+            
+        return context
+    
+    def reset(self, request):
+        user = self.request.user
+        username = request.POST.get('username', '')
+        oldPassword = request.POST.get('oldPassword')
+        newPassword = request.POST.get('newPassword')
+        retypedPassword = request.POST.get('retypedPassword')
+        
+        if user.check_password(oldPassword):
+            if newPassword != oldPassword:
+                if retypedPassword == newPassword:
+                    user.set_password(newPassword)
+                    user.save()
+                else:
+                    raise Exception('invalidNewPassword')
+            else:
+                raise Exception('invalidSamePassword')
+        else:
+            raise Exception('invalidOldPassword')
+        
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('reset'):
+            try:
+                self.reset(request)
+            except Exception as e:
+                return HttpResponseRedirect(reverse('reset') + '?' + str(e) + '=True')
+            return HttpResponseRedirect(reverse('account')+ "?pwReset" + '=True')
 
 
 class ContactPage(LoginRedirect):
@@ -195,12 +256,15 @@ class SigninPage(TemplateView):
         username = request.POST.get('username', '')
         password1 = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
+        email = request.POST.get('email', '')
+        firstName = request.POST.get('firstName', '')
+        lastName = request.POST.get('lastName', '')
 
         if User.objects.filter(username = username).count() > 0:
             raise Exception('invalid_username')
 
         if password1 == password2:
-            newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
+            newUser = User.objects.create(username=username, first_name = firstName, last_name = lastName, email=email, is_active=True, is_staff=False, is_superuser=False)
             newUser.set_password(password1)
             newUser.save()
             user = auth.authenticate(username=username, password=password1)
@@ -463,8 +527,10 @@ class deckSearchResults(LoginRedirect):
         listOfKeywords = keywordArgs.split()
         keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
         context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded, self.request.user.id)
+        cardCounts = {}
+        context['cardCounts'] = cardCounts
         for deck in context['matching_decks']:
-            context['numOfCards'] = getCountCardsInDeck(deck.id)
+            deck.cardCount = getCountCardsInDeck(deck.id)
 
         return context
 
@@ -524,15 +590,15 @@ class viewDeck(LoginRedirect):
         return context
 
         
-def reset_confirm(request, uidb64=None, token=None):
-    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
-        uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))
+#def reset_confirm(request, uidb64=None, token=None):
+    #return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
+        #uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))
 
-def reset(request):
-    return password_reset(request, template_name='registration/password_reset_form.html',
-        email_template_name='registration/password_reset_email.html',
-        subject_template_name='registration/password_reset_subject.text',
-        post_reset_redirect=reverse('signin'))
+#def reset(request):
+    #return password_reset(request, template_name='registration/password_reset_form.html',
+        #email_template_name='registration/password_reset_email.html',
+        #subject_template_name='registration/password_reset_subject.text',
+        #post_reset_redirect=reverse('signin'))
 
 
 class UploadImagePage(View):
