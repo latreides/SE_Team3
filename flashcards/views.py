@@ -12,6 +12,7 @@ from flashcards.decks import *
 from urllib import quote, unquote
 from django.contrib.auth.models import User
 from django.contrib.auth.views import password_reset, password_reset_confirm
+from datetime import datetime
 import glob
 import ntpath
 import os
@@ -22,7 +23,7 @@ from next import getNextCard  #To be removed
 from play import *
 import json
 
-def verify_owner(obj, cls, *args, **kwargs):
+def verify_owner(obj, cls, redirectOnSuccess, *args, **kwargs):
     deckId = None
     if 'deckId' in kwargs:
         deckId = kwargs['deckId']
@@ -33,8 +34,10 @@ def verify_owner(obj, cls, *args, **kwargs):
         deck = getDeck(deckId)
         if not deck or obj.request.user != deck.User_ID:
             return HttpResponseRedirect(reverse('invalid_deck'))
-
-    return super(cls, obj).get(obj.request, *args, **kwargs)
+    if redirectOnSuccess:
+        return super(cls, obj).get(obj.request, *args, **kwargs)
+    else:
+        return None
 
 class LoginRedirect(TemplateView):
 
@@ -51,7 +54,6 @@ class LandingPage(LoginRedirect):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         context['most_recent_deck'] = getMostRecentDeck(self.request.user.id)
-        context['cards_for_deck'] = getCardsForDeck(1)
         context['last_time_logged_in'] = getLastTimeLoggedIn(self.request.user.id)
 
         return context
@@ -84,31 +86,45 @@ class ScoresPage(LoginRedirect):
     template_name = 'scores_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, ScoresPage, *args, **kwargs)
+        return verify_owner(self, ScoresPage, True, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-       context = super(ScoresPage, self).get_context_data(**kwargs)
-       deckId = context.get('deckId')
-       context['user_decks'] = getDecksForUser(self.request.user)
-       if deckId:
-           context['cards'] = getCardsForDeck(deckId)
-           context['deck'] = getDeck(deckId)
-           context['mostRecentDeck'] = getMostRecentDeck(deckId)
-           userDeck = context['user_decks'].get(id=deckId)
-           context['deckName']  = userDeck.Name
-       else:
-           context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
-           context['mostRecentDeck'] = getMostRecentDeck(deckId)
-           context['cardsRankedOne'] = getCountCardsWithDifficulty(deckId, 1)
-           context['cardsRankedTwo'] = getCountCardsWithDifficulty(deckId, 2)
-           context['cardsRankedThree'] = getCountCardsWithDifficulty(deckId, 3)
-           context['cardsRankedFour'] = getCountCardsWithDifficulty(deckId, 4)
-           context['cardsRankedFive'] = getCountCardsWithDifficulty(deckId, 5)
-           context['cardCount'] = (getCountCardsWithDifficulty(deckId, 1) + getCountCardsWithDifficulty(deckId, 2)
+        context = super(ScoresPage, self).get_context_data(**kwargs)
+        deckId = context.get('deckId')
+
+        listOfDecks = getDecksForUser(self.request.user)
+        context['user_decks'] = listOfDecks
+        arrayOfDecks = []
+        for decks in listOfDecks:
+            listId = [0, 0, 0, 0]
+            listId[0] = decks.Name
+            listId[1] = getCountCardsWithDifficulty(decks.id, 1)
+            listId[2] = getCountCardsNotStudied(decks.id)
+            listId[3] = (getCountCardsWithDifficulty(decks.id, 1) + getCountCardsWithDifficulty(decks.id, 2)
+                                   + getCountCardsWithDifficulty(decks.id, 3) + getCountCardsWithDifficulty(decks.id, 3)
+                                   + getCountCardsWithDifficulty(decks.id, 4) + getCountCardsWithDifficulty(decks.id, 5)
+                                   + getCountCardsNotStudied(decks.id))
+            arrayOfDecks.append(listId)
+        context['deckData'] = arrayOfDecks
+        if deckId:
+            context['cards'] = getCardsForDeck(deckId)
+            context['deck'] = getDeck(deckId)
+            context['mostRecentDeck'] = getMostRecentDeck(deckId)
+            userDeck = context['user_decks'].get(id=deckId)
+            context['deckName']  = userDeck.Name
+        else:
+            context['cardsNotStudied'] = getCountCardsNotStudied(deckId)
+            context['mostRecentDeck'] = getMostRecentDeck(deckId)
+            context['cardsRankedOne'] = getCountCardsWithDifficulty(deckId, 1)
+            context['cardsRankedTwo'] = getCountCardsWithDifficulty(deckId, 2)
+            context['cardsRankedThree'] = getCountCardsWithDifficulty(deckId, 3)
+            context['cardsRankedFour'] = getCountCardsWithDifficulty(deckId, 4)
+            context['cardsRankedFive'] = getCountCardsWithDifficulty(deckId, 5)
+            context['cardCount'] = (getCountCardsWithDifficulty(deckId, 1) + getCountCardsWithDifficulty(deckId, 2)
                                    + getCountCardsWithDifficulty(deckId, 3) + getCountCardsWithDifficulty(deckId, 3)
                                    + getCountCardsWithDifficulty(deckId, 4) + getCountCardsWithDifficulty(deckId, 5)
                                    + getCountCardsNotStudied(deckId))
-       return context
+        return context
 
 
 class ViewDeckPage(LoginRedirect):
@@ -122,6 +138,67 @@ class ViewDeckPage(LoginRedirect):
 
 class AccountPage(LoginRedirect):
     template_name = 'account_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountPage, self).get_context_data(**kwargs)
+        user = self.request.user
+        context['userName'] = user.username
+        context['name'] = user.first_name + " " + user.last_name
+        context['email'] = user.email
+        context['joined'] = user.date_joined
+        context['lastLogin'] = user.last_login
+
+        if self.request.GET.get('pwReset', ''):
+            context['pwReset'] = True
+        else:
+            context['pwReset'] = False
+        return context
+
+class PasswordReset(TemplateView):
+    template_name = 'registration/password_reset_form.html'
+
+    def get_context_data(self, **kwargs):
+        invalidOldPassword = "Your old password does not match our password in the database."
+        invalidSamePassword = "Your new password cannot be the same as the old one."
+        invalidNewPassword = "Your new and retyped passwords entered do not match."
+        context = super(PasswordReset, self).get_context_data(**kwargs)
+        if self.request.GET.get('invalidOldPassword', '') == "True":
+            context['invalidPassword'] = invalidOldPassword
+        elif self.request.GET.get('invalidSamePassword', '') == "True":
+            context['invalidPassword'] = invalidSamePassword
+        elif self.request.GET.get('invalidNewPassword', '') == "True":
+            context['invalidPassword'] = invalidNewPassword
+        else:
+            context['invalidPassword'] = ''
+
+        return context
+
+    def reset(self, request):
+        user = self.request.user
+        username = request.POST.get('username', '')
+        oldPassword = request.POST.get('oldPassword')
+        newPassword = request.POST.get('newPassword')
+        retypedPassword = request.POST.get('retypedPassword')
+
+        if user.check_password(oldPassword):
+            if newPassword != oldPassword:
+                if retypedPassword == newPassword:
+                    user.set_password(newPassword)
+                    user.save()
+                else:
+                    raise Exception('invalidNewPassword')
+            else:
+                raise Exception('invalidSamePassword')
+        else:
+            raise Exception('invalidOldPassword')
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('reset'):
+            try:
+                self.reset(request)
+            except Exception as e:
+                return HttpResponseRedirect(reverse('reset') + '?' + str(e) + '=True')
+            return HttpResponseRedirect(reverse('account')+ "?pwReset" + '=True')
 
 
 class ContactPage(LoginRedirect):
@@ -179,12 +256,15 @@ class SigninPage(TemplateView):
         username = request.POST.get('username', '')
         password1 = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
+        email = request.POST.get('email', '')
+        firstName = request.POST.get('firstName', '')
+        lastName = request.POST.get('lastName', '')
 
         if User.objects.filter(username = username).count() > 0:
             raise Exception('invalid_username')
 
         if password1 == password2:
-            newUser = User.objects.create(username=username, is_active=True, is_staff=False, is_superuser=False)
+            newUser = User.objects.create(username=username, first_name = firstName, last_name = lastName, email=email, is_active=True, is_staff=False, is_superuser=False)
             newUser.set_password(password1)
             newUser.save()
             user = auth.authenticate(username=username, password=password1)
@@ -197,7 +277,7 @@ class PlayDeckPage(LoginRedirect):
     template_name = 'play_deck_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, PlayDeckPage, *args, **kwargs)
+        return verify_owner(self, PlayDeckPage, True, *args, **kwargs)
 
     def post(self, request, *args, **kwards):
         #update card
@@ -208,17 +288,27 @@ class PlayDeckPage(LoginRedirect):
         deckId = kwargs.get('deckId', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
-
+        if not userDeck.Accessed_Date or datetime.today().date() != userDeck.Accessed_Date.date():
+            userDeck.Accessed_Date = datetime.now()
+        userDeck.save()
         context['deckId'] = deckId
         context['deckName']  = userDeck.Name
+        context['lastAccessed'] = userDeck.Accessed_Date.isoformat()
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
 
+        context['user_decks'] = getDecksForUser(self.request.user)
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()
             engineObj.play(deckId)
             context['deck'] = engineObj
-            context['card'] = engineObj.getNextCard()
+            card = engineObj.getNextCard()
+            context['card'] = card
+            vals = []
+            for i in range(20):
+                vals.append(engineObj.getNextCard())
+            context['vals'] = vals
+            #context['cardId'] = card.id
             return context
             #self.request.session['playObj'].play(int(deckId))
         else:
@@ -290,28 +380,37 @@ class WelcomePage(TemplateView):
 
 
 class DeleteDeckPage(View):
-    def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deckId')
-        return HttpResponseRedirect(reverse("manage_decks"))
-
+    def get(self, request, *args, **kwargs):
+        invalid = verify_owner(self, ScoresPage, False, *args, **kwargs)
+        if not invalid:
+            deckId = self.request.GET.get('deckId')
+            deleteDeck(deckId)
+            return HttpResponseRedirect(reverse("view_decks"))
+        else:
+            return invalid
 
 class ResetDeckPage(View):
 
-    def post(self, request, *args, **kwargs):
-        deck_id = request.POST.get('deckId')
-        return HttpResponseRedirect(reverse("manage_decks"))
+    def get(self, request, *args, **kwargs):
+        invalid = verify_owner(self, ScoresPage, False, *args, **kwargs)
+        if not invalid:
+            deckId = self.request.GET.get('deckId')
+            resetDeck(deckId)
+            return HttpResponseRedirect(reverse("view_decks"))
+        else:
+            return invalid
 
 class createDeckPage(View):
     def post(self, request, *args, **kwargs):
         newDeck = createDeck(self.request.user.id, 'Untitled Deck')
-        newCard = createCard(newDeck.id, True, "Front Side", "Back Side", None, None)
+        newCard = createCard(newDeck.id, False, "Front Side", "Back Side", None, None)
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
 
 class EditDeckPage(LoginRedirect):
     template_name = 'edit_deck_page.html'
 
     def get(self, request, *args, **kwargs):
-        return verify_owner(self, EditDeckPage, *args, **kwargs)
+        return verify_owner(self, EditDeckPage, True, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         deckId = self.request.GET.get('deckId')
@@ -331,9 +430,10 @@ class GetNextCard(View):
     def post(self, request, *args, **kwargs):
         deckId = self.request.POST.get('deckId')
         cardId = self.request.POST.get('cardId')
+        print(cardId)
         if cardId != None:
-            newDifficulty = self.request.POST.get('difficulty')
-            card = getCard(cardId)
+            newDifficulty = self.request.POST.get('diff')
+            card = getCard(int(cardId))
             card.Difficulty = newDifficulty
             card.save()
 
@@ -342,15 +442,18 @@ class GetNextCard(View):
         deckModel = engine()
         deckModel.play(deckId)
         card = deckModel.getNextCard()
-        print(card)
+        #print(card.id)
+        #print(card.Difficulty)
 
         # print "Deck " + str(deckId)
         # print "Card " + str(card)
         # print card.Front_Text
         # print card.Back_Text
 
-        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID) };
+
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id), 'diff': str(card.Difficulty), 'reversible': card.Two_Sided};
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
+
 
     def drawCard(self, request, deckID):
         card = getNextCard( int(deckID) )
@@ -365,17 +468,23 @@ class deckChangesPage(View):
         deckName = self.request.POST.get('deckName')
         deckTheme = self.request.POST.get('deckTheme')
         deckTags = self.request.POST.get('deckTags')
+        deckPublic = self.request.POST.get('deckPublic')
 
         deckObject = getDeck(deckId)
         deckObject.Name = deckName
         deckObject.Theme = deckTheme
         deckObject.Tags = deckTags
+        if deckPublic is None:
+            deckObject.Public = False
+        else:
+            deckObject.Public = True
 
         for cardId in cardIdList:
             frontText = self.request.POST.get('front-%s' % cardId)
             backText = self.request.POST.get('back-%s' % cardId)
             frontImg = self.request.POST.get('front-img-%s' % cardId)
             backImg = self.request.POST.get('back-img-%s' % cardId)
+            revState = self.request.POST.get('rev-state-%s' % cardId) == "1"
 
             # A Numeric ID means the card exists already,
             # a * before a ID means the card is to be deleted
@@ -394,6 +503,7 @@ class deckChangesPage(View):
                 else:
                     card.Back_Img_ID = None
 
+                card.Two_Sided = revState
                 card.save()
             elif cardId[0] == '*':
                 removeId = cardId[1:]
@@ -408,7 +518,7 @@ class deckChangesPage(View):
                     newBack_Img_ID = Image.objects.get(Image_Path=backImg[len(settings.MEDIA_URL):])
                 else:
                     newBack_Img_ID = None
-                createCard(deckId, True, frontText, backText, newFront_Img_ID.id if newFront_Img_ID else None, newBack_Img_ID.id if newBack_Img_ID else None)
+                createCard(deckId, revState, frontText, backText, newFront_Img_ID.id if newFront_Img_ID else None, newBack_Img_ID.id if newBack_Img_ID else None)
 
 
         deckObject.save()
@@ -417,12 +527,20 @@ class deckChangesPage(View):
 class deckSearchResults(LoginRedirect):
     template_name = 'deck_search_results.html'
 
+    def get(self, request, *args, **kwargs):
+        return verify_owner(self, deckSearchResults, True, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(deckSearchResults, self).get_context_data(**kwargs)
+        deckId = self.request.GET.get('deckId')
         keywordArgs = self.request.GET.get('keywords', '')
         listOfKeywords = keywordArgs.split()
         keywordsDecoded = [unquote(keyword.decode('utf8', '')) for keyword in listOfKeywords]
-        context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded)
+        context['matching_decks'] = getSetOfPublicDecksMatching(keywordsDecoded, self.request.user.id)
+        cardCounts = {}
+        context['cardCounts'] = cardCounts
+        for deck in context['matching_decks']:
+            deck.cardCount = getCountCardsInDeck(deck.id)
 
         return context
 
@@ -432,15 +550,65 @@ class logout(View):
       auth.logout(request)
       return HttpResponseRedirect(reverse('welcome'))
 
-def reset_confirm(request, uidb64=None, token=None):
-    return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
-        uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))
+class cloneDeck(View):
 
-def reset(request):
-    return password_reset(request, template_name='registration/password_reset_form.html',
-        email_template_name='registration/password_reset_email.html',
-        subject_template_name='registration/password_reset_subject.text',
-        post_reset_redirect=reverse('signin'))
+    def get(self, request, *args, **kwargs):
+        deckId = kwargs.get('deckId', None)
+        newDeck = self.cloneDeck(deckId)
+        self.cloneCards(deckId, newDeck.id)
+        return HttpResponseRedirect(reverse('view_decks'))
+
+    def cloneDeck(self, oldDeckId):
+        deck = getDeck(oldDeckId)
+        newDeck = createDeck(self.request.user.id, deck.Name)
+        newDeck.Theme = deck.Theme
+        newDeck.Tags = deck.Tags
+        newDeck.save()
+        return newDeck
+
+    def cloneCards(self, oldDeckId, newDeckId):
+        cards = getCardsForDeck(oldDeckId)
+        deck = getDeck(oldDeckId)
+        for card in cards:
+            if card.Front_Img_ID != None:
+                frontImg = card.Front_Img_ID.id
+            else:
+                frontImg = None
+            if card.Back_Img_ID != None:
+                backImg = card.Back_Img_ID.id
+            else:
+                backImg = None
+            createCard(newDeckId, card.Two_Sided, card.Front_Text, card.Back_Text, frontImg, backImg)
+
+class viewDeck(LoginRedirect):
+    template_name = 'view_deck.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(viewDeck, self).get_context_data(**kwargs)
+        deckId = context.get('deckId')
+        context['deck_id'] = deckId
+        if self.request.GET.get('mydropdown', '') == 'Back':
+            current = 'Back'
+            nextValue = 'Front'
+            context['front'] = False;
+        else:
+            current = 'Front'
+            nextValue = 'Back'
+            context['front'] = True;
+        context['deckName'] = getDeck(deckId)
+        context['cards'] = getCardsForDeck(deckId)
+        return context
+
+
+#def reset_confirm(request, uidb64=None, token=None):
+    #return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
+        #uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))
+
+#def reset(request):
+    #return password_reset(request, template_name='registration/password_reset_form.html',
+        #email_template_name='registration/password_reset_email.html',
+        #subject_template_name='registration/password_reset_subject.text',
+        #post_reset_redirect=reverse('signin'))
 
 
 class UploadImagePage(View):

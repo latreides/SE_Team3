@@ -1,5 +1,5 @@
 .card {
-    position: relative; 
+    position: relative;
     color: #666;
     text-align: center;
     margin-left: auto;
@@ -8,10 +8,21 @@
     width: 500px;
 }
 
+h6 {
+  color: #62CBFF;
+  font-family: Microsoft-Sans-Serif, sans-serif;
+  font-size: 22pt;
+  margin: 0;
+  text-align: center;
+  margin-left: 30%;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
 h1.title{
     top: -5px;
-    position: absolute; 
-    left: 0; 
+    position: absolute;
+    left: 0;
     width: auto;
     font-size: 30px;
     text-align: center;
@@ -19,7 +30,7 @@ h1.title{
 
 p.question {
     top: 35px;
-    position: absolute; 
+    position: absolute;
     left: 0;
     line-height: 140%;
 }
@@ -105,7 +116,7 @@ a.btnRight{
 
 #playField {
     min-width: 540px;
-    overflow: hidden; 
+    overflow: hidden;
     padding-left: 8px;
     padding-right: 8px;
 }
@@ -212,7 +223,7 @@ ul#buttonPanel li, #uiSkip {
     background: red;
     color: black;
 }
-#ui5.uiButton:hover { 
+#ui5.uiButton:hover {
     background: #FC9B9B;
 }
 
@@ -382,4 +393,55 @@ label {
 
 .hide {
     display: none;
+}
+
+#uiCFI, #uiCBI
+{
+    display: block;
+    margin: auto;
+    width: auto;
+    height: 230px;
+    padding-top: 46px;
+}
+
+.diff
+{
+    display: inline-block;
+    color: yellow;
+    text-align: center;
+    padding-bottom: 0px;
+}
+
+.container
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#timer
+{
+    padding-top: 20px;
+}
+
+#timedCover
+{
+    background-color:#000;
+    display: none;
+    opacity:0.8;
+    position:absolute;
+    width: 500px;
+    height: 400px;
+    z-index:10000;
+}
+
+#timedCover div
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: yellow;
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 250px;
 }

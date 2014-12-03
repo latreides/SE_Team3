@@ -147,10 +147,9 @@
     cursor: pointer;
     display: inline-block;
     margin:-2px;
-    background-color: #383838;
+    background-color: #1E90FF;
     border-color: red;
     width: 238px;
-    font-weight: bold;
     padding: 5px;
     text-align: center;
     border: 1px solid white;
@@ -159,7 +158,8 @@
 
 .cardSideRadio:checked + label
 {
-    background-color: #1E90FF;
+    background-color: #383838;
+    font-weight: bold;
 }
 
 #themeContainer
@@ -261,7 +261,7 @@
     z-index: 100;
 }
 
-#uploadImages, #addImages
+#uploadImages, #addImages, #clearImages, #reversible + label, #deckPublic + label
 {
     border: white solid 1px;
     margin-top: 10px;
@@ -269,9 +269,30 @@
     text-align: center;
 }
 
-#uploadImages:hover, #addImages:hover
+#uploadImages:hover, #addImages:hover, #clearImages:hover, #reversible + label:hover, #deckPublic + label:hover
 {
     background: #1EB5FF;
+}
+
+#uploadImages
+{
+    width: 185px;
+    display: inline-block;
+    float: right;
+    margin-right: 4px;
+}
+
+#clearImages
+{
+    background-color: red;
+    width: 120px;
+    display: inline-block;
+    float: right;
+}
+
+#imageControl
+{
+    width: 100%;
 }
 
 #imageDrawer
@@ -321,6 +342,7 @@
     background: initial;
 }
 
+
 #cancelUpload, input[type="submit"]
 {
     border: 2px #AAA solid;
@@ -353,6 +375,25 @@
     display: none;
 }
 
+#noPreview {
+    color: #333;
+    display: none;
+}
+
+#noPreview  div{
+    color: #D33;
+    margin-top: 12px;
+    font-size: 16pt;
+}
+
+#noPreview a#Chrome {
+    color: #0DF;
+}
+
+#noPreview a#FF {
+    color: #FA4;
+}
+
 .disabled
 {
     cursor: default !important;
@@ -368,3 +409,55 @@
     padding-top: 46px;
 }
 
+#uploadedImage {
+    box-shadow: 0px 2px 3px 1px #222;
+    margin: 1em;
+    width: auto;
+    height: 230px;
+}
+
+#reversible, #deckPublic
+{
+   display: none;
+}
+
+#reversible + label, #deckPublic + label
+{
+    background-color: #1E90FF;
+    color: white;
+    float: left;
+    width: 150px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#reversible + label span.revTrue, #deckPublic + label span.revTrue
+{
+    display: none;
+}
+
+#reversible + label span.revFalse, #deckPublic + label span.revFalse
+{
+    display: inline-block;
+    color: red;
+}
+
+
+#reversible:checked + label span.revTrue, #deckPublic:checked + label span.revTrue
+{
+    display: inline-block;
+    color: green;
+}
+
+#reversible:checked + label span.revFalse, #deckPublic:checked + label span.revFalse
+{
+    display: none;
+}
+
+#deckPublic + label
+{
+    width: 100%;
+    position: relative;
+    left: -5px;
+    top: 20px;
+}

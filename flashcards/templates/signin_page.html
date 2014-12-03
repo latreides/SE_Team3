@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Hello, There!</h1>
+    <h1>Hello There!</h1>
 
 <div id="content">
  <h2>Been Here Before?</h2>
@@ -27,9 +27,12 @@
   </p>
   <form class="centerForm" id="sign-up" method="post" onsubmit="return true;" action="">
   {% csrf_token %}
+    <input name="firstName" type="text" placeholder="First Name"><br/>
+    <input name="lastName" type="text" placeholder="Last Name"><br/>
     <input name="username" type="text" placeholder="Pick a user name"><br>
     <input name="password1" type="password" placeholder="Pick a password"><br>
     <input name="password2" type="password" placeholder="Retype your password"><br>
+    <input name="email" type="email" placeholder="Enter your email"><br/>
    <input type="submit" name="signup" value="Sign Up">
    <div class='ErrorMessage'>{{invalid_signup}}</div>
   </form>

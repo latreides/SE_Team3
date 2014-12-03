@@ -1,0 +1,12 @@
+<div class="switch">
+    <input type="text" name="decks" value="Switch Decks" class="button" readonly="readonly" />
+    <ul class="menu">
+        {% for deck in user_decks %}
+            <a href="{% url 'play_deck' deck.id %}">
+                <li>
+                    {{ deck.Name }}
+                </li>
+            </a>
+        {% endfor %}
+    </ul>
+</div>

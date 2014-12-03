@@ -4,15 +4,21 @@
 {% block css %}
     {{block.super}}
     <link rel="stylesheet" type="text/css" href="{% static 'css/play_page.css' %}" />
+    <link rel="stylesheet" type="text/css" href="/static/css/switch.css" />
 {% endblock %}
 
 {% block javascript %}
     {{block.super}}
     <script type="text/javascript" src="{% static 'js/play.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
+    <script>
+        var lastAccessed = new Date("{{ lastAccessed }}");
+    </script>
 {% endblock %}
 
 {% block content %}
-    <h1>You are now in play mode!</h1>
+    {% include "play_switch_button.html" %}
+    <h6>You are now in play mode!</h6>
 
     <div id="playField">
         <div>
@@ -20,10 +26,17 @@
             <div id="deckTitle">{{ deckName }}</div>
         </div>
         <div id="playFrame">
+            <div id="timedCover">
+                <div>Your session has ended!</div>
+            </div>
+            <div class="container" >
+                <div id="timer" >as</div>
+                <div style="display: inline-block" class="diff" > Difficulty Of Card: </div>
+                <div style="display: inline-block" id = "difficulty" class="diff" > {{ card.Difficulty }} </div>
+            </div>
             <div id="uiSettingsDrawer">
                 <span class="drawerTitle">SETTINGS</span>
                 <hr>
-
                 <span id="cardOrder">Present cards to me: </span>
                 <label><input type="radio" name="order" value="frontFirst" checked="checked">
                     <span></span>Front side first
@@ -41,18 +54,26 @@
             <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
                 <div id="uiCardFront" data-id="7">
-                    <div id="uiCFT" class="uiQuestion">{{ card.Front_Text }}</div>
+                    <div id="uiCFT" class="uiQuestion"></div>
                     <img id="uiCFI" class="uiQuestion hidden" src=''>
                 </div>
                 <div id="uiCardBack" class="hide" data-id="8">
-                    <div id="uiCBT" class="uiQuestion">{{ card.Back_Text }}</div>
+                    <div id="uiCBT" class="uiQuestion"></div>
                     <img id="uiCBI" class="uiQuestion hidden" src=''>
                 </div>
+            </div>
+            <div id="debug" style="display:none; position:absolute;left:-20px">
+                <ul>
+                {% for val in vals %}
+                    <li>{{val.Front_Text}} - {{val.Back_Text}} - {{val.Difficulty}}</li>
+                {% endfor %}
+                </ul>
             </div>
             <div id="flipHotkey"></div>
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" id="formDeckId" value="{{ deckId }}"/>
+                <input type="hidden" id="formCardId" value="{{ card.id }}"/>
                 <ul id="buttonPanel">
                     <li class="uiButtonDisabled uiButton-resize" id="ui1" data-id="1">
                         <div id="uiBtnIcon1">

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block content %}
+{% block javascript %}
+    {{block.super}}
+        <script type="text/javascript" src="{% static 'js/switch.js' %}"></script>
+{% endblock %}
+{% block css %}
+        {{ block.super }}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/view_deck.css' %}" />
+{% endblock %}
+	<div class="switch">
+	<input type="text" name="decks" value="Flip Side" class="button" readonly="readonly" />
+    <ul class="menu">
+		<a href="{% url 'view_deck' deck_id %}?mydropdown=Front">
+			<li>
+				Front
+			</li>
+		</a>
+		<a href="{% url 'view_deck' deck_id %}?mydropdown=Back">
+			<li>
+				Back
+			</li>
+		</a>
+    </ul>
+	</div>
+    <h1>Deck {{ deckName }}</h1>
+    <br/>
+	
+	{% for card in cards %}
+		<div class="outerDiv">
+		<div class="containerDiv">
+		<div class="outer">
+			<div class="bottomleft">
+			{% if front %}
+				{% if card.Front_Img_ID %}
+					<img src="{{ card.Front_Img_ID }}" alt="Front Image">
+				{% else %}
+					<p>{{ card.Front_Text }}</p>
+				{% endif %}
+			{% else %}
+				{% if card.Back_Img_ID %}
+					<img src="../../media/{{ card.Back_Img_ID }}" alt="Front Image">
+				{% else %}
+					<p>{{ card.Back_Text }}</p>
+				{% endif %}
+			{% endif %}
+			</div>
+		</div>
+		</div>
+		</div>
+    {% endfor %}
+
+{% endblock %}

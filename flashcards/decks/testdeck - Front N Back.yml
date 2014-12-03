@@ -1,0 +1,11 @@
+frontImgBackImg:
+    card1:
+        - q: 'What is the square root of 25?'
+        - a: '5'
+        - frontImg: 'http://www.picgifs.com/clip-art/cartoons/tom-and-jerry/clip-art-tom-and-jerry-347829.jpg'
+        - backImg: 'http://free.clipartof.com/176-Free-Cartoon-Owl-Clipart.jpg'
+    card2:
+        - q: 'What would you do for a klondike bar?'
+        - a: 'Nothing'
+        - frontImg: 'http://free.clipartof.com/176-Free-Cartoon-Owl-Clipart.jpg'
+        - backImg: 'http://www.picgifs.com/clip-art/cartoons/tom-and-jerry/clip-art-tom-and-jerry-347829.jpg'

@@ -23,13 +23,12 @@
             Card Theme:
             <div id="themeContainer">
                 {% for theme in themes %}
-                  <img class="themePreview {% if deck.Theme = theme.1 %}themeSelected{% endif %}" src="{% static 'themes/' %}{{ theme.1 }}" data-theme="{{ theme.1 }}" >
+                  <img class="themePreview {% if deck.Theme = theme.1 %}themeSelected{% endif %}" src="{% static 'themes/' %}Small{{ theme.1 }}" data-theme="{{ theme.1 }}" >
                 {% endfor %}
                 <input id="themeField" type="hidden" name="deckTheme" value="{{ deck.Theme }}">
             </div>
-
-            <!--action="{% url 'deck_changes' %}"-->
-            {% comment %}<div id="addImages" class="button">Insert Image on Card</div>{% endcomment %}
+        <input type="checkbox" id="deckPublic" name="deckPublic" class="" {% if deck.Public %} checked="checked" {% endif %}>
+        <label for="deckPublic">Public: <span class="revTrue">Yes</span><span class="revFalse">No</span></label>
         </div>
         <div class="contentBox">
             <div id="previewContainer">
@@ -38,13 +37,14 @@
                 <div id="previewBlocker"></div>
                 <div id="cardsContainer">
                     {% for card in cards %}
-                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
+                        <div class="cardMiniPreview {% if forloop.first %}cardSelected{% endif %}" style="background-image: url('{% static 'themes/' %}Mini{{ deck.get_Theme_display }}')" data-cardId="{{ card.id }}">
                             <label>{{ card.Front_Text }}</label>
                             <img class="hidden" src="">
                             <input  id="frontText-{{ card.id }}" type="hidden" name="front-{{ card.id }}" value="{{ card.Front_Text }}">
                             <input  id="frontImg-{{ card.id }}" type="hidden" name="front-img-{{ card.id }}" value="{% if card.Front_Img_ID %}/media/{{ card.Front_Img_ID }}{% endif %}">
                             <input  id="backText-{{ card.id }}" type="hidden" name="back-{{ card.id }}" value="{{ card.Back_Text }}">
                             <input  id="backImg-{{ card.id }}" type="hidden" name="back-img-{{ card.id }}" value="{% if card.Back_Img_ID %}/media/{{ card.Back_Img_ID }}{% endif %}">
+                            <input  id="revState-{{ card.id }}" type="hidden" name="rev-state-{{ card.id }}" value="{% if card.Two_Sided == True %}1{% else %}0{% endif %}">
                         </div>
                     {% endfor %}
                 </div>
@@ -56,7 +56,12 @@
                 <img id="cardImageContent" class="hidden" src="">
                 <textarea id="cardTextContent" rows="4" cols="30"></textarea><br>
             </div>
-            <div id="uploadImages" class="button">Select an Image</div>
+            <div id="imageControl">
+                <input type="checkbox" id="reversible" class="">
+                <label for="reversible">Reversible: <span class="revTrue">True</span><span class="revFalse">False</span></label>
+                <div id="clearImages" class="button">Clear Image</div>
+                <div id="uploadImages" class="button">Select an Image</div>
+            </div>
             <div id="cardSideSelector">
                 <input class="cardSideRadio" id="cardFront" type="radio" name="cardEditSide" value="front" checked><label for="cardFront">Front</label>
                 <input class="cardSideRadio" id="cardBack" type="radio" name="cardEditSide" value="back"><label for="cardBack">Back</label>
@@ -71,8 +76,14 @@
     <div id="imageDrawer">
         <img src="{% static 'img/upload_0.png' %}" alt="Upload">
         <div>Upload an Image</div>
-        <input id="uploadImagesButton" type="file" name="uploadImage" accept=".png,.jpg,.jpeg,.bmp,.gif">
+        <input id="uploadImagesButton" type="file" name="uploadImage" accept="image/.png,image/.jpg,image/.jpeg,image/.bmp,image/.gif">
         <br>
+        <div id="noPreview">
+            <div>Image preview is not available on Internet Explorer.</div>
+            To use this feature, try one of our <br>preferred browsers, like
+            <a id="Chrome" href="https://www.google.com/chrome/browser/">Chrome</a> or
+            <a id="FF" href="https://www.mozilla.org/en-US/firefox/new/">FireFox</a>.
+        </div>
         <div id="imgPreviewContainer">
             <img id="uploadedImage" alt="User Image">
         </div>

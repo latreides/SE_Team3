@@ -35,6 +35,16 @@ def deleteDeck(deckId):
     if foundDeck:
         foundDeck.delete()
 
+def resetDeck(deckId):
+    '''
+    Resets scores in an entire Deck
+    '''
+    foundDeck = Deck.objects.get(id=deckId)
+    if foundDeck:
+        cards = getCardsForDeck(deckId)
+        for card in cards:
+            card.Difficulty = None
+            card.save()
 
 def createCard(deckID, twoSided, frontText = None, backText = None, frontImageID = None, backImageID = None):
     '''
@@ -106,6 +116,7 @@ def getDeck(deckID):
     '''
     return Deck.objects.filter(id=deckID).first()
 
+
 def getCard(cardID):
     '''
     Returns a single specific Card
@@ -148,23 +159,23 @@ def getCountCardsInDeck(deckID):
     '''
     return Card.objects.filter(Deck_ID=deckID).count()
 
-def getListOfDecksWithKeyword(keyword):
-    return Deck.objects.exclude(Public=False).filter(Tags__iregex=r'.*{0}.*'.format(escape(keyword)))
+def getListOfDecksWithKeyword(keyword, userId):
+    return Deck.objects.exclude(Public=False).filter(Tags__iregex=r'.*{0}.*'.format(escape(keyword))).exclude(User_ID=userId)
 
-def getSetOfPublicDecksMatching(keywords):
+def getSetOfPublicDecksMatching(keywords, userId):
     '''
     Takes a list of keywords and returns a set of deck objects that match one or more of the keyword arguments
     '''
     matchingDecks = set()
     for keyword in keywords:
-        matchingDecks = matchingDecks.union(getPublicDecksMatching(keyword))
+        matchingDecks = matchingDecks.union(getPublicDecksMatching(keyword, userId))
     return matchingDecks
 
-def getPublicDecksMatching(keyword):
+def getPublicDecksMatching(keyword, userId):
     '''
     Takes a single keyword and finds all the decks that match it and returns the results in a set
     '''
-    matchingDecks = getListOfDecksWithKeyword(keyword)
+    matchingDecks = getListOfDecksWithKeyword(keyword, userId)
     setOfDecks = set()
     for deck in matchingDecks:
         setOfDecks.add(deck)

@@ -32,6 +32,87 @@ var fadeFrequency = 10;
 //      percentage to decrement from fade remaining
 var tick = 0.04; // fadeFrequency / duration;
 /* ===== End Color Fading Settings ===== */
+var cardId = 0;
+
+var sessionTime = 5; // Minutes
+var sessionEnd;
+var sessionTImer;
+
+function updateTimer()
+{
+    var now = new Date();
+    if (sessionEnd <= now)
+    {
+        clearInterval(timer);
+        $('#timer').text("Session has Ended");
+        $('#timedCover').show();
+    }
+    else
+    {
+        var current = new Date(sessionEnd-now);
+        $('#timer').text("Session will end in: " + current.getMinutes() + " min(s) and " + current.getSeconds() + " second(s)");
+    }
+}
+
+function calcCoverSize()
+{
+
+    $('#timedCover').width($('#playFrame').width());
+    $('#timedCover').height($('#playFrame').height());
+
+}
+
+function playTimer()
+{
+    sessionEnd = new Date(lastAccessed.getFullYear(), lastAccessed.getMonth(), lastAccessed.getDate(), lastAccessed.getHours(), lastAccessed.getMinutes() + sessionTime, lastAccessed.getSeconds());
+    sessionTimer = setInterval(updateTimer, 1000);
+    updateTimer();
+}
+
+function setCardDetails(card)
+{
+    if ((card.reversible) && (Math.random() >= 0.75))
+    {
+        // 25% chance to randomly flip the card if its reversible
+        var oldFrontImage = card.frontImage;
+        var oldFrontText = card.frontText;
+        card.frontImage = card.backImage;
+        card.frontText = card.backText;
+        card.backImage = oldFrontImage;
+        card.backText = oldFrontText;
+    }
+
+    if (card.frontImage != 'None')
+    {
+        $('#uiCFT').addClass('hidden');
+        $("#uiCFT").html( '' );
+        $('#uiCFI').attr('src',  '/media/' + card.frontImage);
+        $('#uiCFI').removeClass('hidden');
+    }
+    else
+    {
+        $('#uiCFI').addClass('hidden');
+        $('#uiCFI').attr('src',  '');
+        $("#uiCFT").html( card.frontText );
+        $('#uiCFT').removeClass('hidden');
+        $("#difficulty").html( card.diff );
+    }
+
+    if (card.backImage != 'None')
+    {
+        $('#uiCBT').addClass('hidden');
+        $("#uiCBT").html('');
+        $('#uiCBI').attr('src',  '/media/' + card.backImage);
+        $('#uiCBI').removeClass('hidden');
+    }
+    else
+    {
+        $('#uiCBI').addClass('hidden');
+        $('#uiCBI').attr('src',  '');
+        $("#uiCBT").html( card.backText );
+        $('#uiCBT').removeClass('hidden');
+    }
+}
 
 $(document).ready(function() {
     $("#uiSettingsButton").click(toggleSettingsDrawer);
@@ -39,11 +120,12 @@ $(document).ready(function() {
 
     populateOriginalColors();
 
-    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
-    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click(getNextCard);
+    $("#ui1").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 1},getNextCardDiff);
+    $("#ui2").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 2},getNextCardDiff);
+    $("#ui3").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 3},getNextCardDiff);
+    $("#ui4").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 4},getNextCardDiff);
+    $("#ui5").hover(rollIconDown, rollIconUp).click(flashButton).click({diff: 5},getNextCardDiff);
+
     $("#uiCard").click(flip);
     $("#flipHotkey").click(flip);
 
@@ -57,7 +139,14 @@ $(document).ready(function() {
     // this is somewhat of a bandaid for the card text not appearing right
     //   away but maintaining the desired fade on click/keyup events.
     $("#uiCardFront").fadeIn();
+    cardId = $("#formCardId").val();
+    $("#uiSkip").trigger('click');
+    calcCoverSize();
+    playTimer();
+
+    $(window).on('resize', calcCoverSize);
 });
+
 
 // disable space bar scrolling and F1 showing browser help
 window.onkeydown = function(event) {
@@ -359,25 +448,47 @@ function getNextCard() {
     var response = $.post("/getNextCard", data, dataType);
     response.done( function(cardJson) {
         card = $.parseJSON(cardJson);
+        setCardDetails(card);
 
-        $('#uiCFI').attr('src', (card.frontImage != "None") ? '/media/' + card.frontImage : '');
-        $('#uiCBI').attr('src', (card.backImage != "None") ? '/media/' + card.backImage : '');
+        //$("#formCardId").val(card.cardId);
+        cardId = card.cardId;
 
-        $("#uiCFT").html( card.frontText );
-        $("#uiCBT").html( card.backText );
+        // console.log( card );
+    });
 
+    if( !buttonsDisabled )
+        toggleButtons();
+    if( !showingFront )
+        flip();
+    cardHasBeenFlipped = false;
+}
 
-        /*if (card.frontImage != 'None')
-        {
-            $('#uiCFT').addClass('hidden');
-            $('#uiCFI').removeClass('hidden');
-        }
-        else
-        {
-            $('#uiCFI').addClass('hidden');
-            $('#uiCFT').removeClass('hidden');
-        }*/
+function getNextCardDiff(event) {
+    var passRating = true;
+    var card = {};
 
+    if( $(this).attr("data-id") != 6 && !cardHasBeenFlipped )
+        return;
+
+    if ( $(this).attr("data-id") == 6 ) {
+        passRating = false;
+    }
+    var data = {};
+    data["deckId"] = $("#formDeckId").val();
+    //data["cardId"] = $("#formCardId").val();
+    data["cardId"] = cardId;
+    data["diff"] = event.data.diff;
+    //console.log(event.data.diff);
+    data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").val();
+    if(passRating)
+        data["rating"] = $(this).attr("data-id");
+    var dataType = "json";
+    var response = $.post("/getNextCard", data, dataType);
+    response.done( function(cardJson) {
+        card = $.parseJSON(cardJson);
+        setCardDetails(card);
+        //$("#formCardId").val(card.cardId);
+        cardId = card.cardId;
 
         // console.log( card );
     });

@@ -1,3 +1,9 @@
+"""
+    urls.py defines patterns for each page of the website.
+    This determines how to pass parameters to the website and
+    how the website reads them.
+"""
+
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from flashcards.views import *
@@ -7,8 +13,8 @@ urlpatterns = patterns('',
                         url(r'^invalid$', invalidDeckPage.as_view(), name='invalid_deck'),
                         url(r'^scores/(?P<deckId>\d+)$', ScoresPage.as_view(), name='scores'),
                         url(r'^view/(?P<deck>\d+)$', ViewDeckPage.as_view(), name='view_decks'),
-                        url(r'^delete_deck/(?P<deck>\d+)$', DeleteDeckPage.as_view(), name='delete_deck'),
-                        url(r'^reset_deck/(?P<deck>\d+)$', ResetDeckPage.as_view(), name='reset_deck'),
+                        url(r'^delete_deck$', DeleteDeckPage.as_view(), name='delete_deck'),
+                        url(r'^reset_deck$', ResetDeckPage.as_view(), name='reset_deck'),
                         url(r'^import_deck$', ImportPage.as_view(), name='import_deck'),
                         url(r'^scores$', ScoresPage.as_view(), name='scores'),
                         url(r'^view$', ViewDeckPage.as_view(), name='view_decks'),
@@ -26,7 +32,9 @@ urlpatterns = patterns('',
                         url(r'^logout$', logout.as_view(), name='logout'),
                         url(r'^deck_search_results$', deckSearchResults.as_view(), name='deck_search_results'),
                         url(r'^import_notification$', importNotificationPage.as_view(), name = 'import_notification_page'),
-                        url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'flashcards.views.reset_confirm', name='password_reset_confirm'),
-                        url(r'^reset/$', 'flashcards.views.reset', name='reset')
+                        #url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'flashcards.views.reset_confirm', name='password_reset_confirm'),
+                        url(r'^reset/$', PasswordReset.as_view(), name='reset'),
+                        url(r'^cloneDeck/(?P<deckId>\d+)$', cloneDeck.as_view(), name='clone'),
+                        url(r'^viewDeck/(?P<deckId>\d+)$', viewDeck.as_view(), name='view_deck')
                        )
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

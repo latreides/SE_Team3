@@ -3,8 +3,8 @@ var editingSide = 0; // 0 Front 1 Back
 
 function img_upload_completed()
 {
-    var url = $('#upload-target').contents().find('body').text();
-    if (url != 'failure')
+    var url = $('#upload-target').contents().find('body').text().trim();
+    if (url != 'failure' && url != '')
     {
         $('#cardImageContent').attr('src', '/media/' + url);
         $('#cardTextContent').addClass('hidden');
@@ -35,10 +35,14 @@ function updateCard(){
 }
 
 function updateTheme(theme, shortName){
+
+    var bigName = theme.replace('Small', '');
+    var tinyName = theme.replace('Small', 'Mini');
+
     $('#themeField').val(shortName);
     theme = theme.replace(' ', '%20');
-    $('#cardPreview').css('background-image', 'url(' + theme +')');
-    $('.cardMiniPreview').css('background-image', 'url(' + theme +')');
+    $('#cardPreview').css('background-image', 'url(' + bigName +')');
+    $('.cardMiniPreview').css('background-image', 'url(' + tinyName +')');
 }
 
 function updateCardList(){
@@ -59,7 +63,6 @@ function updateCardList(){
 
 function selectCard(card){
         var cardId = $(card).attr('data-cardId');
-
         if (editingSide == 0)
         {
             $('#cardTextContent').val($('#frontText-' + cardId).val());
@@ -81,6 +84,7 @@ function selectCard(card){
             $('#cardTextContent').removeClass('hidden');
         }
 
+        $('#reversible').prop('checked', ($('#revState-' + cardId).val() == "1"));
 
         $('#cardPreview').attr('data-cardId', cardId);
         $('.cardMiniPreview').removeClass('cardSelected');
@@ -88,10 +92,42 @@ function selectCard(card){
 }
 
 function previewUploadedImage() {
-    if( !(new FileReader()) ) {
-        console.log("FileReader unsupported! Preview will not function.");
+    if( navigator.sayswho= (function(){
+            var ua= navigator.userAgent, tem,
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\bOPR\/(\d+)/)
+                if(tem!= null) return 'Opera '+tem[1];
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+    })().indexOf("IE") >= 0) {
+        $("#noPreview").slideDown();
         return;
-    }
+    } /*else {
+        console.log(
+            navigator.sayswho= (function(){
+            var ua= navigator.userAgent, tem,
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\bOPR\/(\d+)/)
+                if(tem!= null) return 'Opera '+tem[1];
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+            return M.join(' ');
+            })()
+        );
+    }*/
 
     var input = $("#uploadImagesButton")[0];
 
@@ -128,6 +164,7 @@ function checkImgSize() {
 }
 
 function checkImgType() {
+
     /* -> if the img selected is an acceptable type */
     var img = $("#uploadImagesButton")[0].files[0];
     var type = img.type;
@@ -146,9 +183,18 @@ function checkImgType() {
 }
 
 function validateImage() {
-    var img = $("#uploadImagesButton")[0].files[0];
+
+    try {
+        var img = $("#uploadImagesButton")[0].files[0];
+    } catch(err) {
+        previewUploadedImage();
+        var img = document.getElementById("uploadImagesButton").item(0);
+        console.log("Img = ", img);
+    }
+
     if( img == undefined )
         return false;
+
 
     var imgOK  = checkImgSize();
     var typeOK = checkImgType();
@@ -219,6 +265,11 @@ $(document).ready(function(){
         selectCard($(this));
     });
 
+    $("#reversible").change(function(){
+        var cardId = $('#cardPreview').attr('data-cardId');
+        $('#revState-' + cardId).val($(this).is(":checked") ? "1" : "0");
+    })
+
     $('.themePreview').click(function(){
         $('.themePreview').removeClass('themeSelected');
         $(this).addClass('themeSelected');
@@ -236,6 +287,7 @@ $(document).ready(function(){
         var newFrontImgField = $('<input  id="frontImg-' + cardId  + '" type="hidden" name="front-img-' + cardId + '" value="">');
         var newBackField = $('<input  id="backText-' + cardId  + '" type="hidden" name="back-' + cardId + '" value="">');
         var newBackImgField = $('<input  id="backImg-' + cardId  + '" type="hidden" name="back-img-' + cardId + '" value="">');
+        var newRevStateField = $('<input  id="revState-' + cardId  + '" type="hidden" name="rev-state-' + cardId + '" value="0">');
 
         $('#cardsContainer').append($(newPreviewDiv))
         //$(newPreviewDiv).insertBefore($(this));
@@ -245,6 +297,7 @@ $(document).ready(function(){
         $(newPreviewDiv).append(newFrontImgField);
         $(newPreviewDiv).append(newBackField);
         $(newPreviewDiv).append(newBackImgField);
+        $(newPreviewDiv).append(newRevStateField);
         updateCardList();
     });
 
@@ -324,6 +377,14 @@ $(document).ready(function(){
     $(window).resize( function() {
         var offset = $("body").innerHeight()/2 - $("#imageDrawer").height()/2;
         $("#imageDrawer").css( "top", offset );
+    });
+
+    $('#clearImages').click(function(){
+        $('#cardImageContent').attr('src', '')
+        updateCard();
+        selectCard($('.cardSelected'))
+        updateMiniPreviews();
+
     });
 
     $("#uploadImagesButton").change( validateImage );

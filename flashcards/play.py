@@ -33,7 +33,7 @@ class engine:
             Increase all weights in a given card list
         """
         for card in cardList:
-            if card.Weight > 0:
+            if card.Weight > 1:
                 card.Weight -= 1
                 card.save()
     
@@ -51,13 +51,18 @@ class engine:
         map(shuffle, self.boxes.values())   
     
     def play(self, deckId):
+        """
+            Gets deck id and then retrieves the cards and
+            sorts the cards for playing.
+        """
         #deck = getDeck(deckId)
         self.deckId = int(deckId)
         cardlist = getCardsForDeck(deckId)
         self.sortCardsInBoxes(cardlist)
     
     def buildLotteryList(self):
-        """ The lottery list will be percentage based on picking which
+        """ 
+            The lottery list will be percentage based on picking which
             box to draw a card from. The percentage to pick is based on how
             many difficulties there are.
             Ex: 2 difficulties will be a list of 1^2 and 2 ^ 2 or
@@ -86,7 +91,7 @@ class engine:
     def pickCard(self, cardList):
         """
             Picks a card based on weight
-              weight is based on frequency and time since seen
+            weight is based on frequency and time since seen
         """
         lotteryList = []
         for i in range(len(cardList)):
@@ -95,16 +100,25 @@ class engine:
         return cardList[choice(lotteryList)]
     
     def getNextCard(self):
+        """
+            Selects a card from a box(difficulty) and
+            returns a card from within that box based on it's weight.
+            Higher weight increases the possibility of the 
+            card being picked. Lower weight decreases the 
+            possibility of the card being picked
+        """
         boxNum = self.pickBox()
         cards = self.boxes[boxNum]
         card = self.pickCard(cards)
-        #Higher weight increases the possibility of the card being picked
+ 
         self.addWeights(filter(lambda x: x != card, cards))
-        #Lower weight decreases the possibility of the card being picked
         self.decWeights([card])
         return card
     
     def getRandomCard(self):
+        """
+            Selects and returns a random card.
+        """
         deckOfCards = getCardsForDeck(self.deckId)
         card = deckOfCards.order_by('?')[0]
         return card
