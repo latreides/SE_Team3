@@ -5,7 +5,9 @@ from db_interactions import *
 
 
 def importDeck(fileName):
-    "Imports a deck from Yaml file."
+    """
+        Imports a deck from Yaml file.
+    """
     
     parser = parseConfig()
     parser.importDeck(fileName)

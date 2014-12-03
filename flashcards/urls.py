@@ -1,3 +1,9 @@
+"""
+    urls.py defines patterns for each page of the website.
+    This determines how to pass parameters to the website and
+    how the website reads them.
+"""
+
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from flashcards.views import *
