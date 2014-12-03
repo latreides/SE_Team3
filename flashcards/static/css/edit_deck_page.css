@@ -283,8 +283,9 @@
 #clearImages
 {
     background-color: red;
-    width: 125px;
+    width: 120px;
     display: inline-block;
+    float: right;
 }
 
 #imageControl

@@ -12,7 +12,7 @@ class Deck(models.Model):
         Theme- Theme to display cards on
         Times_Cloned- The number of times the deck has been cloned by another user
     '''
-    
+
     THEME_LIST = (('Blank White', 'BlankWhite.png'),
     ('Index Card', 'IndexCard.png'),
     ('Film Strip', 'FilmStrip.png'),
@@ -44,7 +44,7 @@ class Image(models.Model):
         id- (Primary Key) Integer assigned to card when it is stored
         Image_Path- The path to the image file on the server
     '''
-    
+
     Image_Path = models.CharField(max_length = 200)
 
     #Return the image records path as the text for the object
@@ -67,7 +67,7 @@ class Card(models.Model):
         Two_Sided- A boolean value hloding whether the card can be displayed with either
         side forward
     '''
-    
+
     Deck_ID = models.ForeignKey(Deck)
     Front_Text = models.TextField(blank=True, null=True)
     Back_Text = models.TextField(blank=True, null=True)

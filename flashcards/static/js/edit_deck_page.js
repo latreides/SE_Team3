@@ -3,8 +3,8 @@ var editingSide = 0; // 0 Front 1 Back
 
 function img_upload_completed()
 {
-    var url = $('#upload-target').contents().find('body').text();
-    if (url != 'failure')
+    var url = $('#upload-target').contents().find('body').text().trim();
+    if (url != 'failure' && url != '')
     {
         $('#cardImageContent').attr('src', '/media/' + url);
         $('#cardTextContent').addClass('hidden');
@@ -35,6 +35,7 @@ function updateCard(){
 }
 
 function updateTheme(theme, shortName){
+
     var bigName = theme.replace('Small', '');
     var tinyName = theme.replace('Small', 'Mini');
 
@@ -62,7 +63,6 @@ function updateCardList(){
 
 function selectCard(card){
         var cardId = $(card).attr('data-cardId');
-
         if (editingSide == 0)
         {
             $('#cardTextContent').val($('#frontText-' + cardId).val());
@@ -163,6 +163,7 @@ function checkImgSize() {
 }
 
 function checkImgType() {
+
     /* -> if the img selected is an acceptable type */
     var img = $("#uploadImagesButton")[0].files[0];
     var type = img.type;
@@ -181,6 +182,7 @@ function checkImgType() {
 }
 
 function validateImage() {
+
     try {
         var img = $("#uploadImagesButton")[0].files[0];
     } catch(err) {
