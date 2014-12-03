@@ -468,11 +468,16 @@ class deckChangesPage(View):
         deckName = self.request.POST.get('deckName')
         deckTheme = self.request.POST.get('deckTheme')
         deckTags = self.request.POST.get('deckTags')
+        deckPublic = self.request.POST.get('deckPublic')
 
         deckObject = getDeck(deckId)
         deckObject.Name = deckName
         deckObject.Theme = deckTheme
         deckObject.Tags = deckTags
+        if deckPublic is None:
+            deckObject.Public = False
+        else:
+            deckObject.Public = True
 
         for cardId in cardIdList:
             frontText = self.request.POST.get('front-%s' % cardId)

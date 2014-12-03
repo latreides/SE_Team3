@@ -27,9 +27,8 @@
                 {% endfor %}
                 <input id="themeField" type="hidden" name="deckTheme" value="{{ deck.Theme }}">
             </div>
-
-            <!--action="{% url 'deck_changes' %}"-->
-            {% comment %}<div id="addImages" class="button">Insert Image on Card</div>{% endcomment %}
+        <input type="checkbox" id="deckPublic" name="deckPublic" class="" {% if deck.Public %} checked="checked" {% endif %}>
+        <label for="deckPublic">Public: <span class="revTrue">Yes</span><span class="revFalse">No</span></label>
         </div>
         <div class="contentBox">
             <div id="previewContainer">

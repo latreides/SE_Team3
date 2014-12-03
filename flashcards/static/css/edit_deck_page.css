@@ -261,7 +261,7 @@
     z-index: 100;
 }
 
-#uploadImages, #addImages, #clearImages, #reversible + label
+#uploadImages, #addImages, #clearImages, #reversible + label, #deckPublic + label
 {
     border: white solid 1px;
     margin-top: 10px;
@@ -269,7 +269,7 @@
     text-align: center;
 }
 
-#uploadImages:hover, #addImages:hover, #clearImages:hover, #reversible + label:hover
+#uploadImages:hover, #addImages:hover, #clearImages:hover, #reversible + label:hover, #deckPublic + label:hover
 {
     background: #1EB5FF;
 }
@@ -416,12 +416,12 @@
     height: 230px;
 }
 
-#reversible
+#reversible, #deckPublic
 {
    display: none;
 }
 
-#reversible + label
+#reversible + label, #deckPublic + label
 {
     background-color: #1E90FF;
     color: white;
@@ -431,25 +431,33 @@
     cursor: pointer;
 }
 
-#reversible + label span.revTrue
+#reversible + label span.revTrue, #deckPublic + label span.revTrue
 {
     display: none;
 }
 
-#reversible + label span.revFalse
+#reversible + label span.revFalse, #deckPublic + label span.revFalse
 {
     display: inline-block;
     color: red;
 }
 
 
-#reversible:checked + label span.revTrue
+#reversible:checked + label span.revTrue, #deckPublic:checked + label span.revTrue
 {
     display: inline-block;
     color: green;
 }
 
-#reversible:checked + label span.revFalse
+#reversible:checked + label span.revFalse, #deckPublic:checked + label span.revFalse
 {
     display: none;
+}
+
+#deckPublic + label
+{
+    width: 100%;
+    position: relative;
+    left: -5px;
+    top: 20px;
 }
