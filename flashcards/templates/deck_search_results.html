@@ -2,8 +2,8 @@
 {% load static from staticfiles %}
 {% block content %}
 {% block css %}
-        {{ block.super }}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/deck_search_results.css' %}" />
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/deck_search_results.css' %}" />
 {% endblock %}
     <h1>Search Results</h1>
     <br/>
@@ -13,7 +13,7 @@
     <div class="section">
 
     {% for deck in matching_decks %}
-    
+
     <!-- decks currently fetched in a dictionary -->
     <table>
         <tr class="deckItem">
@@ -36,7 +36,7 @@
         <div id = "stats"> Times Cloned: {{ deck.Times_Cloned }} </div>
         <div id = "stats"> Author: {{ deck.User_ID }} </div>
         <div id = "stats"> Keywords: {{ deck.Tags }} </div>
-        <div id = "stats"> No. of Cards: {{ numOfCards }} </div>
+        <div id = "stats"> No. of Cards: {{ deck.cardCount }} </div>
     </ul>
     <br/>
     <hr/>

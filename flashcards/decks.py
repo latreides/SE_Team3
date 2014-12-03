@@ -5,14 +5,18 @@ from django.contrib.auth.models import User
 #from os import getcwd
 
 class parseConfig:
-    "Handles parsing, exporting, importing of deck configs"
+    """
+        Handles parsing, exporting, importing of deck configs
+    """
 
     def __init__(self):
         self.decks_location = "/decks/"
         self.deck = {}
 
     def importDeck(self, request, filename):
-        "Import deck to database from file"
+        """
+            Import deck to database from file.
+        """
             
         if request.user.is_authenticated():
             self.deck = yaml.load(filename)
@@ -28,21 +32,39 @@ class parseConfig:
                     front = qNa[0].values()[0]
                     back = qNa[1].values()[0]
                     frontImgPath = qNa[2].values()[0]
+                    if frontImgPath == None:
+                        frontImgPath == ''
                     backImgPath = qNa[3].values()[0]
-                    frontImg = createImage(frontImgPath)
-                    backImg = createImage(backImgPath)
+                    if backImgPath == None:
+                        backImgPath == ''
+                    if frontImgPath != '':
+                        frontImg = createImage(frontImgPath)
+                    if backImgPath != '':
+                        backImg = createImage(backImgPath)
 
-                    createCard(deck.id, False, front, back, frontImg.id, backImg.id)
+                    if frontImgPath != '' and backImgPath != '':
+                        createCard(deck.id, False, front, back, frontImg.id, backImg.id)
+                    elif frontImgPath != '' and backImgPath == '':
+                        createCard(deck.id, False, front, back, frontImg.id, None)
+                    elif frontImgPath == '' and backImgPath != '':
+                        createCard(deck.id, False, front, back, None, backImg.id)
+                    else:
+                        createCard(deck.id, False, front, back, None, None)
                         
             return True, deck
         else:
             return False, deck
 
     def getDeck(self):
+        """
+            Returns deck object.
+        """
         return self.deck
 
     def exportDeck(self, request, deckID):
-        "Export deck to file"
+        """
+            Export deck to file.
+        """
         exportDeck = Deck.objects.get(pk = deckID)
         dictOfCards = {}
         cards = getCardsForDeck(exportDeck)
@@ -69,17 +91,21 @@ class parseConfig:
             #f.write(yaml.dump(self.deck, default_flow_style=False))
 
     def getListOfDecks(self):
-        """Get list of decks in file
-            Returns a list"""
+        """
+            Get list of decks in file and
+            Returns a list
+        """
         retVal = []
         if self.deck:
             retVal = [deckName for deckName in self.deck]
         return retVal
 
     def getListOfCards(self, deckName):
-        """Get list of cards for deck in file
+        """
+            Get list of cards for deck in file
             Expects a string for deckname
-            Returns a list"""
+            Returns a list
+        """
         retVal = []
         if self.deck and self.deck[deckName]:
             retVal = [card for card in self.deck[deckName]]

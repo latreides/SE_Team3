@@ -1,3 +1,8 @@
+"""
+    admin.py provides access to database interactions
+    via the admin page after login.
+"""
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from flashcards.models import Deck, Image, Card

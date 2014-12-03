@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-    <h1>Account Information</h1>
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/accountPage.css' %}" />
+{% endblock %}
 
     <div id="content">
-
-        <h2>Account Information</h2>
+        {% if pwReset == 1 %}
+            <div class="pwChangeNote" style="display: block;">
+        {% else %}
+            <div class="pwChangeNote" style="display: none;">
+        {% endif %}
+            You have changed your password.
+        </div>
+        <h2>Account Details</h2>
 
         <div class="section">
             <p>
-                <!--TODO: fetch username-->
+                Username: {{ userName }}
             </p>
-
+            <br/>
             <p>
-                Change Password: <br />
+                Name: {{ name }}
             </p>
-            <form class="centerForm" method="link" action="{% url 'reset' %}">
+            <br/>
+            <p>
+                Email: {{ email }}
+            </p>
+            <br/>
+            <p>
+                Date Joined: {{ joined }}
+            </p>
+            <br/>
+            <p>
+                Last Login: {{ lastLogin }}
+            </p>
+            <br/>
+
+            <form class="centerForm" action="{% url 'reset' %}">
                 {% csrf_token %}
                 <input type="submit" value="Change Password">
             </form>
 
-            <p>
-                <!--TODO: fetch email-->
-            </p>
+            <!--
             <p>
                 Change Email: <br />
             </p>
@@ -31,8 +52,10 @@
                 {% csrf_token %}
                 <input type="submit" value="Change Email">
             </form>
+            -->
         </div>
 
+        <!--
         <h2>Destroy Account</h2>
 
         <div class="section">
@@ -47,5 +70,6 @@
                 <input type="submit" value="Accept">
             </form>
         </div>
+        -->
     </div>
 {% endblock %}
