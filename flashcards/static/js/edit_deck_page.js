@@ -84,6 +84,7 @@ function selectCard(card){
             $('#cardTextContent').removeClass('hidden');
         }
 
+        $('#reversible').prop('checked', ($('#revState-' + cardId).val() == "1"));
 
         $('#cardPreview').attr('data-cardId', cardId);
         $('.cardMiniPreview').removeClass('cardSelected');
@@ -264,6 +265,11 @@ $(document).ready(function(){
         selectCard($(this));
     });
 
+    $("#reversible").change(function(){
+        var cardId = $('#cardPreview').attr('data-cardId');
+        $('#revState-' + cardId).val($(this).is(":checked") ? "1" : "0");
+    })
+
     $('.themePreview').click(function(){
         $('.themePreview').removeClass('themeSelected');
         $(this).addClass('themeSelected');
@@ -281,6 +287,7 @@ $(document).ready(function(){
         var newFrontImgField = $('<input  id="frontImg-' + cardId  + '" type="hidden" name="front-img-' + cardId + '" value="">');
         var newBackField = $('<input  id="backText-' + cardId  + '" type="hidden" name="back-' + cardId + '" value="">');
         var newBackImgField = $('<input  id="backImg-' + cardId  + '" type="hidden" name="back-img-' + cardId + '" value="">');
+        var newRevStateField = $('<input  id="revState-' + cardId  + '" type="hidden" name="rev-state-' + cardId + '" value="0">');
 
         $('#cardsContainer').append($(newPreviewDiv))
         //$(newPreviewDiv).insertBefore($(this));
@@ -290,6 +297,7 @@ $(document).ready(function(){
         $(newPreviewDiv).append(newFrontImgField);
         $(newPreviewDiv).append(newBackField);
         $(newPreviewDiv).append(newBackImgField);
+        $(newPreviewDiv).append(newRevStateField);
         updateCardList();
     });
 

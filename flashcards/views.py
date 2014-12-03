@@ -12,6 +12,7 @@ from flashcards.decks import *
 from urllib import quote, unquote
 from django.contrib.auth.models import User
 from django.contrib.auth.views import password_reset, password_reset_confirm
+from datetime import datetime
 import glob
 import ntpath
 import os
@@ -53,7 +54,6 @@ class LandingPage(LoginRedirect):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         context['most_recent_deck'] = getMostRecentDeck(self.request.user.id)
-        context['cards_for_deck'] = getCardsForDeck(1)
         context['last_time_logged_in'] = getLastTimeLoggedIn(self.request.user.id)
 
         return context
@@ -138,7 +138,7 @@ class ViewDeckPage(LoginRedirect):
 
 class AccountPage(LoginRedirect):
     template_name = 'account_page.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super(AccountPage, self).get_context_data(**kwargs)
         user = self.request.user
@@ -147,16 +147,16 @@ class AccountPage(LoginRedirect):
         context['email'] = user.email
         context['joined'] = user.date_joined
         context['lastLogin'] = user.last_login
-        
+
         if self.request.GET.get('pwReset', ''):
             context['pwReset'] = True
         else:
             context['pwReset'] = False
         return context
-    
+
 class PasswordReset(TemplateView):
     template_name = 'registration/password_reset_form.html'
-    
+
     def get_context_data(self, **kwargs):
         invalidOldPassword = "Your old password does not match our password in the database."
         invalidSamePassword = "Your new password cannot be the same as the old one."
@@ -170,16 +170,16 @@ class PasswordReset(TemplateView):
             context['invalidPassword'] = invalidNewPassword
         else:
             context['invalidPassword'] = ''
-            
+
         return context
-    
+
     def reset(self, request):
         user = self.request.user
         username = request.POST.get('username', '')
         oldPassword = request.POST.get('oldPassword')
         newPassword = request.POST.get('newPassword')
         retypedPassword = request.POST.get('retypedPassword')
-        
+
         if user.check_password(oldPassword):
             if newPassword != oldPassword:
                 if retypedPassword == newPassword:
@@ -191,7 +191,7 @@ class PasswordReset(TemplateView):
                 raise Exception('invalidSamePassword')
         else:
             raise Exception('invalidOldPassword')
-        
+
     def post(self, request, *args, **kwargs):
         if request.POST.get('reset'):
             try:
@@ -288,7 +288,8 @@ class PlayDeckPage(LoginRedirect):
         deckId = kwargs.get('deckId', None)
         context = super(PlayDeckPage, self).get_context_data(**kwargs)
         userDeck = getDecksForUser(self.request.user).get(id=deckId)
-
+        userDeck.Accessed_Date = datetime.now();
+        userDeck.save();
         context['deckId'] = deckId
         context['deckName']  = userDeck.Name
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
@@ -400,7 +401,7 @@ class ResetDeckPage(View):
 class createDeckPage(View):
     def post(self, request, *args, **kwargs):
         newDeck = createDeck(self.request.user.id, 'Untitled Deck')
-        newCard = createCard(newDeck.id, True, "Front Side", "Back Side", None, None)
+        newCard = createCard(newDeck.id, False, "Front Side", "Back Side", None, None)
         return HttpResponseRedirect(reverse('edit')+ '?deckId=' + str(newDeck.id))
 
 class EditDeckPage(LoginRedirect):
@@ -448,7 +449,7 @@ class GetNextCard(View):
         # print card.Back_Text
 
 
-        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id), 'diff': str(card.Difficulty)};
+        cardData = {'frontText': card.Front_Text, 'backText': card.Back_Text, 'frontImage': str(card.Front_Img_ID), 'backImage': str(card.Back_Img_ID), 'cardId': str(card.id), 'diff': str(card.Difficulty), 'reversible': card.Two_Sided};
         return HttpResponse( json.dumps(cardData), content_type="application/jason")
 
 
@@ -476,6 +477,7 @@ class deckChangesPage(View):
             backText = self.request.POST.get('back-%s' % cardId)
             frontImg = self.request.POST.get('front-img-%s' % cardId)
             backImg = self.request.POST.get('back-img-%s' % cardId)
+            revState = self.request.POST.get('rev-state-%s' % cardId) == "1"
 
             # A Numeric ID means the card exists already,
             # a * before a ID means the card is to be deleted
@@ -494,6 +496,7 @@ class deckChangesPage(View):
                 else:
                     card.Back_Img_ID = None
 
+                card.Two_Sided = revState
                 card.save()
             elif cardId[0] == '*':
                 removeId = cardId[1:]
@@ -508,7 +511,7 @@ class deckChangesPage(View):
                     newBack_Img_ID = Image.objects.get(Image_Path=backImg[len(settings.MEDIA_URL):])
                 else:
                     newBack_Img_ID = None
-                createCard(deckId, True, frontText, backText, newFront_Img_ID.id if newFront_Img_ID else None, newBack_Img_ID.id if newBack_Img_ID else None)
+                createCard(deckId, revState, frontText, backText, newFront_Img_ID.id if newFront_Img_ID else None, newBack_Img_ID.id if newBack_Img_ID else None)
 
 
         deckObject.save()
@@ -545,7 +548,7 @@ class cloneDeck(View):
     def get(self, request, *args, **kwargs):
         deckId = kwargs.get('deckId', None)
         newDeck = self.cloneDeck(deckId)
-        self.cloneCards(deckId, newDeck.id) 
+        self.cloneCards(deckId, newDeck.id)
         return HttpResponseRedirect(reverse('view_decks'))
 
     def cloneDeck(self, oldDeckId):
@@ -569,10 +572,10 @@ class cloneDeck(View):
             else:
                 backImg = None
             createCard(newDeckId, card.Two_Sided, card.Front_Text, card.Back_Text, frontImg, backImg)
-            
+
 class viewDeck(LoginRedirect):
     template_name = 'view_deck.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super(viewDeck, self).get_context_data(**kwargs)
         deckId = context.get('deckId')
@@ -589,7 +592,7 @@ class viewDeck(LoginRedirect):
         context['cards'] = getCardsForDeck(deckId)
         return context
 
-        
+
 #def reset_confirm(request, uidb64=None, token=None):
     #return password_reset_confirm(request, template_name='registration/password_reset_confirm.html',
         #uidb64=uidb64, token=token, post_reset_redirect=reverse('signin'))

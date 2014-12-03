@@ -36,6 +36,17 @@ var cardId = 0;
 
 function setCardDetails(card)
 {
+    if ((card.reversible) && (Math.random() >= 0.75))
+    {
+        // 25% chance to randomly flip the card if its reversible
+        var oldFrontImage = card.frontImage;
+        var oldFrontText = card.frontText;
+        card.frontImage = card.backImage;
+        card.frontText = card.backText;
+        card.backImage = oldFrontImage;
+        card.backText = oldFrontText;
+    }
+
     if (card.frontImage != 'None')
     {
         $('#uiCFT').addClass('hidden');
@@ -94,7 +105,9 @@ $(document).ready(function() {
     //   away but maintaining the desired fade on click/keyup events.
     $("#uiCardFront").fadeIn();
     cardId = $("#formCardId").val();
+    $("#uiSkip").trigger('click');
 });
+
 
 // disable space bar scrolling and F1 showing browser help
 window.onkeydown = function(event) {
@@ -410,6 +423,7 @@ function getNextCard() {
         flip();
     cardHasBeenFlipped = false;
 }
+
 function getNextCardDiff(event) {
     var passRating = true;
     var card = {};

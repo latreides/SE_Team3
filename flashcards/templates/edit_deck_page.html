@@ -45,6 +45,7 @@
                             <input  id="frontImg-{{ card.id }}" type="hidden" name="front-img-{{ card.id }}" value="{% if card.Front_Img_ID %}/media/{{ card.Front_Img_ID }}{% endif %}">
                             <input  id="backText-{{ card.id }}" type="hidden" name="back-{{ card.id }}" value="{{ card.Back_Text }}">
                             <input  id="backImg-{{ card.id }}" type="hidden" name="back-img-{{ card.id }}" value="{% if card.Back_Img_ID %}/media/{{ card.Back_Img_ID }}{% endif %}">
+                            <input  id="revState-{{ card.id }}" type="hidden" name="rev-state-{{ card.id }}" value="{% if card.Two_Sided == True %}1{% else %}0{% endif %}">
                         </div>
                     {% endfor %}
                 </div>
@@ -57,8 +58,10 @@
                 <textarea id="cardTextContent" rows="4" cols="30"></textarea><br>
             </div>
             <div id="imageControl">
-                <div id="uploadImages" class="button">Select an Image</div>
+                <input type="checkbox" id="reversible" class="">
+                <label for="reversible">Reversible: <span class="revTrue">True</span><span class="revFalse">False</span></label>
                 <div id="clearImages" class="button">Clear Image</div>
+                <div id="uploadImages" class="button">Select an Image</div>
             </div>
             <div id="cardSideSelector">
                 <input class="cardSideRadio" id="cardFront" type="radio" name="cardEditSide" value="front" checked><label for="cardFront">Front</label>

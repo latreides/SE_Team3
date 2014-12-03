@@ -261,7 +261,7 @@
     z-index: 100;
 }
 
-#uploadImages, #addImages, #clearImages
+#uploadImages, #addImages, #clearImages, #reversible + label
 {
     border: white solid 1px;
     margin-top: 10px;
@@ -269,15 +269,17 @@
     text-align: center;
 }
 
-#uploadImages:hover, #addImages:hover, #clearImages:hover
+#uploadImages:hover, #addImages:hover, #clearImages:hover, #reversible + label:hover
 {
     background: #1EB5FF;
 }
 
 #uploadImages
 {
-    width: 347px;
+    width: 185px;
     display: inline-block;
+    float: right;
+    margin-right: 4px;
 }
 
 #clearImages
@@ -412,4 +414,42 @@
     margin: 1em;
     width: auto;
     height: 230px;
+}
+
+#reversible
+{
+   display: none;
+}
+
+#reversible + label
+{
+    background-color: #1E90FF;
+    color: white;
+    float: left;
+    width: 150px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#reversible + label span.revTrue
+{
+    display: none;
+}
+
+#reversible + label span.revFalse
+{
+    display: inline-block;
+    color: red;
+}
+
+
+#reversible:checked + label span.revTrue
+{
+    display: inline-block;
+    color: green;
+}
+
+#reversible:checked + label span.revFalse
+{
+    display: none;
 }

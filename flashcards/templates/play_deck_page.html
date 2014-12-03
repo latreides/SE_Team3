@@ -16,7 +16,7 @@
 {% block content %}
     {% include "play_switch_button.html" %}
     <h6>You are now in play mode!</h6>
-    
+
     <div id="playField">
         <div>
             <h5>Now Playing</h5>
@@ -47,11 +47,11 @@
             <div id="uiCard" style="background-image: url('{% static 'themes/' %}{{ deckTheme }}.png')" title="Click to flip">
                 <!-- Element Data IDs are used by the JS for quick & easy indexing -->
                 <div id="uiCardFront" data-id="7">
-                    <div id="uiCFT" class="uiQuestion">{{ card.Front_Text }}</div>
+                    <div id="uiCFT" class="uiQuestion"></div>
                     <img id="uiCFI" class="uiQuestion hidden" src=''>
                 </div>
                 <div id="uiCardBack" class="hide" data-id="8">
-                    <div id="uiCBT" class="uiQuestion">{{ card.Back_Text }}</div>
+                    <div id="uiCBT" class="uiQuestion"></div>
                     <img id="uiCBI" class="uiQuestion hidden" src=''>
                 </div>
             </div>
