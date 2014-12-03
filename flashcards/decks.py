@@ -17,40 +17,26 @@ class parseConfig:
         """
             Import deck to database from file.
         """
-            
+
         if request.user.is_authenticated():
             self.deck = yaml.load(filename)
             decks = self.getListOfDecks()
             cards = self.getListOfCards(decks[0])
-            deck = createDeck(1, decks[0])
+            deck = createDeck(request.user.id, decks[0])
             if cards == []:
                 return True, deck
-            
+
             importedDeck = self.getDeck()
             for cards in importedDeck.values():
                 for qNa in cards.values():
                     front = qNa[0].values()[0]
                     back = qNa[1].values()[0]
                     frontImgPath = qNa[2].values()[0]
-                    if frontImgPath == None:
-                        frontImgPath == ''
                     backImgPath = qNa[3].values()[0]
-                    if backImgPath == None:
-                        backImgPath == ''
-                    if frontImgPath != '':
-                        frontImg = createImage(frontImgPath)
-                    if backImgPath != '':
-                        backImg = createImage(backImgPath)
+                    frontImg = None if frontImgPath or frontImgPath == '' else createImage(frontImgPath).id
+                    backImg = None if backImgPath or backImgPath == '' else createImage(backImgPath).id
+                    createCard(deck.id, False, front, back, frontImg, backImg)
 
-                    if frontImgPath != '' and backImgPath != '':
-                        createCard(deck.id, False, front, back, frontImg.id, backImg.id)
-                    elif frontImgPath != '' and backImgPath == '':
-                        createCard(deck.id, False, front, back, frontImg.id, None)
-                    elif frontImgPath == '' and backImgPath != '':
-                        createCard(deck.id, False, front, back, None, backImg.id)
-                    else:
-                        createCard(deck.id, False, front, back, None, None)
-                        
             return True, deck
         else:
             return False, deck
@@ -70,23 +56,23 @@ class parseConfig:
         cards = getCardsForDeck(exportDeck)
         for card in cards:
             #Prepping cards for export
-            front = {'q': str(card.Front_Text)}                 
+            front = {'q': str(card.Front_Text)}
             back = {'a': str(card.Back_Text)}
             frontImgId = card.Front_Img_ID_id
             backImgId = card.Back_Img_ID_id
-            frontImgPath = Image.objects.get(pk = frontImgId)
-            backImgPath = Image.objects.get(pk = backImgId)
+            frontImgPath = Image.objects.get(pk = frontImgId) if frontImgId else ''
+            backImgPath = Image.objects.get(pk = backImgId) if backImgId else ''
             frontImg = {'frontImg': str(frontImgPath)}
             backImg = {'backImg': str(backImgPath)}
             exportList = [front, back, frontImg, backImg]
             exportCard = {("card" + str(card.id)): exportList}
-            
+
             dictOfCards.update(exportCard)
-        
+
         self.deck = {str(exportDeck.Name): dictOfCards}
         formattedDeck = yaml.dump(self.deck, default_flow_style = False)
         return formattedDeck
-            
+
         #with open(getcwd() + "/flashcards/decks/" + exportDeck.Name + ".yml", 'w') as f:
             #f.write(yaml.dump(self.deck, default_flow_style=False))
 
