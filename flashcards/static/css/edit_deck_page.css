@@ -439,7 +439,7 @@
 #reversible + label span.revFalse, #deckPublic + label span.revFalse
 {
     display: inline-block;
-    color: red;
+    color: yellow;
 }
 
 

@@ -232,7 +232,7 @@ input[type="reset"]:hover {
 }
 
 .ErrorMessage    {
-    color: red;
+    color: yellow;
     margin-top: 4px;
 }
 
