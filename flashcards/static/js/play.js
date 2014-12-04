@@ -48,6 +48,7 @@ function updateTimer()
         { toggleSettingsDrawer(); }
         if ($("#uiHelpButton").hasClass("helpOpen"))
         { toggleHelpDrawer(); }
+        document.removeEventListener( "keyup", pressAKey);
         $('#timedCover').show();
     }
     else
@@ -168,7 +169,7 @@ window.onkeydown = function(event) {
     return !(event.keyCode == 32 || event.keyCode == 112);
 };
 
-document.addEventListener( "keyup", function(event) {
+function pressAKey(event) {
         switch (event.keyCode) {
             case 37: // left arrow key
             case 39: // right arrow key
@@ -210,7 +211,8 @@ document.addEventListener( "keyup", function(event) {
             */
         }
     }
-);
+
+document.addEventListener( "keyup", pressAKey);
 
 // Need to redo in JQuery with correct URL
 function loadXMLDoc(deckId) {
