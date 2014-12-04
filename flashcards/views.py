@@ -300,6 +300,8 @@ class PlayDeckPage(LoginRedirect):
         context['deckTheme'] = userDeck.Theme.replace(' ', '').replace('.png', '')
 
         context['user_decks'] = getDecksForUser(self.request.user)
+        context['cardCount'] = getCountCardsInDeck(deckId)
+
         if deckId:
             engineObj = engine()
             #print engineObj.toJson()
@@ -307,12 +309,12 @@ class PlayDeckPage(LoginRedirect):
             context['deck'] = engineObj
             card = engineObj.getNextCard()
             context['card'] = card
-            
+
             #vals = []
             #for i in range(20):
             #    vals.append(engineObj.getNextCard())
             #context['vals'] = vals
-            
+
             #context['cardId'] = card.id
             return context
             #self.request.session['playObj'].play(int(deckId))

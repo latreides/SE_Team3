@@ -34,7 +34,6 @@ var tick = 0.04; // fadeFrequency / duration;
 /* ===== End Color Fading Settings ===== */
 var cardId = 0;
 
-var sessionTime = 5; // Minutes
 var sessionEnd;
 var sessionTImer;
 
@@ -45,6 +44,10 @@ function updateTimer()
     {
         clearInterval(timer);
         $('#timer').text("Session has Ended");
+        if ($("#uiSettingsButton").hasClass("settingsOpen"))
+        { toggleSettingsDrawer(); }
+        if ($("#uiHelpButton").hasClass("helpOpen"))
+        { toggleHelpDrawer(); }
         $('#timedCover').show();
     }
     else
@@ -64,22 +67,29 @@ function calcCoverSize()
 
 function playTimer()
 {
-    sessionEnd = new Date(lastAccessed.getFullYear(), lastAccessed.getMonth(), lastAccessed.getDate(), lastAccessed.getHours(), lastAccessed.getMinutes() + sessionTime, lastAccessed.getSeconds());
+    var sessionTime = ((5 * cardCount) + 30);
+
+    sessionEnd = new Date(lastAccessed.getFullYear(), lastAccessed.getMonth(), lastAccessed.getDate(), lastAccessed.getHours(), lastAccessed.getMinutes(), lastAccessed.getSeconds() + sessionTime);
     sessionTimer = setInterval(updateTimer, 1000);
     updateTimer();
 }
 
 function setCardDetails(card)
 {
-    if ((card.reversible) && (Math.random() >= 0.75))
+    if (card.reversible)
     {
-        // 25% chance to randomly flip the card if its reversible
-        var oldFrontImage = card.frontImage;
-        var oldFrontText = card.frontText;
-        card.frontImage = card.backImage;
-        card.frontText = card.backText;
-        card.backImage = oldFrontImage;
-        card.backText = oldFrontText;
+        // If its frontFirst, we leave it as is.
+        // If its backFirst we flip it 100% chance
+        // If its random we flip it 50% chance
+        if ((order == "backFirst") || ((order == "random") && (Math.random() >= 0.5)))
+        {
+            var oldFrontImage = card.frontImage;
+            var oldFrontText = card.frontText;
+            card.frontImage = card.backImage;
+            card.frontText = card.backText;
+            card.backImage = oldFrontImage;
+            card.backText = oldFrontText;
+        }
     }
 
     if (card.frontImage != 'None')
@@ -145,6 +155,11 @@ $(document).ready(function() {
     playTimer();
 
     $(window).on('resize', calcCoverSize);
+
+    $("input[name=order]").change(function(){
+        order = $("input[name=order]:checked").val();
+    })
+
 });
 
 
